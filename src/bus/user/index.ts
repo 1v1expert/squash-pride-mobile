@@ -13,7 +13,7 @@ export const useUser = () => {
     dispatch(userActions.setAuthorize(state));
 
   return {
-    user: useSelector(({isAuthorized}) => isAuthorized),
+    isAuthorized: useSelector(({user}) => user.isAuthorized),
     setAuthorize,
   };
 };

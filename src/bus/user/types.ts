@@ -1,5 +1,26 @@
 import {CaseReducer, PayloadAction} from '@reduxjs/toolkit';
 
+export type GeoPosition = {
+  coords: {
+    speed: number;
+    longitude: number;
+    latitude: number;
+    accuracy: number;
+    heading: number;
+    altitude: number;
+    altitudeAccuracy: number;
+  };
+  timestamp: number;
+};
+
+type LatitudeType = GeoPosition['coords']['latitude'];
+type LongitudeType = GeoPosition['coords']['longitude'];
+
+export type CoordsPaylaod = {
+  latitude: LatitudeType;
+  longitude: LongitudeType;
+};
+
 export type LocationPermission =
   | 'limited'
   | 'denied'

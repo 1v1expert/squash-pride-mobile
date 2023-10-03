@@ -1,22 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, {FC} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
+import React from 'react';
 import {Provider as ReduxProvider} from 'react-redux';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {GluestackUIProvider, Box, Text, Image} from '@gluestack-ui/themed';
-import Main from './src/view/screens/Auth/Main';
+import {GluestackUIProvider} from '@gluestack-ui/themed';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {store} from './src/init/redux';
+import {Navigation} from './src/view/navigation';
 
 // const FeatureCard = ({iconSvg, name, desc}: any) => {
 //   return (
@@ -146,32 +133,14 @@ import {store} from './src/init/redux';
 // };
 
 const App = () => {
-  // const isDarkMode = useColorScheme() === 'dark';
-
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  //   // height: '100%',
-
   return (
-    // <SafeAreaView style={backgroundStyle}>
-    //   <StatusBar
-    //     barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-    //     backgroundColor={backgroundStyle.backgroundColor}
-    //   />
     <ReduxProvider store={store}>
-      <GluestackUIProvider>
-        {/* <Box
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}
-          height="100%"> */}
-        {/* <Container /> */}
-        <Main />
-        {/* </Box> */}
-      </GluestackUIProvider>
+      <SafeAreaProvider>
+        <GluestackUIProvider>
+          <Navigation />
+        </GluestackUIProvider>
+      </SafeAreaProvider>
     </ReduxProvider>
-
-    // </SafeAreaView>
   );
 };
 
