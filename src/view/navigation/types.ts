@@ -12,10 +12,10 @@ export type PublicStackParamList = {
   //   PasswordResetCode: undefined;
   //   PasswordResetRecover: undefined;
 };
-// export type PublicStackScreenProps = NativeStackScreenProps<
-//   PublicStackParamList,
-//   any
-// >;
+export type PublicStackScreenProps = NativeStackScreenProps<
+  PublicStackParamList,
+  any
+>;
 // export type EmailVerificationCodeScreenProps = NativeStackScreenProps<
 //   PublicStackParamList,
 //   'EmailVerificationCode'

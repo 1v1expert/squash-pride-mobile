@@ -1,12 +1,16 @@
-import {Box, VStack, HStack, Button, ButtonText} from '@gluestack-ui/themed';
-
-import React from 'react';
+import {Box, VStack, HStack} from '@gluestack-ui/themed';
+import React, {FC} from 'react';
 import {Dimensions, Image, ImageBackground, StyleSheet} from 'react-native';
 import {images} from '../../../../assets';
 import SafeAreaLayout from '../../../components/SafeAreaLayout';
+import {PublicStackScreenProps} from '../../../navigation/types';
+import {Book} from '../../../navigation/book';
+import CustomButton from '../../../components/CustomButton';
 
 const width = Dimensions.get('screen').width;
-const Main = () => {
+
+const Main: FC<PublicStackScreenProps> = ({navigation}) => {
+  const {navigate} = navigation;
   return (
     <Box flex={1}>
       <ImageBackground
@@ -25,23 +29,20 @@ const Main = () => {
             />
             <VStack paddingHorizontal={40} space="4xl">
               <VStack space="xl">
-                <Button borderRadius={100} height={50}>
-                  <ButtonText>РЕГИСТРАЦИЯ</ButtonText>
-                </Button>
-                <Button borderRadius={100} height={50}>
-                  <ButtonText>АВТОРИЗАЦИЯ</ButtonText>
-                </Button>
+                <CustomButton
+                  title="РЕГИСТРАЦИЯ"
+                  onPress={() => navigate(Book.Registration)}
+                />
+
+                <CustomButton
+                  title="АВТОРИЗАЦИЯ"
+                  onPress={() => navigate(Book.Login)}
+                />
               </VStack>
               <HStack alignItems="center" justifyContent="space-around">
-                <Button borderRadius={100} height={50}>
-                  <ButtonText>+</ButtonText>
-                </Button>
-                <Button borderRadius={100} height={50}>
-                  <ButtonText>+</ButtonText>
-                </Button>
-                <Button borderRadius={100} height={50}>
-                  <ButtonText>+</ButtonText>
-                </Button>
+                <CustomButton title="+" />
+                <CustomButton title="+" />
+                <CustomButton title="+" />
               </HStack>
             </VStack>
           </VStack>
@@ -59,8 +60,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     justifyContent: 'space-between',
-    // alignItems: 'center',
-    // backgroundColor: 'red',
   },
 });
 export default Main;
