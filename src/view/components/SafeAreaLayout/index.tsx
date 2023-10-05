@@ -9,7 +9,7 @@ type SafeAreaLayoutProps = {
   bottom?: boolean;
   bgColor?: 1 | 2 | 3 | 4;
   customColor?: string;
-  style: ViewStyle;
+  style?: ViewStyle;
 };
 
 const SafeAreaLayout: FC<PropsWithChildren<SafeAreaLayoutProps>> = ({

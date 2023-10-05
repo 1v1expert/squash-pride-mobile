@@ -178,6 +178,9 @@ export const config = createConfig({
         variants: {
           variant: {
             primary: {
+              color: '#FFFFFF',
+            },
+            secondary: {
               color: '#F7A936',
             },
           },

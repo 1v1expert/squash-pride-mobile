@@ -1,9 +1,11 @@
+import {ButtonIcon} from '@gluestack-ui/themed';
 import {
   Button as UIButton,
   ButtonSpinner,
   ButtonText,
 } from '@gluestack-ui/themed';
-import React, {FC, ReactNode, useState} from 'react';
+import React, {FC, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 type CustomButtonProps = {
@@ -11,8 +13,8 @@ type CustomButtonProps = {
   onPress?: () => void;
   isLoading?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  iconLeft?: ReactNode;
-  iconRight?: ReactNode;
+  iconLeft?: any;
+  iconRight?: any;
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -26,10 +28,10 @@ const CustomButton: FC<CustomButtonProps> = ({
   const [pressed, setPressed] = useState(false);
   return (
     <LinearGradient
-      colors={pressed ? ['#FBC36B', '#fbc46bd7', '#F7AA37'] : ['#000']}
+      colors={pressed ? ['#FBC36B', '#fbc46bd7', '#F7AA37'] : ['#000', '#000']}
       start={{y: 0.0, x: 0.0}}
       end={{y: 1, x: 0.0}}
-      style={{borderRadius: 100, height: 50}}>
+      style={styles.container}>
       <UIButton
         size={size}
         bgColor="inherit"
@@ -37,15 +39,26 @@ const CustomButton: FC<CustomButtonProps> = ({
         onPress={onPress}
         onPressIn={() => setPressed(true)}
         onPressOut={() => setPressed(false)}>
-        {iconLeft && iconLeft}
+        {iconLeft && (
+          <ButtonIcon mr={15} as={iconLeft} color={pressed ? '#000' : '#fff'} />
+        )}
         {title && (
           <ButtonText color={pressed ? '#000' : '#fff'}>{title}</ButtonText>
         )}
-        {iconRight && iconRight}
+        {iconRight && (
+          <ButtonIcon
+            ml={15}
+            as={iconRight}
+            color={pressed ? '#000' : '#fff'}
+          />
+        )}
         {isLoading && <ButtonSpinner />}
       </UIButton>
     </LinearGradient>
   );
 };
+const styles = StyleSheet.create({
+  container: {borderRadius: 100, height: 50},
+});
 
 export default CustomButton;

@@ -2,18 +2,18 @@ import React, {FC} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {Book} from './book';
-import {PublicStackParamList} from './types';
-import Main from '../screens/Auth/Main';
+import {PrivateStackParamList} from './types';
+import {TabNavigator} from './TabNavigator';
 
-const Stack = createNativeStackNavigator<PublicStackParamList>();
+const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
 export const Private: FC = () => {
   return (
-    <Stack.Navigator initialRouteName={Book.Main}>
+    <Stack.Navigator initialRouteName={Book.TabNavigator}>
       <Stack.Group>
         <Stack.Screen
-          name={Book.Main}
-          component={Main}
+          name={Book.TabNavigator}
+          component={TabNavigator}
           options={{headerShown: false}}
         />
       </Stack.Group>

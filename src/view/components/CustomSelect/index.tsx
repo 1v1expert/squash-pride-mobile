@@ -18,8 +18,8 @@ const CustomSelect = () => {
   const [value, setValue] = useState('');
   console.log('value', value);
   return (
-    <Select onValueChange={setValue} variant="primary" borderWidth={0}>
-      <SelectTrigger variant="outline" size="md" variant="primary">
+    <Select onValueChange={setValue} variant="primary">
+      <SelectTrigger variant="outline" size="md" borderWidth={0}>
         <SelectInput placeholder="Select option" variant="primary" />
         <SelectIcon mr="$3">
           <Icon as={ChevronDownIcon} />

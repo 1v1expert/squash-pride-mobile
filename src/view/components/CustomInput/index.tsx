@@ -1,6 +1,15 @@
-import {Input, InputField, Text, VStack} from '@gluestack-ui/themed';
-import React, {FC} from 'react';
+import {
+  Input,
+  InputField,
+  InputIcon,
+  InputSlot,
+  Text,
+  VStack,
+} from '@gluestack-ui/themed';
+import React, {FC, useState} from 'react';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
+import Star from '../../../assets/svg/star';
+import {KeyboardType} from 'react-native';
 
 type CustomInputProps = {
   placeholder?: string;
@@ -10,6 +19,8 @@ type CustomInputProps = {
   error?: FieldError;
   maxLength?: number;
   variant?: 'primary' | 'secondary';
+  required?: boolean;
+  keyboardType?: KeyboardType;
 };
 
 const CustomInput: FC<CustomInputProps> = ({
@@ -20,8 +31,11 @@ const CustomInput: FC<CustomInputProps> = ({
   maxLength,
   error,
   variant,
+  required,
+  keyboardType,
 }) => {
   const {control} = useFormContext();
+  const [focus, setFocus] = useState(false);
 
   return (
     <Controller
@@ -36,13 +50,21 @@ const CustomInput: FC<CustomInputProps> = ({
                 value={value}
                 onChangeText={(formatted: string) => onChange(formatted)}
                 placeholder={placeholder}
-                // placeholderTextColor="#fff"
-                // color="#fff"
+                placeholderTextColor={focus ? '#000' : '#fff'}
                 variant={variant}
                 type={type}
+                keyboardType={keyboardType}
                 maxLength={maxLength}
+                onFocus={() => setFocus(true)}
+                onBlur={() => setFocus(false)}
               />
+              {required && !focus && (
+                <InputSlot pr="$3">
+                  <InputIcon as={Star} color="$darkBlue500" />
+                </InputSlot>
+              )}
             </Input>
+
             <VStack margin={0} minHeight={22.5}>
               <Text color={!value.length ? '#F7A936' : '#F00'}>
                 {error && error.message}
