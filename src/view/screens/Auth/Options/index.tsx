@@ -1,6 +1,6 @@
 import {ArrowRightIcon, Box, HStack, Text, VStack} from '@gluestack-ui/themed';
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
 import SafeAreaLayout from '../../../components/SafeAreaLayout';
 import Teams from '../../../components/Team';
@@ -13,6 +13,7 @@ import Indicator from '../../../components/Indicator';
 import Levels from '../../../components/Levels';
 import {useUser} from '../../../../bus/user';
 
+const height = Dimensions.get('screen').height;
 interface OptionsForm {
   peopleCount: string;
   level?: string;
@@ -36,9 +37,10 @@ const Options = () => {
       };
     },
   });
-  const {handleSubmit} = methods;
+  const {handleSubmit, watch} = methods;
 
-  const nextStep = () => setStep(prev => prev + 1);
+  const person = watch('peopleCount');
+  const nextStep = () => person && setStep(prev => prev + 1);
   const onPress = (values: OptionsForm) => {
     console.log('values', values);
     setAuthorize(true);
@@ -52,13 +54,10 @@ const Options = () => {
           <Indicator selected={step} length={2} />
         </VStack>
         <FormProvider {...methods}>
-          <VStack
-            flex={1}
-            bgColor="#25282D"
-            justifyContent="space-between"
-            pb={bottom}>
+          <VStack flex={1} bgColor="#25282D" pb={bottom}>
             {!step ? (
               <HStack
+                flex={1}
                 mt={40}
                 alignItems="center"
                 justifyContent="center"
@@ -70,6 +69,7 @@ const Options = () => {
               </HStack>
             ) : (
               <HStack
+                flex={1}
                 mt={40}
                 alignItems="center"
                 justifyContent="center"
@@ -80,7 +80,10 @@ const Options = () => {
                 ))}
               </HStack>
             )}
-            <HStack justifyContent="center">
+            <HStack
+              justifyContent="center"
+              alignItems="flex-end"
+              pb={height * 0.025}>
               <CustomButton
                 title="Далее"
                 onPress={step ? handleSubmit(onPress) : nextStep}

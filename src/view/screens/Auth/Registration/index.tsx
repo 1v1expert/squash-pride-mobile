@@ -20,6 +20,7 @@ import {PublicStackScreenProps} from '../../../navigation/types';
 import {Book} from '../../../navigation/book';
 
 const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height;
 
 interface RegistrationForm {
   name: string;
@@ -57,33 +58,33 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
   };
 
   return (
-    <Box flex={1} bgColor="#25282D">
-      <SafeAreaLayout top bottom style={styles.container}>
-        <VStack flex={1}>
-          <FormProvider {...methods}>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-              style={styles.keyboardAvoidingContainer}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingContainer}>
+      <Box flex={1} bgColor="#25282D">
+        <SafeAreaLayout top bottom style={styles.container}>
+          <VStack flex={1}>
+            <FormProvider {...methods}>
               <VStack
                 paddingHorizontal={40}
                 space="4xl"
-                justifyContent="flex-end">
-                <VStack alignItems="center" space="2xl">
-                  <Image
-                    source={images.logo}
-                    resizeMode="contain"
-                    style={{
-                      width: width / 4,
-                      height: width / 4,
-                    }}
-                  />
-                  <Text textAlign="center" variant="secondary">
-                    Создай аккаунт и получи доступ к тренировкам
-                  </Text>
-                </VStack>
-
-                <VStack space="xs">
-                  <VStack space="xs" justifyContent="flex-end">
+                flex={1}
+                justifyContent="space-between">
+                <VStack space="xl" justifyContent="flex-end">
+                  <VStack alignItems="center" space="2xl">
+                    <Image
+                      source={images.logo}
+                      resizeMode="contain"
+                      style={{
+                        width: width / 4,
+                        height: width / 4,
+                      }}
+                    />
+                    <Text textAlign="center" variant="secondary">
+                      Создай аккаунт и получи доступ к тренировкам
+                    </Text>
+                  </VStack>
+                  <VStack space="xs">
                     <CustomInput
                       name="name"
                       placeholder="Имя"
@@ -126,21 +127,23 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       variant="secondary"
                     />
                   </VStack>
-
-                  <HStack justifyContent="center">
-                    <CustomButton
-                      title="Далее"
-                      onPress={handleSubmit(onPress)}
-                      iconRight={ArrowRightIcon}
-                    />
-                  </HStack>
                 </VStack>
+                <HStack
+                  justifyContent="center"
+                  alignItems="flex-end"
+                  pb={height * 0.025}>
+                  <CustomButton
+                    title="Далее"
+                    onPress={handleSubmit(onPress)}
+                    iconRight={ArrowRightIcon}
+                  />
+                </HStack>
               </VStack>
-            </KeyboardAvoidingView>
-          </FormProvider>
-        </VStack>
-      </SafeAreaLayout>
-    </Box>
+            </FormProvider>
+          </VStack>
+        </SafeAreaLayout>
+      </Box>
+    </KeyboardAvoidingView>
   );
 };
 
