@@ -20,6 +20,7 @@ const Teams: FC<TeamProps> = ({teamLength, name}) => {
       control={control}
       name={name}
       render={({field: {onChange, value}}) => {
+        const textColor = value === teamLength ? '#000' : '#fff';
         return (
           <Pressable onPress={() => onChange(teamLength)}>
             <VStack
@@ -35,14 +36,16 @@ const Teams: FC<TeamProps> = ({teamLength, name}) => {
               shadowOpacity={0.36}
               shadowRadius={6.68}
               elevation={11}>
-              <Text variant="primary">{title}</Text>
+              <Text variant="primary" color={textColor}>
+                {title}
+              </Text>
               <HStack justifyContent="center" space="xs">
                 {count.map((_, i) => (
                   <Human key={i} />
                 ))}
               </HStack>
 
-              <Text variant="primary">
+              <Text variant="primary" color={textColor}>
                 {`${teamLength} игрок${teamLength !== 1 ? 'a' : ''}`}
               </Text>
             </VStack>

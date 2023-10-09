@@ -1,6 +1,8 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import React from 'react';
-
 import Home from '../screens/Home';
 import Favorites from '../screens/Favorites';
 import Training from '../screens/Training';
@@ -10,9 +12,10 @@ import {Book} from './book';
 import TabBar from './TabBar';
 
 const Tab = createBottomTabNavigator();
+const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
 export const TabNavigator = () => {
   return (
-    <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+    <Tab.Navigator tabBar={tabBar}>
       <Tab.Screen
         name={Book.Home}
         component={Home}

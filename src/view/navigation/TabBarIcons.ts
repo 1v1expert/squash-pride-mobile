@@ -1,24 +1,33 @@
+import {ImageProps} from 'react-native';
 import {images} from '../../assets';
+interface TabBarIcon {
+  focused: ImageProps;
+  default: ImageProps;
+}
 
-export const tabBarIcons = {
+interface TabBarIcons {
+  [key: string]: TabBarIcon;
+}
+
+export const tabBarIcons: TabBarIcons = {
   home: {
-    focused: images.home,
+    focused: images.homeFocus,
     default: images.home,
   },
   favorites: {
-    focused: images.favorites,
+    focused: images.favoritesFocus,
     default: images.favorites,
   },
   training: {
-    focused: images.training,
+    focused: images.trainingFocus,
     default: images.training,
   },
   calendar: {
-    focused: images.calendar,
+    focused: images.calendarFocus,
     default: images.calendar,
   },
   profile: {
-    focused: images.profile,
+    focused: images.profileFocus,
     default: images.profile,
   },
 };

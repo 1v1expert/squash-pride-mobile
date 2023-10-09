@@ -1,8 +1,7 @@
-import {HStack, Text, VStack} from '@gluestack-ui/themed';
+import {HStack, Image, Text, VStack} from '@gluestack-ui/themed';
 import React, {FC} from 'react';
 import {Pressable} from 'react-native';
 import {Controller, useFormContext} from 'react-hook-form';
-import {AirbnbRating} from 'react-native-ratings';
 
 import {images} from '../../../assets';
 type LevelsProps = {
@@ -13,6 +12,7 @@ type LevelsProps = {
 const Levels: FC<LevelsProps> = ({level, name}) => {
   const {control} = useFormContext();
 
+  const stars = Array.from({length: 5}, (_, index) => index + 1);
   const title = [
     'ЛЕГКО',
     'СЛОЖНЕЕ',
@@ -44,16 +44,21 @@ const Levels: FC<LevelsProps> = ({level, name}) => {
               <Text variant="primary" textAlign="center">
                 {title[level - 1]}
               </Text>
-              <HStack justifyContent="center" space="xs">
-                <AirbnbRating
-                  defaultRating={level}
-                  count={5}
-                  starImage={images.star}
-                  showRating={false}
-                  isDisabled
-                  size={20}
-                  unSelectedColor="#131517"
-                />
+              <HStack justifyContent="center" space="xs" alignItems="center">
+                {stars.map(count => (
+                  <Image
+                    source={
+                      count <= level
+                        ? value !== level
+                          ? images.star
+                          : images.filledStar
+                        : images.unselectedStar
+                    }
+                    width={20}
+                    resizeMode="contain"
+                    alt=""
+                  />
+                ))}
               </HStack>
             </VStack>
           </Pressable>

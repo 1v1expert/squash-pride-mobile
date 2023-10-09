@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Image} from 'react-native';
 import {HStack, Text} from '@gluestack-ui/themed';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import {tabBarIcons} from './TabBarIcons';
+import {tabBarIcons} from './tabBarIcons';
+import {Image} from '@gluestack-ui/themed';
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const {bottom} = useSafeAreaInsets();
@@ -41,13 +41,15 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
             key={index}
             style={styles.tab}>
             <Image
-              style={styles.iconSize}
+              width={20}
+              height={20}
               resizeMode="contain"
               source={
                 isFocused
                   ? tabBarIcons[route.name.toLowerCase()].focused
                   : tabBarIcons[route.name.toLowerCase()].default
               }
+              alt=""
             />
 
             <Text lineHeight={13} fontSize={10} color="#FFF" mt={3}>
@@ -68,15 +70,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     height: 49,
   },
-  image: {
-    width: 25,
-    height: 25,
-  },
   iconSize: {
     width: 20,
     height: 20,
-  },
-  containerWindow: {
-    flex: 1,
   },
 });
