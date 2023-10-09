@@ -47,6 +47,7 @@ const Levels: FC<LevelsProps> = ({level, name}) => {
               <HStack justifyContent="center" space="xs" alignItems="center">
                 {stars.map(count => (
                   <Image
+                    key={count}
                     source={
                       count <= level
                         ? value !== level

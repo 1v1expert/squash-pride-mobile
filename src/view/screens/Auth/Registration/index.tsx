@@ -18,6 +18,7 @@ import {registrationSchema} from './schema';
 import CustomInput from '../../../components/CustomInput';
 import {PublicStackScreenProps} from '../../../navigation/types';
 import {Book} from '../../../navigation/book';
+import CustomSelect from '../../../components/CustomSelect';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -51,6 +52,11 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
     formState: {errors},
     handleSubmit,
   } = methods;
+
+  const ages = Array.from({length: 100}, (_, index) => {
+    const age = index + 1;
+    return {label: String(age), value: age};
+  });
 
   const onPress = (values: RegistrationForm) => {
     console.log('values', values);
@@ -107,18 +113,19 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       variant="secondary"
                       required
                     />
-                    <CustomInput
+                    <CustomSelect
                       name="age"
                       placeholder="Возраст"
-                      error={errors.age}
-                      variant="secondary"
-                      keyboardType="number-pad"
+                      items={ages}
                     />
-                    <CustomInput
+                    <CustomSelect
                       name="gender"
                       placeholder="Пол"
-                      error={errors.gender}
-                      variant="secondary"
+                      items={[
+                        {label: 'Мужской', value: 'male'},
+                        {label: 'Женский', value: 'female'},
+                        {label: 'Другое', value: 'other'},
+                      ]}
                     />
                     <CustomInput
                       name="country"

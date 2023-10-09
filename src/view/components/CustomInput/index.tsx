@@ -45,7 +45,7 @@ const CustomInput: FC<CustomInputProps> = ({
       render={({field: {onChange, value}}) => {
         return (
           <VStack space="xs">
-            <Input variant={variant} size="md" margin={0}>
+            <Input variant={variant} size="md">
               <InputField
                 value={value}
                 onChangeText={(formatted: string) => onChange(formatted)}
