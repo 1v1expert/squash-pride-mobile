@@ -15,6 +15,7 @@ type CustomButtonProps = {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   iconLeft?: any;
   iconRight?: any;
+  bgColor?: string;
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -24,11 +25,14 @@ const CustomButton: FC<CustomButtonProps> = ({
   size,
   iconLeft,
   iconRight,
+  bgColor = '#000',
 }) => {
   const [pressed, setPressed] = useState(false);
   return (
     <LinearGradient
-      colors={pressed ? ['#FBC36B', '#fbc46bd7', '#F7AA37'] : ['#000', '#000']}
+      colors={
+        pressed ? ['#FBC36B', '#fbc46bd7', '#F7AA37'] : [bgColor, bgColor]
+      }
       start={{y: 0.0, x: 0.0}}
       end={{y: 1, x: 0.0}}
       style={styles.container}>
@@ -40,14 +44,18 @@ const CustomButton: FC<CustomButtonProps> = ({
         onPressIn={() => setPressed(true)}
         onPressOut={() => setPressed(false)}>
         {iconLeft && (
-          <ButtonIcon mr={15} as={iconLeft} color={pressed ? '#000' : '#fff'} />
+          <ButtonIcon
+            mr={title ? 15 : 0}
+            as={iconLeft}
+            color={pressed ? '#000' : '#fff'}
+          />
         )}
         {title && (
           <ButtonText color={pressed ? '#000' : '#fff'}>{title}</ButtonText>
         )}
         {iconRight && (
           <ButtonIcon
-            ml={15}
+            ml={title ? 15 : 0}
             as={iconRight}
             color={pressed ? '#000' : '#fff'}
           />

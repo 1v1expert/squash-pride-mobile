@@ -10,7 +10,7 @@ interface TabBarIcons {
 }
 
 export const tabBarIcons: TabBarIcons = {
-  home: {
+  homescreens: {
     focused: images.homeFocus,
     default: images.home,
   },

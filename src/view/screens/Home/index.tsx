@@ -1,8 +1,11 @@
-import {Box, HStack, Text, VStack} from '@gluestack-ui/themed';
-import React from 'react';
+import {Box, Text, VStack} from '@gluestack-ui/themed';
+import React, {FC} from 'react';
 import SafeAreaLayout from '../../components/SafeAreaLayout';
+import TouchableContainer from '../../components/TouchableContainer';
+import {HomeScreensStackScreenProps} from '../../navigation/types';
 
-const Home = () => {
+const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
+  const {navigate} = navigation;
   return (
     <Box flex={1} bgColor="#131517">
       <SafeAreaLayout top>
@@ -19,39 +22,25 @@ const Home = () => {
           </VStack>
           <VStack
             flex={1}
-            // bgColor="red"
             width="$full"
-            // height="$full"
             paddingHorizontal={20}
             justifyContent="space-evenly">
-            <HStack bgColor="#393A40" padding={25} borderRadius={15}>
-              <Box
-                width={60}
-                height={60}
-                bgColor="orange"
-                borderRadius={15}></Box>
-            </HStack>
-            <HStack bgColor="#393A40" padding={25} borderRadius={15}>
-              <Box
-                width={60}
-                height={60}
-                bgColor="orange"
-                borderRadius={15}></Box>
-            </HStack>
-            <HStack bgColor="#393A40" padding={25} borderRadius={15}>
-              <Box
-                width={60}
-                height={60}
-                bgColor="orange"
-                borderRadius={15}></Box>
-            </HStack>
-            <HStack bgColor="#393A40" padding={25} borderRadius={15}>
-              <Box
-                width={60}
-                height={60}
-                bgColor="orange"
-                borderRadius={15}></Box>
-            </HStack>
+            <TouchableContainer
+              text="НАЧАТЬ ГОТОВУЮ ТРЕНИРОВКУ"
+              onPress={() => navigate('StartTraining')}
+            />
+            <TouchableContainer
+              text="СОЗДАТЬ СВОЮ ТРЕНИРОВКУ"
+              onPress={() => console.log('СОЗДАТЬ СВОЮ ТРЕНИРОВКУ')}
+            />
+            <TouchableContainer
+              text="ТЕХНИКА ИГРЫ"
+              onPress={() => console.log('ТЕХНИКА ИГРЫ')}
+            />
+            <TouchableContainer
+              text="СМОТРЕТЬ ПРАВИЛА"
+              onPress={() => console.log('СМОТРЕТЬ ПРАВИЛА')}
+            />
           </VStack>
         </VStack>
       </SafeAreaLayout>

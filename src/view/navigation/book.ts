@@ -9,9 +9,13 @@ export enum Book {
   TabNavigator = 'TabNavigator',
 
   //TabNavigator
-  Home = 'Home',
+  HomeScreens = 'HomeScreens',
   Favorites = 'Favorites',
   Training = 'Training',
   Calendar = 'Calendar',
   Profile = 'Profile',
+
+  //HomeScreens
+  Home = 'Home',
+  StartTraining = 'StartTraining',
 }

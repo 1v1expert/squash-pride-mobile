@@ -3,13 +3,13 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import Home from '../screens/Home';
 import Favorites from '../screens/Favorites';
 import Training from '../screens/Training';
 import Calendar from '../screens/Calendar';
 import Profile from '../screens/Profile';
 import {Book} from './book';
 import TabBar from './TabBar';
+import {HomeScreens} from './HomeScreens';
 
 const Tab = createBottomTabNavigator();
 const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
@@ -17,8 +17,8 @@ export const TabNavigator = () => {
   return (
     <Tab.Navigator tabBar={tabBar}>
       <Tab.Screen
-        name={Book.Home}
-        component={Home}
+        name={Book.HomeScreens}
+        component={HomeScreens}
         options={{headerShown: false, tabBarLabel: 'Домой'}}
       />
       <Tab.Screen
