@@ -1,4 +1,18 @@
 export const images = {
   background: require('./images/background.png'),
   logo: require('./images/logo.png'),
+  star: require('./images/star.png'),
+  filledStar: require('./images/filled_star.png'),
+  unselectedStar: require('./images/unselected_star.png'),
+  home: require('./images/home.png'),
+  homeFocus: require('./images/home_focus.png'),
+  favorites: require('./images/favorites.png'),
+  favoritesFocus: require('./images/favorites_focus.png'),
+  training: require('./images/training.png'),
+  trainingFocus: require('./images/training_focus.png'),
+  calendar: require('./images/calendar.png'),
+  calendarFocus: require('./images/calendar_focus.png'),
+  profile: require('./images/profile.png'),
+  profileFocus: require('./images/profile_focus.png'),
+  human: require('./images/human.png'),
 };

@@ -4,6 +4,7 @@ import {GluestackUIProvider} from '@gluestack-ui/themed';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {store} from './src/init/redux';
 import {Navigation} from './src/view/navigation';
+import {config} from './gluestack-ui.config';
 
 // const FeatureCard = ({iconSvg, name, desc}: any) => {
 //   return (
@@ -136,7 +137,7 @@ const App = () => {
   return (
     <ReduxProvider store={store}>
       <SafeAreaProvider>
-        <GluestackUIProvider>
+        <GluestackUIProvider config={config}>
           <Navigation />
         </GluestackUIProvider>
       </SafeAreaProvider>
