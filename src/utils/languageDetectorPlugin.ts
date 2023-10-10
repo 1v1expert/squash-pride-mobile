@@ -11,7 +11,7 @@ export const languageDetectorPlugin: LanguageDetectorModule = {
   detect: async function (callback: (lang: string) => void) {
     try {
       await AsyncStorage.getItem(STORE_LANGUAGE_KEY).then(language => {
-        const supportedLanguages = ['en'];
+        const supportedLanguages = ['en', 'ru'];
         const locale =
           Platform.OS === 'ios'
             ? NativeModules.SettingsManager?.settings?.AppleLocale ||

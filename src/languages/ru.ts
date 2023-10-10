@@ -1,0 +1,71 @@
+export default {
+  public: {
+    mainScreen: {registrationButton: 'РЕГИСТРАЦИЯ', loginButton: 'АВТОРИЗАЦИЯ'},
+    loginScreen: {
+      loginInputPlaceholder: 'Логин',
+      passInputPlaceholder: 'Пароль',
+      rememberMe: 'Запомнить меня',
+      button: 'Войти',
+      loginRequiredError: 'Заполните, чтобы продолжить',
+      passRequiredError: 'Заполните, чтобы продолжить',
+      requestError: 'Введен неверный логин или пароль',
+    },
+    registrationScreen: {
+      title: 'Создай аккаунт и получи доступ к тренировкам',
+      nameInputPlaceholder: 'Имя',
+      emailInputPlaceholder: 'E-mail',
+      passInputPlaceholder: 'Пароль',
+      ageInputPlaceholder: 'Возраст',
+      genderInputPlaceholder: 'Пол',
+      countryInputPlaceholder: 'Страна',
+      button: 'Далее',
+      nameRequiredError: 'Заполните, чтобы продолжить',
+      emailRequiredError: 'Заполните, чтобы продолжить',
+      passRequiredError: 'Заполните, чтобы продолжить',
+    },
+  },
+  private: {
+    navigator: {
+      home: 'Домой',
+      favorites: 'Избранное',
+      training: 'Тренироки',
+      calendar: 'Каленьдарь',
+      profile: 'Профиль',
+    },
+    optionsScreen: {
+      step1: {
+        title: 'СКОЛЬКО ВАС?',
+        player: 'игрок',
+        players: 'игрока',
+        solo: 'СОЛО',
+        spring: 'СПРИНГ',
+        group: 'ГРУППА',
+      },
+      step2: {
+        title: 'УРОВЕНЬ СЛОЖНОСТИ',
+        level1: 'ЛЕГКО',
+        level2: 'СЛОЖНЕЕ',
+        level3: 'СРЕДНЯЯ СЛОЖНОСТЬ',
+        level4: 'СЛОЖНО',
+        level5: 'ОЧЕНЬ СЛОЖНО',
+      },
+      button: 'Далее',
+    },
+    homeScreen: {
+      title: 'Добро пожаловать, Кристи!',
+      startTraining: 'НАЧАТЬ ГОТОВУЮ ТРЕНИРОВКУ',
+      createTraining: 'СОЗДАТЬ СВОЮ ТРЕНИРОВКУ',
+      gameTechnique: 'ТЕХНИКА ИГРЫ',
+      rules: 'СМОТРЕТЬ ПРАВИЛА',
+    },
+    startTrainingScreen: {
+      title: 'ГОТОВАЯ ТРЕНИРОВКА',
+      description:
+        'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
+    },
+    favoritesScreen: {},
+    trainingScreen: {},
+    calendarScreen: {},
+    profileScreen: {},
+  },
+};

@@ -2,7 +2,7 @@ import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, {FC} from 'react';
 import Favorites from '../screens/Favorites';
 import Training from '../screens/Training';
 import Calendar from '../screens/Calendar';
@@ -14,7 +14,7 @@ import {useCustomTranslation} from '../../tools/hooks/useTranslation';
 
 const Tab = createBottomTabNavigator();
 const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
-export const TabNavigator = () => {
+export const TabNavigator: FC = () => {
   const {t} = useCustomTranslation();
   return (
     <Tab.Navigator tabBar={tabBar}>

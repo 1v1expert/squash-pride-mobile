@@ -25,7 +25,7 @@ const SafeAreaLayout: FC<PropsWithChildren<SafeAreaLayoutProps>> = ({
       style={[
         styles.layout,
         style,
-        top && {paddingTop: up},
+        top && {paddingTop: up + 10},
         bottom && {paddingBottom: down},
       ]}>
       {children}
