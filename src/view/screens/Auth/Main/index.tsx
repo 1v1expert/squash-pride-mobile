@@ -6,11 +6,13 @@ import SafeAreaLayout from '../../../components/SafeAreaLayout';
 import {PublicStackScreenProps} from '../../../navigation/types';
 import {Book} from '../../../navigation/book';
 import CustomButton from '../../../components/CustomButton';
+import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 
 const Main: FC<PublicStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
+  const {t} = useCustomTranslation();
   return (
     <Box flex={1}>
       <ImageBackground
@@ -30,12 +32,12 @@ const Main: FC<PublicStackScreenProps> = ({navigation}) => {
             <VStack paddingHorizontal={40} space="4xl">
               <VStack space="xl">
                 <CustomButton
-                  title="РЕГИСТРАЦИЯ"
+                  title={t('public.mainScreen.registrationButton')}
                   onPress={() => navigate(Book.Registration)}
                 />
 
                 <CustomButton
-                  title="АВТОРИЗАЦИЯ"
+                  title={t('public.mainScreen.loginButton')}
                   onPress={() => navigate(Book.Login)}
                 />
               </VStack>

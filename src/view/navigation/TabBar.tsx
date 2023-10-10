@@ -3,8 +3,9 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {HStack, Text} from '@gluestack-ui/themed';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import {tabBarIcons} from './tabBarIcons';
+// import {tabBarIcons} from './tabBarIcons';
 import {Image} from '@gluestack-ui/themed';
+import {tabBarIcons} from './tabBarIcons';
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const {bottom} = useSafeAreaInsets();

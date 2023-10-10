@@ -24,6 +24,7 @@ import {loginSchema} from './schema';
 import CustomInput from '../../../components/CustomInput';
 import CustomCheckbox from '../../../components/CustomCheckbox';
 import {useUser} from '../../../../bus/user';
+import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 
@@ -36,6 +37,7 @@ interface LoginForm {
 const Login = () => {
   const {setAuthorize} = useUser();
   const [imageWidth, setImageWidth] = useState(width);
+  const {t} = useCustomTranslation();
 
   const methods = useForm<LoginForm>({
     resolver: yupResolver(loginSchema),
@@ -50,6 +52,7 @@ const Login = () => {
   });
   const {
     formState: {errors},
+    setError,
     handleSubmit,
   } = methods;
 
@@ -75,7 +78,11 @@ const Login = () => {
 
   const onPress = (values: LoginForm) => {
     console.log('values', values);
-    setAuthorize(true);
+    try {
+      setAuthorize(true);
+    } catch {
+      setError('login', {message: t('public.loginScreen.requestError')});
+    }
   };
 
   return (
@@ -105,23 +112,30 @@ const Login = () => {
                     <VStack space="sm">
                       <CustomInput
                         name="login"
-                        placeholder="Логин"
+                        placeholder={t(
+                          'public.loginScreen.loginInputPlaceholder',
+                        )}
                         error={errors.login}
                         variant="primary"
                       />
                       <CustomInput
                         name="password"
-                        placeholder="Пароль"
+                        placeholder={t(
+                          'public.loginScreen.passInputPlaceholder',
+                        )}
                         type="password"
                         error={errors.password}
                         variant="primary"
                       />
                       <HStack>
-                        <CustomCheckbox name="checkbox" />
+                        <CustomCheckbox
+                          name="checkbox"
+                          label={t('public.loginScreen.rememberMe')}
+                        />
                       </HStack>
                     </VStack>
                     <CustomButton
-                      title="ВОЙТИ"
+                      title={t('public.loginScreen.button')}
                       onPress={handleSubmit(onPress)}
                     />
                   </VStack>

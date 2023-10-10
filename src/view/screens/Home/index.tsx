@@ -3,9 +3,11 @@ import React, {FC} from 'react';
 import SafeAreaLayout from '../../components/SafeAreaLayout';
 import TouchableContainer from '../../components/TouchableContainer';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
+  const {t} = useCustomTranslation();
   return (
     <Box flex={1} bgColor="#131517">
       <SafeAreaLayout top>
@@ -17,7 +19,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             paddingHorizontal={20}
             minHeight={160}
             space="xs">
-            <Text variant="primary">Добро пожаловать, Кристи!</Text>
+            <Text variant="primary">{t('private.homeScreen.title')}</Text>
             <Box bgColor="#F7A936" width="$full" height={2} />
           </VStack>
           <VStack
@@ -26,20 +28,20 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             paddingHorizontal={20}
             justifyContent="space-evenly">
             <TouchableContainer
-              text="НАЧАТЬ ГОТОВУЮ ТРЕНИРОВКУ"
+              text={t('private.homeScreen.startTraining')}
               onPress={() => navigate('StartTraining')}
             />
             <TouchableContainer
-              text="СОЗДАТЬ СВОЮ ТРЕНИРОВКУ"
-              onPress={() => console.log('СОЗДАТЬ СВОЮ ТРЕНИРОВКУ')}
+              text={t('private.homeScreen.createTraining')}
+              onPress={() => {}}
             />
             <TouchableContainer
-              text="ТЕХНИКА ИГРЫ"
-              onPress={() => console.log('ТЕХНИКА ИГРЫ')}
+              text={t('private.homeScreen.gameTechnique')}
+              onPress={() => {}}
             />
             <TouchableContainer
-              text="СМОТРЕТЬ ПРАВИЛА"
-              onPress={() => console.log('СМОТРЕТЬ ПРАВИЛА')}
+              text={t('private.homeScreen.rules')}
+              onPress={() => {}}
             />
           </VStack>
         </VStack>

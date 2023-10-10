@@ -10,36 +10,50 @@ import Profile from '../screens/Profile';
 import {Book} from './book';
 import TabBar from './TabBar';
 import {HomeScreens} from './HomeScreens';
+import {useCustomTranslation} from '../../tools/hooks/useTranslation';
 
 const Tab = createBottomTabNavigator();
 const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
 export const TabNavigator = () => {
+  const {t} = useCustomTranslation();
   return (
     <Tab.Navigator tabBar={tabBar}>
       <Tab.Screen
         name={Book.HomeScreens}
         component={HomeScreens}
-        options={{headerShown: false, tabBarLabel: 'Домой'}}
+        options={{headerShown: false, tabBarLabel: t('private.navigator.home')}}
       />
       <Tab.Screen
         name={Book.Favorites}
         component={Favorites}
-        options={{headerShown: false, tabBarLabel: 'Избранное'}}
+        options={{
+          headerShown: false,
+          tabBarLabel: t('private.navigator.favorites'),
+        }}
       />
       <Tab.Screen
         name={Book.Training}
         component={Training}
-        options={{headerShown: false, tabBarLabel: 'Тренироки'}}
+        options={{
+          headerShown: false,
+          tabBarLabel: t('private.navigator.training'),
+        }}
       />
       <Tab.Screen
         name={Book.Calendar}
         component={Calendar}
-        options={{headerShown: false, tabBarLabel: 'Каленьдарь'}}
+        options={{
+          headerShown: false,
+          tabBarLabel: t('private.navigator.calendar'),
+        }}
       />
       <Tab.Screen
         name={Book.Profile}
         component={Profile}
-        options={{headerShown: false, tabBarLabel: 'Профиль'}}
+        options={{
+          headerShown: false,
+          tabBarLabel: t('private.navigator.profile'),
+        }}
       />
     </Tab.Navigator>
   );

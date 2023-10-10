@@ -17,8 +17,9 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {registrationSchema} from './schema';
 import CustomInput from '../../../components/CustomInput';
 import {PublicStackScreenProps} from '../../../navigation/types';
-import {Book} from '../../../navigation/book';
 import CustomSelect from '../../../components/CustomSelect';
+import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
+import {useUser} from '../../../../bus/user';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -33,7 +34,9 @@ interface RegistrationForm {
 }
 
 const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
-  const {navigate} = navigation;
+  const {setAuthorize} = useUser();
+  const {} = navigation;
+  const {t} = useCustomTranslation();
   const methods = useForm<RegistrationForm>({
     resolver: yupResolver(registrationSchema),
     mode: 'onSubmit',
@@ -60,7 +63,7 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
 
   const onPress = (values: RegistrationForm) => {
     console.log('values', values);
-    navigate(Book.Options);
+    setAuthorize(true);
   };
 
   return (
@@ -87,27 +90,33 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       }}
                     />
                     <Text textAlign="center" variant="secondary">
-                      Создай аккаунт и получи доступ к тренировкам
+                      {t('public.registrationScreen.title')}
                     </Text>
                   </VStack>
                   <VStack space="xs">
                     <CustomInput
                       name="name"
-                      placeholder="Имя"
+                      placeholder={t(
+                        'public.registrationScreen.nameInputPlaceholder',
+                      )}
                       error={errors.name}
                       variant="secondary"
                       required
                     />
                     <CustomInput
                       name="email"
-                      placeholder="E-mail"
+                      placeholder={t(
+                        'public.registrationScreen.emailInputPlaceholder',
+                      )}
                       error={errors.email}
                       variant="secondary"
                       required
                     />
                     <CustomInput
                       name="password"
-                      placeholder="Пароль"
+                      placeholder={t(
+                        'public.registrationScreen.passInputPlaceholder',
+                      )}
                       type="password"
                       error={errors.password}
                       variant="secondary"
@@ -115,12 +124,16 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                     />
                     <CustomSelect
                       name="age"
-                      placeholder="Возраст"
+                      placeholder={t(
+                        'public.registrationScreen.ageInputPlaceholder',
+                      )}
                       items={ages}
                     />
                     <CustomSelect
                       name="gender"
-                      placeholder="Пол"
+                      placeholder={t(
+                        'public.registrationScreen.genderInputPlaceholder',
+                      )}
                       items={[
                         {label: 'Мужской', value: 'male'},
                         {label: 'Женский', value: 'female'},
@@ -129,7 +142,9 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                     />
                     <CustomInput
                       name="country"
-                      placeholder="Страна"
+                      placeholder={t(
+                        'public.registrationScreen.countryInputPlaceholder',
+                      )}
                       error={errors.country}
                       variant="secondary"
                     />
@@ -140,7 +155,7 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                   alignItems="flex-end"
                   pb={height * 0.025}>
                   <CustomButton
-                    title="Далее"
+                    title={t('public.registrationScreen.button')}
                     onPress={handleSubmit(onPress)}
                     iconRight={ArrowRightIcon}
                   />
