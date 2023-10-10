@@ -5,7 +5,6 @@ import {
   ButtonText,
 } from '@gluestack-ui/themed';
 import React, {FC, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 type CustomButtonProps = {
@@ -16,6 +15,9 @@ type CustomButtonProps = {
   iconLeft?: any;
   iconRight?: any;
   bgColor?: string;
+  width?: number;
+  height?: number;
+  borderRadius?: number;
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -26,6 +28,9 @@ const CustomButton: FC<CustomButtonProps> = ({
   iconLeft,
   iconRight,
   bgColor = '#000',
+  width,
+  height,
+  borderRadius = 50,
 }) => {
   const [pressed, setPressed] = useState(false);
   return (
@@ -35,11 +40,13 @@ const CustomButton: FC<CustomButtonProps> = ({
       }
       start={{y: 0.0, x: 0.0}}
       end={{y: 1, x: 0.0}}
-      style={styles.container}>
+      style={{borderRadius: borderRadius}}>
       <UIButton
         size={size}
         bgColor="inherit"
-        height={50}
+        minHeight={50}
+        height={height}
+        width={width}
         onPress={onPress}
         onPressIn={() => setPressed(true)}
         onPressOut={() => setPressed(false)}>
@@ -65,8 +72,5 @@ const CustomButton: FC<CustomButtonProps> = ({
     </LinearGradient>
   );
 };
-const styles = StyleSheet.create({
-  container: {borderRadius: 100, height: 50},
-});
 
 export default CustomButton;

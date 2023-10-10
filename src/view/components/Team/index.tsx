@@ -1,8 +1,8 @@
-import {HStack, Text, VStack} from '@gluestack-ui/themed';
+import {HStack, Image, Text, VStack} from '@gluestack-ui/themed';
 import React, {FC} from 'react';
-import Human from '../../../assets/svg/human';
 import {Pressable} from 'react-native';
 import {Controller, useFormContext} from 'react-hook-form';
+import {images} from '../../../assets';
 type TeamProps = {
   teamLength: number;
   name: string;
@@ -41,7 +41,14 @@ const Teams: FC<TeamProps> = ({teamLength, name}) => {
               </Text>
               <HStack justifyContent="center" space="xs">
                 {count.map((_, i) => (
-                  <Human key={i} />
+                  <Image
+                    key={i}
+                    source={images.human}
+                    width={20}
+                    height={50}
+                    resizeMode="contain"
+                    alt=""
+                  />
                 ))}
               </HStack>
 

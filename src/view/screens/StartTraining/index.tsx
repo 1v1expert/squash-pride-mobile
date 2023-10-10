@@ -13,12 +13,16 @@ import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import Indicator from '../../components/Indicator';
 import {Dimensions} from 'react-native';
-import Human from '../../../assets/svg/human';
+import {Image} from '@gluestack-ui/themed';
+import {images} from '../../../assets';
 
 const width = Dimensions.get('screen').width;
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack} = navigation;
+  const humanCount = Array.from({length: 2}, (_, index) => index);
+  const stars = Array.from({length: 5}, (_, index) => index + 1);
+
   return (
     <Box flex={1} bgColor="#131517">
       <SafeAreaLayout top>
@@ -33,21 +37,27 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               iconLeft={ArrowLeftIcon}
               bgColor="#25282D"
               onPress={goBack}
+              width={50}
             />
             <Text variant="primary">ГОТОВАЯ ТРЕНИРОВКА</Text>
             <CustomButton
               iconLeft={SettingsIcon}
               bgColor="#25282D"
               onPress={goBack}
+              width={50}
             />
           </HStack>
           <VStack flex={1} justifyContent="space-between">
-            <HStack alignItems="center" justifyContent="center" padding={10}>
+            <HStack
+              alignItems="center"
+              justifyContent="center"
+              paddingHorizontal={20}
+              paddingVertical={20}>
               <Indicator
                 items={['Drive', 'Drop', 'Cross', 'Тактика']}
-                selected={0}
+                selected={1}
                 length={4}
-                justifyContent="space-evenly"
+                space="4xl"
               />
             </HStack>
             <HStack bgColor="#393A40" height={250} width={width} />
@@ -63,9 +73,30 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               bgColor="#1B1E20"
               minHeight={75}
               alignItems="center"
-              paddingHorizontal={30}>
-              <Human />
-              <Human />
+              paddingHorizontal={30}
+              space="xl">
+              <HStack space="md">
+                {humanCount.map((_, i) => (
+                  <Image
+                    key={i}
+                    source={images.human}
+                    width={20}
+                    resizeMode="contain"
+                    alt=""
+                  />
+                ))}
+              </HStack>
+              <HStack space="md">
+                {stars.map(count => (
+                  <Image
+                    key={count}
+                    source={count <= 2 ? images.star : images.unselectedStar}
+                    width={20}
+                    resizeMode="contain"
+                    alt=""
+                  />
+                ))}
+              </HStack>
             </HStack>
           </VStack>
         </VStack>

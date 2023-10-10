@@ -14,4 +14,5 @@ export const images = {
   calendarFocus: require('./images/calendar_focus.png'),
   profile: require('./images/profile.png'),
   profileFocus: require('./images/profile_focus.png'),
+  human: require('./images/human.png'),
 };

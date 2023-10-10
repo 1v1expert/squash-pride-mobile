@@ -30,7 +30,7 @@ const Indicator = ({
     <HStack space={space} width="$full" justifyContent={justifyContent}>
       {position.map((text, i) => {
         return (
-          <VStack alignItems="center" space="md">
+          <VStack alignItems="center" space="md" key={i}>
             {items && <Text variant="primary">{text}</Text>}
             <Box
               bgColor={i === selected ? '#F7AB39' : '#D9D9D9'}
