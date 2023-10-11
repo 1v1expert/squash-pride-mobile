@@ -15,11 +15,13 @@ import Indicator from '../../components/Indicator';
 import {Dimensions} from 'react-native';
 import {Image} from '@gluestack-ui/themed';
 import {images} from '../../../assets';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack} = navigation;
+  const {t} = useCustomTranslation();
   const humanCount = Array.from({length: 2}, (_, index) => index);
   const stars = Array.from({length: 5}, (_, index) => index + 1);
 
@@ -39,7 +41,9 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               onPress={goBack}
               width={50}
             />
-            <Text variant="primary">ГОТОВАЯ ТРЕНИРОВКА</Text>
+            <Text variant="primary">
+              {t('private.startTrainingScreen.title')}
+            </Text>
             <CustomButton
               iconLeft={SettingsIcon}
               bgColor="#25282D"
@@ -63,10 +67,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             <HStack bgColor="#393A40" height={250} width={width} />
             <HStack padding={30}>
               <Text variant="primary" textAlign="auto">
-                Прямой удар в переднюю стену корта, при котором мяч по прямой
-                направляется бьющим игроком паралельно одной из боковых стен
-                корта в его заднюю часть. Драйв может наноситься с любой части
-                корта (передней, центральной задней). Это основной удар в игре.
+                {t('private.startTrainingScreen.description')}
               </Text>
             </HStack>
             <HStack

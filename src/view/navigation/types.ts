@@ -4,7 +4,6 @@ export type PublicStackParamList = {
   Main: undefined;
   Login: undefined;
   Registration: undefined;
-  Options: undefined;
 };
 export type PublicStackScreenProps = NativeStackScreenProps<
   PublicStackParamList,
@@ -12,6 +11,7 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 >;
 
 export type PrivateStackParamList = {
+  Options: undefined;
   TabNavigator: undefined;
 };
 export type HomeScreensStackParamList = {

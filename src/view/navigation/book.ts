@@ -3,9 +3,9 @@ export enum Book {
   Main = 'Main',
   Login = 'Login',
   Registration = 'Registration',
-  Options = 'Options',
 
   // PrivateScreen
+  Options = 'Options',
   TabNavigator = 'TabNavigator',
 
   //TabNavigator

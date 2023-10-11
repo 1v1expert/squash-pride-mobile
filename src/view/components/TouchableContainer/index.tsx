@@ -33,10 +33,11 @@ const TouchableContainer: FC<TouchableContainerProps> = ({text, onPress}) => {
 
           <Text
             variant="primary"
-            fontSize={22}
+            fontSize={20}
             flexWrap="wrap"
             alignItems="center"
-            lineHeight={30}>
+            lineHeight={30}
+            maxWidth="80%">
             {text}
           </Text>
         </HStack>

@@ -1,17 +1,19 @@
 import {ArrowRightIcon, Box, HStack, Text, VStack} from '@gluestack-ui/themed';
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
-import SafeAreaLayout from '../../../components/SafeAreaLayout';
-import Teams from '../../../components/Team';
-import CustomButton from '../../../components/CustomButton';
+import SafeAreaLayout from '../../components/SafeAreaLayout';
+import Teams from '../../components/Team';
+import CustomButton from '../../components/CustomButton';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {optionsSchema} from './schema';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Indicator from '../../../components/Indicator';
-import Levels from '../../../components/Levels';
-import {useUser} from '../../../../bus/user';
+import Indicator from '../../components/Indicator';
+import Levels from '../../components/Levels';
+import {PrivateStackScreenProps} from '../../navigation/types';
+import {Book} from '../../navigation/book';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const height = Dimensions.get('screen').height;
 interface OptionsForm {
@@ -19,14 +21,13 @@ interface OptionsForm {
   level?: string;
 }
 
-const Options = () => {
-  const {setAuthorize} = useUser();
-
+const Options: FC<PrivateStackScreenProps> = ({navigation}) => {
+  const {navigate} = navigation;
   const [step, setStep] = useState(0);
   const {bottom} = useSafeAreaInsets();
   const teams = Array.from({length: 4}, (_, index) => index + 1);
   const levels = Array.from({length: 5}, (_, index) => index + 1);
-
+  const {t} = useCustomTranslation();
   const methods = useForm<OptionsForm>({
     resolver: yupResolver(optionsSchema),
     mode: 'onSubmit',
@@ -43,14 +44,16 @@ const Options = () => {
   const nextStep = () => person && setStep(prev => prev + 1);
   const onPress = (values: OptionsForm) => {
     console.log('values', values);
-    setAuthorize(true);
+    navigate(Book.TabNavigator);
   };
 
   return (
     <Box flex={1} bgColor="#131517">
       <SafeAreaLayout top style={styles.container}>
         <VStack bgColor="#131517" alignItems="center" space="sm" minHeight={50}>
-          <Text variant="primary">СКОЛЬКО ВАС?</Text>
+          <Text variant="primary">
+            {t(`private.optionsScreen.step${step ? 2 : 1}.title`)}
+          </Text>
           <Indicator selected={step} length={2} />
         </VStack>
         <FormProvider {...methods}>
@@ -85,7 +88,7 @@ const Options = () => {
               alignItems="flex-end"
               pb={height * 0.025}>
               <CustomButton
-                title="Далее"
+                title={t('private.optionsScreen.button')}
                 onPress={step ? handleSubmit(onPress) : nextStep}
                 iconRight={ArrowRightIcon}
               />
