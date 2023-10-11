@@ -6,9 +6,14 @@ import {Controller, useFormContext} from 'react-hook-form';
 type CustomCheckboxProps = {
   name: string;
   defaultValue?: string;
+  label?: string;
 };
 
-const CustomCheckbox: FC<CustomCheckboxProps> = ({name, defaultValue}) => {
+const CustomCheckbox: FC<CustomCheckboxProps> = ({
+  name,
+  defaultValue,
+  label,
+}) => {
   const {control} = useFormContext();
 
   return (
@@ -22,7 +27,7 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({name, defaultValue}) => {
             <CheckboxIndicator mr="$2" variant="primary">
               <CheckboxIcon as={CheckIcon} color="#F7A936" />
             </CheckboxIndicator>
-            <CheckboxLabel color="#F7A936">Запомнить меня</CheckboxLabel>
+            {label && <CheckboxLabel color="#F7A936">{label}</CheckboxLabel>}
           </Checkbox>
         );
       }}

@@ -6,7 +6,6 @@ import {PublicStackParamList} from './types';
 import Main from '../screens/Auth/Main';
 import Login from '../screens/Auth/Login';
 import Registration from '../screens/Auth/Registration';
-import Options from '../screens/Auth/Options';
 
 const Stack = createNativeStackNavigator<PublicStackParamList>();
 
@@ -27,11 +26,6 @@ export const Public: FC = () => {
         <Stack.Screen
           name={Book.Registration}
           component={Registration}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={Book.Options}
-          component={Options}
           options={{headerShown: false}}
         />
       </Stack.Group>

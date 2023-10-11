@@ -4,6 +4,7 @@ import {Pressable} from 'react-native';
 import {Controller, useFormContext} from 'react-hook-form';
 
 import {images} from '../../../assets';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 type LevelsProps = {
   level: number;
   name: string;
@@ -11,15 +12,12 @@ type LevelsProps = {
 
 const Levels: FC<LevelsProps> = ({level, name}) => {
   const {control} = useFormContext();
-
+  const {t} = useCustomTranslation();
   const stars = Array.from({length: 5}, (_, index) => index + 1);
-  const title = [
-    'ЛЕГКО',
-    'СЛОЖНЕЕ',
-    'СРЕДНЯЯ СЛОЖНОСТЬ',
-    'СЛОЖНО',
-    'ОЧЕНЬ СЛОЖНО',
-  ];
+  // const title = Array.from({length: 5}, (_, index) => {
+  //   const count: number = index + 1;
+  //   return t(`private.optionsScreen.step2.level${level}`);
+  // });
 
   return (
     <Controller
@@ -42,7 +40,7 @@ const Levels: FC<LevelsProps> = ({level, name}) => {
               shadowRadius={6.68}
               elevation={11}>
               <Text variant="primary" textAlign="center">
-                {title[level - 1]}
+                {t(`private.optionsScreen.step2.level${level}`)}
               </Text>
               <HStack justifyContent="center" space="xs" alignItems="center">
                 {stars.map(count => (

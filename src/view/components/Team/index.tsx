@@ -3,6 +3,7 @@ import React, {FC} from 'react';
 import {Pressable} from 'react-native';
 import {Controller, useFormContext} from 'react-hook-form';
 import {images} from '../../../assets';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 type TeamProps = {
   teamLength: number;
   name: string;
@@ -10,9 +11,14 @@ type TeamProps = {
 
 const Teams: FC<TeamProps> = ({teamLength, name}) => {
   const {control} = useFormContext();
+  const {t} = useCustomTranslation();
 
   const title =
-    teamLength === 1 ? 'СОЛО' : teamLength === 2 ? 'СПРИНГ' : 'ГРУППА';
+    teamLength === 1
+      ? t('private.optionsScreen.step1.solo')
+      : teamLength === 2
+      ? t('private.optionsScreen.step1.spring')
+      : t('private.optionsScreen.step1.group');
   const count = Array.from({length: teamLength}, (_, index) => index);
 
   return (
@@ -53,7 +59,11 @@ const Teams: FC<TeamProps> = ({teamLength, name}) => {
               </HStack>
 
               <Text variant="primary" color={textColor}>
-                {`${teamLength} игрок${teamLength !== 1 ? 'a' : ''}`}
+                {`${teamLength} ${t(
+                  `private.optionsScreen.step1.player${
+                    teamLength > 1 ? 's' : ''
+                  }`,
+                )}`}
               </Text>
             </VStack>
           </Pressable>

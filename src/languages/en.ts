@@ -1,0 +1,71 @@
+export default {
+  public: {
+    mainScreen: {registrationButton: 'REGISTER', loginButton: 'LOGIN'},
+    loginScreen: {
+      loginInputPlaceholder: 'Username',
+      passInputPlaceholder: 'Password',
+      rememberMe: 'Remember Me',
+      button: 'Log In',
+      loginRequiredError: 'Please fill in to continue',
+      passRequiredError: 'Please fill in to continue',
+      requestError: 'Incorrect login or password entered',
+    },
+    registrationScreen: {
+      title: 'Create an account and get access to workouts',
+      nameInputPlaceholder: 'Name',
+      emailInputPlaceholder: 'E-mail',
+      passInputPlaceholder: 'Password',
+      ageInputPlaceholder: 'Age',
+      genderInputPlaceholder: 'Gender',
+      countryInputPlaceholder: 'Country',
+      button: 'Next',
+      nameRequiredError: 'Please fill in to continue',
+      emailRequiredError: 'Please fill in to continue',
+      passRequiredError: 'Please fill in to continue',
+    },
+  },
+  private: {
+    navigator: {
+      home: 'Home',
+      favorites: 'Favorites',
+      training: 'Training',
+      calendar: 'Calendar',
+      profile: 'Profile',
+    },
+    optionsScreen: {
+      step1: {
+        title: 'HOW MANY OF YOU?',
+        player: 'player',
+        players: 'players',
+        solo: 'SOLO',
+        spring: 'SPRING',
+        group: 'GROUP',
+      },
+      step2: {
+        title: 'DIFFICULTY LEVEL',
+        level1: 'EASY',
+        level2: 'HARDER',
+        level3: 'MEDIUM DIFFICULTY',
+        level4: 'DIFFICULT',
+        level5: 'VERY DIFFICULT',
+      },
+      button: 'Next',
+    },
+    homeScreen: {
+      title: 'Welcome, Kristi!',
+      startTraining: 'START READY TRAINING',
+      createTraining: 'CREATE YOUR OWN TRAINING',
+      gameTechnique: 'GAME TECHNIQUE',
+      rules: 'VIEW RULES',
+    },
+    startTrainingScreen: {
+      title: 'READY TRAINING',
+      description:
+        'A direct hit to the front wall of the court, where the ball is directed parallel to one of the side walls of the court in its rear part by the striking player. The drive can be made from any part of the court (front, center, rear). This is the basic shot in the game.',
+    },
+    favoritesScreen: {},
+    trainingScreen: {},
+    calendarScreen: {},
+    profileScreen: {},
+  },
+};
