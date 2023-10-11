@@ -29,9 +29,14 @@ export type LocationPermission =
   | 'granted'
   | 'never_ask_again';
 
-export type DeviceState = {
+export type FiltersType = {
+  level: number;
+  people: number;
+};
+export type UserState = {
   isAuthorized: boolean;
+  filters: FiltersType;
 };
 
 // Contracts
-export type BaseContract<T = any> = CaseReducer<DeviceState, PayloadAction<T>>;
+export type BaseContract<T = any> = CaseReducer<UserState, PayloadAction<T>>;

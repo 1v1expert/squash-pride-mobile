@@ -4,6 +4,7 @@ import SafeAreaLayout from '../../components/SafeAreaLayout';
 import TouchableContainer from '../../components/TouchableContainer';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {Book} from '../../navigation/book';
 
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
@@ -29,19 +30,19 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             justifyContent="space-evenly">
             <TouchableContainer
               text={t('private.homeScreen.startTraining')}
-              onPress={() => navigate('StartTraining')}
+              onPress={() => navigate(Book.StartTraining)}
             />
             <TouchableContainer
               text={t('private.homeScreen.createTraining')}
-              onPress={() => {}}
+              onPress={() => navigate(Book.CreateTraining)}
             />
             <TouchableContainer
               text={t('private.homeScreen.gameTechnique')}
-              onPress={() => {}}
+              onPress={() => navigate(Book.GameTechnique)}
             />
             <TouchableContainer
               text={t('private.homeScreen.rules')}
-              onPress={() => {}}
+              onPress={() => navigate(Book.Rules)}
             />
           </VStack>
         </VStack>

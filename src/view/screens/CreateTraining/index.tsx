@@ -4,26 +4,29 @@ import {
   SettingsIcon,
   VStack,
 } from '@gluestack-ui/themed';
-import React from 'react';
-import ViewContainer from '../../components/ViewContainer';
+import React, {FC} from 'react';
+
+import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
 import Stars from '../../components/Stars';
 import {useUser} from '../../../bus/user';
 
-const Training = () => {
-  const {filters} = useUser();
+const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
+  const {goBack} = navigation;
   const {t} = useCustomTranslation();
+  const {filters} = useUser();
 
   return (
     <ViewContainer
-      title={t('private.trainingScreen.title')}
+      title={t('private.createTraining.title')}
       leftHeaderButton={
         <CustomButton
           iconLeft={ArrowLeftIcon}
           bgColor="#25282D"
-          onPress={() => {}}
+          onPress={goBack}
           width={50}
         />
       }
@@ -43,11 +46,11 @@ const Training = () => {
         alignItems="center"
         paddingHorizontal={30}
         space="xl">
-        <PeopleCounter amountOfPeople={filters.people} />
         <Stars level={filters.level} />
+        <PeopleCounter amountOfPeople={filters.people} />
       </HStack>
     </ViewContainer>
   );
 };
 
-export default Training;
+export default CreateTraining;

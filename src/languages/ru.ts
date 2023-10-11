@@ -63,9 +63,18 @@ export default {
       description:
         'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
     },
-    favoritesScreen: {},
-    trainingScreen: {},
-    calendarScreen: {},
-    profileScreen: {},
+    createTraining: {title: 'ВЫБРАТЬ РАЗДЕЛ'},
+    gameTechnique: {title: 'ТЕХНИКА ИГРЫ'},
+    rules: {title: 'ПРАВИЛА'},
+
+    favoritesScreen: {title: 'ИЗБРАННОЕ'},
+    trainingScreen: {title: 'МОИ ТРЕНИРОВКИ'},
+    calendarScreen: {title: 'План тренировок'},
+    profileScreen: {
+      title: 'ПРОФИЛЬ',
+      saveButton: 'Сохранить',
+      logoutButton: 'Выйти из профиля',
+      changeLanguage: 'Cменить язык',
+    },
   },
 };

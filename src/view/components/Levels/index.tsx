@@ -1,10 +1,10 @@
-import {HStack, Image, Text, VStack} from '@gluestack-ui/themed';
+import {Text, VStack} from '@gluestack-ui/themed';
 import React, {FC} from 'react';
 import {Pressable} from 'react-native';
 import {Controller, useFormContext} from 'react-hook-form';
 
-import {images} from '../../../assets';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import Stars from '../Stars';
 type LevelsProps = {
   level: number;
   name: string;
@@ -13,17 +13,13 @@ type LevelsProps = {
 const Levels: FC<LevelsProps> = ({level, name}) => {
   const {control} = useFormContext();
   const {t} = useCustomTranslation();
-  const stars = Array.from({length: 5}, (_, index) => index + 1);
-  // const title = Array.from({length: 5}, (_, index) => {
-  //   const count: number = index + 1;
-  //   return t(`private.optionsScreen.step2.level${level}`);
-  // });
 
   return (
     <Controller
       control={control}
       name={name}
       render={({field: {onChange, value}}) => {
+        const isFocused = value === level;
         return (
           <Pressable onPress={() => onChange(level)}>
             <VStack
@@ -42,23 +38,12 @@ const Levels: FC<LevelsProps> = ({level, name}) => {
               <Text variant="primary" textAlign="center">
                 {t(`private.optionsScreen.step2.level${level}`)}
               </Text>
-              <HStack justifyContent="center" space="xs" alignItems="center">
-                {stars.map(count => (
-                  <Image
-                    key={count}
-                    source={
-                      count <= level
-                        ? value !== level
-                          ? images.star
-                          : images.filledStar
-                        : images.unselectedStar
-                    }
-                    width={20}
-                    resizeMode="contain"
-                    alt=""
-                  />
-                ))}
-              </HStack>
+              <Stars
+                level={level}
+                space="xs"
+                unselectedType={1}
+                focus={isFocused}
+              />
             </VStack>
           </Pressable>
         );

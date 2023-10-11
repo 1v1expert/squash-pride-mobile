@@ -1,9 +1,9 @@
-import {HStack, Image, Text, VStack} from '@gluestack-ui/themed';
+import {Text, VStack} from '@gluestack-ui/themed';
 import React, {FC} from 'react';
 import {Pressable} from 'react-native';
 import {Controller, useFormContext} from 'react-hook-form';
-import {images} from '../../../assets';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import PeopleCounter from '../PeopleCounter';
 type TeamProps = {
   teamLength: number;
   name: string;
@@ -19,7 +19,6 @@ const Teams: FC<TeamProps> = ({teamLength, name}) => {
       : teamLength === 2
       ? t('private.optionsScreen.step1.spring')
       : t('private.optionsScreen.step1.group');
-  const count = Array.from({length: teamLength}, (_, index) => index);
 
   return (
     <Controller
@@ -45,18 +44,11 @@ const Teams: FC<TeamProps> = ({teamLength, name}) => {
               <Text variant="primary" color={textColor}>
                 {title}
               </Text>
-              <HStack justifyContent="center" space="xs">
-                {count.map((_, i) => (
-                  <Image
-                    key={i}
-                    source={images.human}
-                    width={20}
-                    height={50}
-                    resizeMode="contain"
-                    alt=""
-                  />
-                ))}
-              </HStack>
+              <PeopleCounter
+                amountOfPeople={teamLength}
+                width={20}
+                space="xs"
+              />
 
               <Text variant="primary" color={textColor}>
                 {`${teamLength} ${t(

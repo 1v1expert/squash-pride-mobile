@@ -1,108 +1,130 @@
 import {
   ArrowLeftIcon,
-  Box,
+  Center,
   HStack,
+  ScrollView,
   SettingsIcon,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC} from 'react';
-import SafeAreaLayout from '../../components/SafeAreaLayout';
+import React, {FC, useState} from 'react';
 
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import Indicator from '../../components/Indicator';
 import {Dimensions} from 'react-native';
-import {Image} from '@gluestack-ui/themed';
-import {images} from '../../../assets';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import ViewContainer from '../../components/ViewContainer';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import PeopleCounter from '../../components/PeopleCounter';
+import Stars from '../../components/Stars';
+import {useUser} from '../../../bus/user';
 
 const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height;
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack} = navigation;
   const {t} = useCustomTranslation();
-  const humanCount = Array.from({length: 2}, (_, index) => index);
-  const stars = Array.from({length: 5}, (_, index) => index + 1);
+  const {filters} = useUser();
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const DATA = [
+    {
+      description: t('private.startTrainingScreen.description'),
+    },
+    {
+      description: t('private.startTrainingScreen.description'),
+    },
+    {
+      description: t('private.startTrainingScreen.description'),
+    },
+    {
+      description: t('private.startTrainingScreen.description'),
+    },
+  ];
+  const scrollRef = React.useRef<SwiperFlatList>(null);
+  const goToIndex = (index: number) => {
+    scrollRef.current?.scrollToIndex({index});
+  };
 
   return (
-    <Box flex={1} bgColor="#131517">
-      <SafeAreaLayout top>
-        <VStack flex={1} alignItems="center" bgColor="#25282D">
-          <HStack
-            bgColor="#131517"
-            width="$full"
-            alignItems="center"
-            justifyContent="space-around"
-            paddingBottom={15}>
-            <CustomButton
-              iconLeft={ArrowLeftIcon}
-              bgColor="#25282D"
-              onPress={goBack}
-              width={50}
-            />
-            <Text variant="primary">
-              {t('private.startTrainingScreen.title')}
-            </Text>
-            <CustomButton
-              iconLeft={SettingsIcon}
-              bgColor="#25282D"
-              onPress={goBack}
-              width={50}
-            />
-          </HStack>
-          <VStack flex={1} justifyContent="space-between">
-            <HStack
+    <ViewContainer
+      title={t('private.startTrainingScreen.title')}
+      leftHeaderButton={
+        <CustomButton
+          iconLeft={ArrowLeftIcon}
+          bgColor="#25282D"
+          onPress={goBack}
+          width={50}
+        />
+      }
+      rightHeaderButton={
+        <CustomButton
+          iconLeft={SettingsIcon}
+          bgColor="#25282D"
+          onPress={() => goToIndex(3)}
+          width={50}
+        />
+      }>
+      <HStack
+        alignItems="center"
+        justifyContent="center"
+        paddingHorizontal={20}
+        paddingVertical={10}>
+        <Indicator
+          items={['Drive', 'Drop', 'Cross', 'Тактика']}
+          selected={currentIndex}
+          length={DATA.length}
+          space="4xl"
+        />
+      </HStack>
+      <SwiperFlatList
+        ref={scrollRef}
+        onChangeIndex={e => setCurrentIndex(e.index)}
+        index={0}
+        data={DATA}
+        renderItem={({item}) => {
+          return (
+            <VStack
+              flex={1}
+              justifyContent="space-between"
               alignItems="center"
-              justifyContent="center"
-              paddingHorizontal={20}
-              paddingVertical={20}>
-              <Indicator
-                items={['Drive', 'Drop', 'Cross', 'Тактика']}
-                selected={1}
-                length={4}
-                space="4xl"
-              />
-            </HStack>
-            <HStack bgColor="#393A40" height={250} width={width} />
-            <HStack padding={30}>
-              <Text variant="primary" textAlign="auto">
-                {t('private.startTrainingScreen.description')}
-              </Text>
-            </HStack>
-            <HStack
-              bgColor="#1B1E20"
-              minHeight={75}
-              alignItems="center"
-              paddingHorizontal={30}
-              space="xl">
-              <HStack space="md">
-                {humanCount.map((_, i) => (
-                  <Image
-                    key={i}
-                    source={images.human}
-                    width={20}
-                    resizeMode="contain"
-                    alt=""
-                  />
-                ))}
+              width={width}>
+              <HStack
+                bgColor="#393A40"
+                height={height * 0.3}
+                width={width}
+                alignItems="center"
+                justifyContent="center">
+                <Center
+                  bgColor="#131517"
+                  width={width * 0.25}
+                  height={width * 0.25}
+                  borderRadius="$full"
+                />
               </HStack>
-              <HStack space="md">
-                {stars.map(count => (
-                  <Image
-                    key={count}
-                    source={count <= 2 ? images.star : images.unselectedStar}
-                    width={20}
-                    resizeMode="contain"
-                    alt=""
-                  />
-                ))}
-              </HStack>
-            </HStack>
-          </VStack>
-        </VStack>
-      </SafeAreaLayout>
-    </Box>
+              <ScrollView padding={30}>
+                <Text variant="primary" textAlign="auto">
+                  {item.description}
+                </Text>
+              </ScrollView>
+            </VStack>
+          );
+        }}
+      />
+      <HStack
+        width="$full"
+        bgColor="#1B1E20"
+        height={75}
+        alignItems="center"
+        paddingHorizontal={30}
+        space="xl">
+        <PeopleCounter amountOfPeople={filters.people} />
+        <Stars level={filters.level} />
+      </HStack>
+    </ViewContainer>
   );
 };
 

@@ -17,6 +17,9 @@ export type PrivateStackParamList = {
 export type HomeScreensStackParamList = {
   Home: undefined;
   StartTraining: undefined;
+  CreateTraining: undefined;
+  GameTechnique: undefined;
+  Rules: undefined;
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<

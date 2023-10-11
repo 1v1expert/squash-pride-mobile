@@ -3,6 +3,7 @@ export const images = {
   logo: require('./images/logo.png'),
   star: require('./images/star.png'),
   filledStar: require('./images/filled_star.png'),
+  footerStar: require('./images/footer_star.png'),
   unselectedStar: require('./images/unselected_star.png'),
   home: require('./images/home.png'),
   homeFocus: require('./images/home_focus.png'),

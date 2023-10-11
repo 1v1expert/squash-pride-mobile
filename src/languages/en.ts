@@ -63,9 +63,17 @@ export default {
       description:
         'A direct hit to the front wall of the court, where the ball is directed parallel to one of the side walls of the court in its rear part by the striking player. The drive can be made from any part of the court (front, center, rear). This is the basic shot in the game.',
     },
-    favoritesScreen: {},
-    trainingScreen: {},
-    calendarScreen: {},
-    profileScreen: {},
+    createTraining: {title: 'SELECT SECTION'},
+    gameTechnique: {title: 'GAME TECHNIQUE'},
+    rules: {title: 'RULES'},
+    favoritesScreen: {title: 'FAVORITES'},
+    trainingScreen: {title: 'MY TRAININGS'},
+    calendarScreen: {title: 'Training Plan'},
+    profileScreen: {
+      title: 'PROFILE',
+      saveButton: 'Save',
+      logoutButton: 'Logout',
+      changeLanguage: 'Change Language',
+    },
   },
 };
