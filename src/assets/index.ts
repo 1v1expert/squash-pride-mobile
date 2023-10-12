@@ -16,4 +16,5 @@ export const images = {
   profile: require('./images/profile.png'),
   profileFocus: require('./images/profile_focus.png'),
   human: require('./images/human.png'),
+  heart: require('./images/heart.png'),
 };

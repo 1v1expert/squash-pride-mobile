@@ -1,17 +1,50 @@
 import React, {FC} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
-import {ArrowLeftIcon, VStack} from '@gluestack-ui/themed';
+import {ArrowLeftIcon} from '@gluestack-ui/themed';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {HomeScreensStackScreenProps} from '../../navigation/types';
+import {HomeScreensStackScreenProps, TItem} from '../../navigation/types';
+import {Book} from '../../navigation/book';
+import {Dimensions, FlatList} from 'react-native';
+import Item from '../../components/Item';
+
+const width = Dimensions.get('screen').width;
+
+const DATA: TItem[] = [
+  {
+    id: '1',
+    title: 'Правила подачи',
+    description:
+      'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
+    url: 'test',
+  },
+  {
+    id: '2',
+    title: 'Правила 2',
+    description:
+      'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
+    url: 'test',
+  },
+  {
+    id: '3',
+    title: 'Правила 3',
+    description:
+      'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
+    url: 'test',
+  },
+];
 
 const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {t} = useCustomTranslation();
-  const {goBack} = navigation;
+  const {navigate, goBack} = navigation;
+
+  const goToItem = (e: TItem) => {
+    navigate(Book.MediaViewer, {...e});
+  };
 
   return (
     <ViewContainer
-      title={t('private.rules.title')}
+      title={t('private.gameTechnique.title')}
       leftHeaderButton={
         <CustomButton
           iconLeft={ArrowLeftIcon}
@@ -20,7 +53,11 @@ const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           width={50}
         />
       }>
-      <VStack flex={1} />
+      <FlatList
+        data={DATA}
+        renderItem={({item}) => <Item item={item} onPress={goToItem} />}
+        style={{width, paddingTop: 20, paddingHorizontal: 20}}
+      />
     </ViewContainer>
   );
 };

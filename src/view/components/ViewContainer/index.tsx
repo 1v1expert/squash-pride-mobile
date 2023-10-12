@@ -6,6 +6,13 @@ type ViewContainerProps = {
   title?: string;
   leftHeaderButton?: ReactNode;
   rightHeaderButton?: ReactNode;
+  headerContent?:
+    | 'space-between'
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-around'
+    | 'space-evenly';
 };
 
 const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
@@ -13,6 +20,7 @@ const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
   title,
   leftHeaderButton,
   rightHeaderButton,
+  headerContent = 'space-between',
 }) => {
   return (
     <Box flex={1} bgColor="#131517">
@@ -22,7 +30,8 @@ const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
             bgColor="#131517"
             width="$full"
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent={headerContent}
+            space="xl"
             paddingHorizontal={20}
             minHeight={50}
             paddingBottom={15}>

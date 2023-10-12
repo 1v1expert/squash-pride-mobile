@@ -20,6 +20,7 @@ export type HomeScreensStackParamList = {
   CreateTraining: undefined;
   GameTechnique: undefined;
   Rules: undefined;
+  MediaViewer: TItem;
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
@@ -30,7 +31,15 @@ export type PrivateStackScreenProps = NativeStackScreenProps<
   PrivateStackParamList,
   any
 >;
-// export type EmailVerificationCodeScreenProps = NativeStackScreenProps<
-//   PublicStackParamList,
-//   'EmailVerificationCode'
-// >;
+export type MediaViewerScreenProps = NativeStackScreenProps<
+  HomeScreensStackParamList,
+  'MediaViewer'
+>;
+export type TItem = {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  favorite?: boolean;
+  completed?: boolean;
+};

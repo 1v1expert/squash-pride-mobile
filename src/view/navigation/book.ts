@@ -21,4 +21,5 @@ export enum Book {
   CreateTraining = 'CreateTraining',
   GameTechnique = 'GameTechnique',
   Rules = 'Rules',
+  MediaViewer = 'MediaViewer',
 }
