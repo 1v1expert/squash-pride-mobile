@@ -17,4 +17,11 @@ export const images = {
   profileFocus: require('./images/profile_focus.png'),
   human: require('./images/human.png'),
   heart: require('./images/heart.png'),
+  drive: require('./images/drive.png'),
+  cross: require('./images/cross.png'),
+  drop: require('./images/drop.png'),
+  boost: require('./images/boost.png'),
+  candle: require('./images/candle.png'),
+  serve: require('./images/serve.png'),
+  shot: require('./images/shot.png'),
 };

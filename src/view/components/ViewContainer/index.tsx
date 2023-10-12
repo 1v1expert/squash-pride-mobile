@@ -34,6 +34,7 @@ const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
             space="xl"
             paddingHorizontal={20}
             minHeight={50}
+            pt={5}
             paddingBottom={15}>
             <HStack minHeight={50} minWidth={50}>
               {leftHeaderButton}
