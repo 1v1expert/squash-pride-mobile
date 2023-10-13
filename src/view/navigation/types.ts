@@ -21,6 +21,7 @@ export type HomeScreensStackParamList = {
   GameTechnique: undefined;
   Rules: undefined;
   MediaViewer: TItem;
+  Filter: undefined;
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<

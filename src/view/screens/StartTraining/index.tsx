@@ -19,12 +19,13 @@ import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import PeopleCounter from '../../components/PeopleCounter';
 import Stars from '../../components/Stars';
 import {useUser} from '../../../bus/user';
+import {Book} from '../../navigation/book';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {goBack} = navigation;
+  const {navigate, goBack} = navigation;
   const {t} = useCustomTranslation();
   const {filters} = useUser();
 
@@ -45,9 +46,9 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     },
   ];
   const scrollRef = React.useRef<SwiperFlatList>(null);
-  const goToIndex = (index: number) => {
-    scrollRef.current?.scrollToIndex({index});
-  };
+  // const goToIndex = (index: number) => {
+  //   scrollRef.current?.scrollToIndex({index});
+  // };
 
   return (
     <ViewContainer
@@ -64,7 +65,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         <CustomButton
           iconLeft={SettingsIcon}
           bgColor="#25282D"
-          onPress={() => goToIndex(3)}
+          onPress={() => navigate(Book.Filter)}
           width={50}
         />
       }>
@@ -105,8 +106,8 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
                   borderRadius="$full"
                 />
               </HStack>
-              <ScrollView padding={30}>
-                <Text variant="primary" textAlign="auto">
+              <ScrollView>
+                <Text variant="primary" textAlign="auto" p={10}>
                   {item.description}
                 </Text>
               </ScrollView>
