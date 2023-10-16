@@ -8,12 +8,12 @@ import React from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {useUser} from '../../../bus/user';
 import PeopleCounter from '../../components/PeopleCounter';
 import Stars from '../../components/Stars';
+import {useTraining} from '../../../bus/training';
 
 const Favorites = () => {
-  const {filters} = useUser();
+  const {filters} = useTraining();
   const {t} = useCustomTranslation();
 
   return (

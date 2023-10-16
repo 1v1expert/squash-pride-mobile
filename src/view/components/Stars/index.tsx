@@ -2,14 +2,14 @@ import {HStack, Image} from '@gluestack-ui/themed';
 import React from 'react';
 import {images} from '../../../assets';
 type StarsProps = {
-  level: number;
+  level?: number;
   space?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
   width?: number;
   unselectedType?: 0 | 1;
   focus?: boolean;
 };
 const Stars = ({
-  level,
+  level = 0,
   unselectedType,
   focus,
   space = 'md',

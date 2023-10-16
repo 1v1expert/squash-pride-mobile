@@ -5,11 +5,6 @@ import * as reducers from './reducers';
 
 const initialState: types.UserState = {
   isAuthorized: false,
-  filters: {
-    level: 0,
-    people: 0,
-    shot: [],
-  },
 };
 
 export const userSlice = createSlice({

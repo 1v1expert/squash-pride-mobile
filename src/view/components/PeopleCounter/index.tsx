@@ -2,7 +2,7 @@ import {HStack, Image, Pressable} from '@gluestack-ui/themed';
 import React from 'react';
 import {images} from '../../../assets';
 type PeopleCounterProps = {
-  amountOfPeople: number;
+  amountOfPeople?: number;
   selected?: number;
   setSelected?: (e: number) => void;
   action?: () => void;
@@ -11,7 +11,7 @@ type PeopleCounterProps = {
   height?: number;
 };
 const PeopleCounter = ({
-  amountOfPeople,
+  amountOfPeople = 0,
   selected = 0,
   setSelected,
   action,

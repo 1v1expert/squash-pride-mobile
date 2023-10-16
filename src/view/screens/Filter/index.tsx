@@ -17,7 +17,7 @@ import {filterSchema} from './schema';
 import {yupResolver} from '@hookform/resolvers/yup';
 import LevelAccordion from '../../components/LevelAccordion';
 import ShotAccordion from '../../components/ShotAccordion';
-import {useUser} from '../../../bus/user';
+import {useTraining} from '../../../bus/training';
 
 type FilterForm = {
   level?: number;
@@ -26,7 +26,7 @@ type FilterForm = {
 };
 const width = Dimensions.get('screen').width;
 const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
-  const {setFilters} = useUser();
+  const {setFilters} = useTraining();
   const {t} = useCustomTranslation();
   const {goBack, replace} = navigation;
   const location = route.params?.location;

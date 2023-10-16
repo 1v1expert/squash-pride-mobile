@@ -18,8 +18,8 @@ import ViewContainer from '../../components/ViewContainer';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import PeopleCounter from '../../components/PeopleCounter';
 import Stars from '../../components/Stars';
-import {useUser} from '../../../bus/user';
 import {Book} from '../../navigation/book';
+import {useTraining} from '../../../bus/training';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -27,7 +27,7 @@ const height = Dimensions.get('screen').height;
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate, goBack} = navigation;
   const {t} = useCustomTranslation();
-  const {filters} = useUser();
+  const {filters} = useTraining();
 
   const [currentIndex, setCurrentIndex] = useState(0);
 

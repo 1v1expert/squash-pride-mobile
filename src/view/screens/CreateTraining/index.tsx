@@ -16,9 +16,9 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
 import Stars from '../../components/Stars';
-import {useUser} from '../../../bus/user';
 import {images} from '../../../assets';
 import {Dimensions, TouchableOpacity} from 'react-native';
+import {useTraining} from '../../../bus/training';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -26,7 +26,7 @@ const height = Dimensions.get('screen').height;
 const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack} = navigation;
   const {t} = useCustomTranslation();
-  const {filters} = useUser();
+  const {filters} = useTraining();
   const imageWidth = width * 0.425;
   const imageHeight = height * 0.25;
 

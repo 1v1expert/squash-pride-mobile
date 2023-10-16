@@ -10,10 +10,10 @@ import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import PeopleCounter from '../../components/PeopleCounter';
 import Stars from '../../components/Stars';
-import {useUser} from '../../../bus/user';
+import {useTraining} from '../../../bus/training';
 
 const Training = () => {
-  const {filters} = useUser();
+  const {filters} = useTraining();
   const {t} = useCustomTranslation();
 
   return (

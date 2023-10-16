@@ -14,7 +14,7 @@ import Levels from '../../components/Levels';
 import {PrivateStackScreenProps} from '../../navigation/types';
 import {Book} from '../../navigation/book';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {useUser} from '../../../bus/user';
+import {useTraining} from '../../../bus/training';
 
 const height = Dimensions.get('screen').height;
 interface OptionsForm {
@@ -23,7 +23,7 @@ interface OptionsForm {
 }
 
 const Options: FC<PrivateStackScreenProps> = ({navigation}) => {
-  const {setFilters} = useUser();
+  const {setFilters} = useTraining();
   const {navigate} = navigation;
   const [step, setStep] = useState(0);
   const {bottom} = useSafeAreaInsets();
