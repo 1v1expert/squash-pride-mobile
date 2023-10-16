@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import * as reducers from './reducers';
 
-const initialState: types.DeviceState = {
+const initialState: types.UserState = {
   isAuthorized: false,
 };
 

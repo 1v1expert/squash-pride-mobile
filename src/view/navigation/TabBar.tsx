@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {HStack, Text} from '@gluestack-ui/themed';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
@@ -15,7 +15,8 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
       bgColor="#131517"
       alignItems="center"
       justifyContent="space-evenly"
-      pb={bottom}>
+      pt={15}
+      pb={Platform.OS === 'ios' ? bottom : 15}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;
@@ -69,7 +70,8 @@ const styles = StyleSheet.create({
   tab: {
     alignItems: 'center',
     justifyContent: 'flex-end',
-    height: 49,
+    // height: 49,
+    // backgroundColor: 'red',
   },
   iconSize: {
     width: 20,

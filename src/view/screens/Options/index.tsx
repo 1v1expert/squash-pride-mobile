@@ -14,14 +14,16 @@ import Levels from '../../components/Levels';
 import {PrivateStackScreenProps} from '../../navigation/types';
 import {Book} from '../../navigation/book';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {useTraining} from '../../../bus/training';
 
 const height = Dimensions.get('screen').height;
 interface OptionsForm {
-  peopleCount: string;
-  level?: string;
+  people: number;
+  level: number;
 }
 
 const Options: FC<PrivateStackScreenProps> = ({navigation}) => {
+  const {setFilters} = useTraining();
   const {navigate} = navigation;
   const [step, setStep] = useState(0);
   const {bottom} = useSafeAreaInsets();
@@ -31,19 +33,14 @@ const Options: FC<PrivateStackScreenProps> = ({navigation}) => {
   const methods = useForm<OptionsForm>({
     resolver: yupResolver(optionsSchema),
     mode: 'onSubmit',
-    defaultValues: async () => {
-      return {
-        peopleCount: '',
-        level: '',
-      };
-    },
   });
   const {handleSubmit, watch} = methods;
 
-  const person = watch('peopleCount');
+  const person = watch('people');
   const nextStep = () => person && setStep(prev => prev + 1);
   const onPress = (values: OptionsForm) => {
     console.log('values', values);
+    setFilters(values);
     navigate(Book.TabNavigator);
   };
 
@@ -67,7 +64,7 @@ const Options: FC<PrivateStackScreenProps> = ({navigation}) => {
                 space="xl"
                 flexWrap="wrap">
                 {teams.map(team => (
-                  <Teams teamLength={team} key={team} name="peopleCount" />
+                  <Teams teamLength={team} key={team} name="people" />
                 ))}
               </HStack>
             ) : (

@@ -1,30 +1,55 @@
-import {Box, Text, VStack} from '@gluestack-ui/themed';
+import {ArrowLeftIcon, HStack, Text, VStack} from '@gluestack-ui/themed';
 import React from 'react';
-import SafeAreaLayout from '../../components/SafeAreaLayout';
 import {useUser} from '../../../bus/user';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import ViewContainer from '../../components/ViewContainer';
+import {TouchableOpacity} from 'react-native';
 
 const Profile = () => {
   const {setAuthorize} = useUser();
-  const {i18n} = useCustomTranslation();
+  const {t, i18n} = useCustomTranslation();
+
+  const changeLanguage = () => {
+    if (i18n.language === 'ru') {
+      i18n.changeLanguage('en');
+    } else {
+      i18n.changeLanguage('ru');
+    }
+  };
   return (
-    <Box flex={1}>
-      <SafeAreaLayout top>
-        <VStack flex={1} alignItems="center" justifyContent="space-evenly">
-          <Text>Profile</Text>
-          <CustomButton
-            title="Russian"
-            onPress={() => i18n.changeLanguage('ru')}
-          />
-          <CustomButton
-            title="English"
-            onPress={() => i18n.changeLanguage('en')}
-          />
-          <CustomButton title="Logout" onPress={() => setAuthorize(false)} />
-        </VStack>
-      </SafeAreaLayout>
-    </Box>
+    <ViewContainer
+      title={t('private.profileScreen.title')}
+      leftHeaderButton={
+        <CustomButton
+          iconLeft={ArrowLeftIcon}
+          bgColor="#25282D"
+          onPress={() => {}}
+          width={50}
+        />
+      }>
+      <VStack flex={1} padding={30}>
+        <CustomButton
+          title={t('private.profileScreen.changeLanguage')}
+          onPress={changeLanguage}
+        />
+      </VStack>
+      <HStack
+        width="$full"
+        bgColor="#1B1E20"
+        height={75}
+        alignItems="center"
+        justifyContent="space-between"
+        paddingHorizontal={50}
+        space="xl">
+        <TouchableOpacity>
+          <Text color="#F7A936">{t('private.profileScreen.saveButton')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setAuthorize(false)}>
+          <Text color="#F7A936">{t('private.profileScreen.logoutButton')}</Text>
+        </TouchableOpacity>
+      </HStack>
+    </ViewContainer>
   );
 };
 

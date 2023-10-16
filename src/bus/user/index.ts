@@ -11,7 +11,6 @@ export const useUser = () => {
 
   const setAuthorize = (state: boolean) =>
     dispatch(userActions.setAuthorize(state));
-
   return {
     isAuthorized: useSelector(({user}) => user.isAuthorized),
     setAuthorize,

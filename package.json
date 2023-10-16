@@ -29,6 +29,7 @@
     "react-hook-form": "^7.45.2",
     "react-i18next": "^13.2.2",
     "react-native": "0.72.3",
+    "react-native-collapsible": "^1.6.1",
     "react-native-config": "^1.5.1",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-picker-select": "^8.1.0",
@@ -37,6 +38,7 @@
     "react-native-screens": "^3.22.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "13.4.0",
+    "react-native-swiper-flatlist": "^3.2.3",
     "react-redux": "^8.1.1",
     "redux-logger": "^3.0.6",
     "yup": "^1.2.0"
