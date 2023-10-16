@@ -33,12 +33,6 @@ const Options: FC<PrivateStackScreenProps> = ({navigation}) => {
   const methods = useForm<OptionsForm>({
     resolver: yupResolver(optionsSchema),
     mode: 'onSubmit',
-    defaultValues: async () => {
-      return {
-        people: 0,
-        level: 0,
-      };
-    },
   });
   const {handleSubmit, watch} = methods;
 

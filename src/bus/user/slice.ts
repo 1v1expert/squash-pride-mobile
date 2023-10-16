@@ -8,6 +8,7 @@ const initialState: types.UserState = {
   filters: {
     level: 0,
     people: 0,
+    shot: [],
   },
 };
 

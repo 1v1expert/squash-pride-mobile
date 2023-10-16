@@ -12,6 +12,6 @@ export const setFilters: types.BaseContract<types.FiltersType> = (
 ) => {
   return {
     ...state,
-    filters: action.payload,
+    filters: {...state.filters, ...action.payload},
   };
 };

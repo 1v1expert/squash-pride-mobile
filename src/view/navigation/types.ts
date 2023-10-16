@@ -21,7 +21,7 @@ export type HomeScreensStackParamList = {
   GameTechnique: undefined;
   Rules: undefined;
   MediaViewer: TItem;
-  Filter: undefined;
+  Filter: {location?: keyof HomeScreensStackParamList} | undefined;
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
@@ -36,6 +36,11 @@ export type MediaViewerScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'MediaViewer'
 >;
+export type FilterScreenProps = NativeStackScreenProps<
+  HomeScreensStackParamList,
+  'Filter'
+>;
+
 export type TItem = {
   id: string;
   title: string;

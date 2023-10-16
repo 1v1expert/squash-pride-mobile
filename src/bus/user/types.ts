@@ -30,8 +30,9 @@ export type LocationPermission =
   | 'never_ask_again';
 
 export type FiltersType = {
-  level: number;
-  people: number;
+  level?: number;
+  people?: number;
+  shot?: string[];
 };
 export type UserState = {
   isAuthorized: boolean;

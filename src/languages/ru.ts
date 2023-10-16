@@ -88,5 +88,6 @@ export default {
       logoutButton: 'Выйти из профиля',
       changeLanguage: 'Cменить язык',
     },
+    filter: {title: 'ФИЛЬТР', saveButton: 'Применть'},
   },
 };

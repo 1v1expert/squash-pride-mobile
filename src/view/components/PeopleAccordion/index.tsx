@@ -1,9 +1,11 @@
-import {HStack, Icon, Text, VStack} from '@gluestack-ui/themed';
+import {HStack, Text, VStack} from '@gluestack-ui/themed';
 import React, {useState} from 'react';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import PeopleCounter from '../PeopleCounter';
 import {Controller, useFormContext} from 'react-hook-form';
+import ChevronDown from '../../../assets/svg/chevron_down';
+import ChevronUp from '../../../assets/svg/chevron_up';
 
 const width = Dimensions.get('screen').width;
 type PeopleAccordionProps = {
@@ -19,7 +21,7 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue ?? 0}
+      defaultValue={defaultValue}
       render={({field: {onChange, value}}) => {
         return (
           <VStack>
@@ -31,7 +33,7 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                 alignItems="center"
                 justifyContent="space-between">
                 <Text color="#fff">КОЛИЧЕСТВО ИГРОКОВ</Text>
-                <Icon />
+                {collapsed ? <ChevronDown /> : <ChevronUp />}
               </HStack>
             </TouchableOpacity>
             <Collapsible collapsed={collapsed}>

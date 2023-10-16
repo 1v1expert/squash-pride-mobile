@@ -30,7 +30,9 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             justifyContent="space-evenly">
             <TouchableContainer
               text={t('private.homeScreen.startTraining')}
-              onPress={() => navigate(Book.StartTraining)}
+              onPress={() =>
+                navigate(Book.Filter, {location: Book.StartTraining})
+              }
             />
             {/* <TouchableContainer
               text={t('private.homeScreen.createTraining')}

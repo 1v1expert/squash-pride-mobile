@@ -87,5 +87,9 @@ export default {
       logoutButton: 'Logout',
       changeLanguage: 'Change Language',
     },
+    filter: {
+      title: 'FILTER',
+      saveButton: 'APPLY',
+    },
   },
 };

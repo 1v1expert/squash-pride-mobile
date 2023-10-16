@@ -24,7 +24,7 @@ const PeopleCounter = ({
     setSelected && setSelected(i);
     action && action();
   };
-  console.log(selected);
+
   return (
     <HStack space={space}>
       {people.map((target, i) =>
