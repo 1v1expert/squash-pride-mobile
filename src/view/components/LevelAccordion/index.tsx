@@ -39,7 +39,9 @@ const LevelAccordion = ({name, defaultValue}: LevelAccordionProps) => {
                 minHeight={50}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">УРОВЕНЬ СЛОЖНОСТИ</Text>
+                <Text color="#fff">
+                  {t('private.optionsScreen.step2.title')}
+                </Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp />}
               </HStack>
             </TouchableOpacity>
@@ -57,7 +59,11 @@ const LevelAccordion = ({name, defaultValue}: LevelAccordionProps) => {
                       alignItems="center"
                       paddingHorizontal={5}
                       borderBottomWidth={levels.length !== level ? 1 : 0}>
-                      <Text fontSize={12} color="#fff" maxWidth="$1/2">
+                      <Text
+                        fontSize={12}
+                        color="#fff"
+                        width="$1/2"
+                        textAlign="center">
                         {t(`private.optionsScreen.step2.level${level}`)}
                       </Text>
                       <Stars level={level} space="sm" />
@@ -72,7 +78,11 @@ const LevelAccordion = ({name, defaultValue}: LevelAccordionProps) => {
                   justifyContent="space-between"
                   alignItems="center"
                   paddingHorizontal={5}>
-                  <Text fontSize={12} color="#fff">
+                  <Text
+                    fontSize={12}
+                    color="#fff"
+                    width="$1/2"
+                    textAlign="center">
                     {t(`private.optionsScreen.step2.level${value}`)}
                   </Text>
                   <Stars level={value} space="sm" />

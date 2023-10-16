@@ -5,6 +5,7 @@ import Collapsible from 'react-native-collapsible';
 import {Controller, useFormContext} from 'react-hook-form';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import ChevronUp from '../../../assets/svg/chevron_up';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 
@@ -14,18 +15,13 @@ type ShotAccordionProps = {
 };
 const ShotAccordion = ({name, defaultValue}: ShotAccordionProps) => {
   const [collapsed, setCollapsed] = useState(true);
+  const {t} = useCustomTranslation();
   const toggleExpand = () => setCollapsed(prev => !prev);
   const {control} = useFormContext();
-  const shots = [
-    'DRIVE',
-    'CROSS',
-    'BOUST',
-    'DROP',
-    'SERVE',
-    'LOB',
-    'ВСЕ',
-    'ТАКТИКА',
-  ];
+
+  const shots: string[] = Array.from({length: 8}, (_, index) =>
+    t(`private.shotAccordion.shot${index + 1}`),
+  );
 
   return (
     <Controller
@@ -50,7 +46,7 @@ const ShotAccordion = ({name, defaultValue}: ShotAccordionProps) => {
                 minHeight={50}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">ТИП УДАРА</Text>
+                <Text color="#fff">{t('private.shotAccordion.title')}</Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp />}
               </HStack>
             </TouchableOpacity>

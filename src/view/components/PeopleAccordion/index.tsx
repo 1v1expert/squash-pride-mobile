@@ -6,6 +6,7 @@ import PeopleCounter from '../PeopleCounter';
 import {Controller, useFormContext} from 'react-hook-form';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import ChevronUp from '../../../assets/svg/chevron_up';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 type PeopleAccordionProps = {
@@ -14,8 +15,12 @@ type PeopleAccordionProps = {
 };
 const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
   const [collapsed, setCollapsed] = useState(true);
+  const {t} = useCustomTranslation();
   const toggleExpand = () => setCollapsed(prev => !prev);
-  const number = ['ОДИН', 'ДВОЕ', 'ТРОЕ', 'ЧЕТВЕРО'];
+  const number: string[] = Array.from({length: 4}, (_, index) =>
+    t(`private.peopleAccordion.number${index + 1}`),
+  );
+
   const {control} = useFormContext();
   return (
     <Controller
@@ -32,7 +37,7 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                 minHeight={50}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">КОЛИЧЕСТВО ИГРОКОВ</Text>
+                <Text color="#fff">{t('private.peopleAccordion.title')}</Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp />}
               </HStack>
             </TouchableOpacity>
@@ -43,14 +48,14 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                 minHeight={50}>
                 <HStack space="4xl" alignItems="center" padding={10}>
                   <Text fontSize={12} color="#fff">
-                    СКОЛЬКО ВАС
+                    {t('private.peopleAccordion.text')}
                   </Text>
                   <PeopleCounter
                     amountOfPeople={4}
                     selected={value}
                     setSelected={onChange}
                     action={() => setCollapsed(true)}
-                    space="4xl"
+                    space="3xl"
                   />
                 </HStack>
               </VStack>
@@ -64,7 +69,11 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                   justifyContent="space-between"
                   alignItems="center"
                   paddingHorizontal={10}>
-                  <Text fontSize={12} color="#fff">
+                  <Text
+                    fontSize={12}
+                    color="#fff"
+                    textAlign="center"
+                    width="$1/2">
                     {number[value - 1]}
                   </Text>
                   <PeopleCounter
