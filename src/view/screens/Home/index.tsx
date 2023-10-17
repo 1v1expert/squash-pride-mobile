@@ -1,5 +1,5 @@
 import {Box, Text, VStack} from '@gluestack-ui/themed';
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import SafeAreaLayout from '../../components/SafeAreaLayout';
 import TouchableContainer from '../../components/TouchableContainer';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
@@ -9,12 +9,8 @@ import {useUser} from '../../../bus/user';
 
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
-  const {user, fetchUser} = useUser();
+  const {user} = useUser();
   const {t} = useCustomTranslation();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <Box flex={1} bgColor="#131517">
@@ -28,7 +24,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             minHeight={160}
             space="xs">
             <Text variant="primary">
-              {t('private.homeScreen.title')} {user.username}!
+              {t('private.homeScreen.title')} {user.first_name}!
             </Text>
             <Box bgColor="#F7A936" width="$full" height={2} />
           </VStack>

@@ -12,9 +12,11 @@ export default {
     },
     registrationScreen: {
       title: 'Создай аккаунт и получи доступ к тренировкам',
-      nameInputPlaceholder: 'Имя',
+      firstNameInputPlaceholder: 'Имя',
+      lastNameInputPlaceholder: 'Фамилия',
       emailInputPlaceholder: 'E-mail',
       passInputPlaceholder: 'Пароль',
+      passConfirmInputPlaceholder: 'Подтвердите пароль',
       ageInputPlaceholder: 'Возраст',
       genderInputPlaceholder: 'Пол',
       countryInputPlaceholder: 'Страна',

@@ -2,7 +2,7 @@ import {userActions} from './slice';
 
 // Tools
 import {useSelector, useDispatch} from '../../tools/hooks';
-import {LoginForm} from './types';
+import {LoginForm, RegisterForm} from './types';
 import {login} from './thunk/login';
 import {getUserData} from './thunk/getUserData';
 import {
@@ -11,6 +11,7 @@ import {
   setAuthHeader,
 } from '../../init/axios/baseService';
 import {load} from '../../utils/storage';
+import {register} from './thunk/register';
 
 // Types
 // import * as types from './types';
@@ -37,6 +38,7 @@ export const useUser = () => {
     user: useSelector(({user}) => user.user),
     isAuthorized: useSelector(({user}) => user.isAuthorized),
     login: (values: LoginForm) => dispatch(login(values)).unwrap(),
+    register: (values: RegisterForm) => dispatch(register(values)).unwrap(),
     fetchUser,
     setAuthorize,
     logout,

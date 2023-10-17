@@ -12,9 +12,11 @@ export default {
     },
     registrationScreen: {
       title: 'Create an account and get access to workouts',
-      nameInputPlaceholder: 'Name',
+      firstNameInputPlaceholder: 'First Name',
+      lastNameInputPlaceholder: 'Last Name',
       emailInputPlaceholder: 'E-mail',
       passInputPlaceholder: 'Password',
+      passConfirmInputPlaceholder: 'Confirm Password',
       ageInputPlaceholder: 'Age',
       genderInputPlaceholder: 'Gender',
       countryInputPlaceholder: 'Country',

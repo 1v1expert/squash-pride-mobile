@@ -56,7 +56,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
                 },
                 inputAndroidContainer: {
                   backgroundColor: focus ? '#F7A936' : '#000',
-                  paddingHorizontal: width * 0.02,
+                  paddingHorizontal: width * 0.03,
                   ...styles.inputContainer,
                 },
               }}

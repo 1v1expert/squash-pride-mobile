@@ -39,6 +39,14 @@ export type LoginForm = {
   password: string;
   rememberMe?: boolean;
 };
+export type RegisterForm = {
+  username: string;
+  password: string;
+  password2: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+};
 export type Tokens = {
   access: string;
   refresh: string;
