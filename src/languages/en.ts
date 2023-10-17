@@ -52,7 +52,7 @@ export default {
       button: 'Next',
     },
     homeScreen: {
-      title: 'Welcome, Kristi!',
+      title: 'Welcome,',
       startTraining: 'START READY TRAINING',
       createTraining: 'CREATE YOUR OWN TRAINING',
       gameTechnique: 'GAME TECHNIQUE',

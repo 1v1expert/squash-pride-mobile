@@ -25,28 +25,30 @@ import CustomInput from '../../../components/CustomInput';
 import CustomCheckbox from '../../../components/CustomCheckbox';
 import {useUser} from '../../../../bus/user';
 import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
+import {getUsername} from '../../../../tools/helpers';
 
 const width = Dimensions.get('screen').width;
 
 interface LoginForm {
-  login: string;
+  username: string;
   password: string;
-  checkbox?: boolean;
+  rememberMe?: boolean;
 }
 
 const Login = () => {
-  const {setAuthorize} = useUser();
+  const {login} = useUser();
   const [imageWidth, setImageWidth] = useState(width);
   const {t} = useCustomTranslation();
-
   const methods = useForm<LoginForm>({
     resolver: yupResolver(loginSchema),
     mode: 'onSubmit',
     defaultValues: async () => {
+      const username = await getUsername();
+
       return {
-        login: '',
+        username: username,
         password: '',
-        checkbox: false,
+        rememberMe: !!username,
       };
     },
   });
@@ -76,12 +78,12 @@ const Login = () => {
     };
   }, []);
 
-  const onPress = (values: LoginForm) => {
+  const onPress = async (values: LoginForm) => {
     console.log('values', values);
     try {
-      setAuthorize(true);
+      await login(values);
     } catch {
-      setError('login', {message: t('public.loginScreen.requestError')});
+      setError('username', {message: t('public.loginScreen.requestError')});
     }
   };
 
@@ -109,13 +111,13 @@ const Login = () => {
               <FormProvider {...methods}>
                 <VStack paddingHorizontal={40} space="4xl">
                   <VStack space="4xl">
-                    <VStack space="sm">
+                    <VStack space="xs">
                       <CustomInput
-                        name="login"
+                        name="username"
                         placeholder={t(
                           'public.loginScreen.loginInputPlaceholder',
                         )}
-                        error={errors.login}
+                        error={errors.username}
                         variant="primary"
                       />
                       <CustomInput
@@ -129,7 +131,7 @@ const Login = () => {
                       />
                       <HStack>
                         <CustomCheckbox
-                          name="checkbox"
+                          name="rememberMe"
                           label={t('public.loginScreen.rememberMe')}
                         />
                       </HStack>

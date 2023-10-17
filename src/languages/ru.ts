@@ -52,7 +52,7 @@ export default {
       button: 'Далее',
     },
     homeScreen: {
-      title: 'Добро пожаловать, Кристи!',
+      title: 'Добро пожаловать,',
       startTraining: 'НАЧАТЬ ГОТОВУЮ ТРЕНИРОВКУ',
       createTraining: 'СОЗДАТЬ СВОЮ ТРЕНИРОВКУ',
       gameTechnique: 'ТЕХНИКА ИГРЫ',
