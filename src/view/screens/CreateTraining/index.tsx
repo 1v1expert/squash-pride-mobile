@@ -15,16 +15,16 @@ import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
-import Stars from '../../components/Stars';
 import {images} from '../../../assets';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import {useTraining} from '../../../bus/training';
+import {Book} from '../../navigation/book';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {goBack} = navigation;
+  const {navigate, goBack} = navigation;
   const {t} = useCustomTranslation();
   const {filters} = useTraining();
   const imageWidth = width * 0.425;
@@ -45,7 +45,7 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         <CustomButton
           iconLeft={SettingsIcon}
           bgColor="#25282D"
-          onPress={() => {}}
+          onPress={() => navigate(Book.Options)}
           width={50}
         />
       }>
@@ -222,8 +222,10 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         alignItems="center"
         paddingHorizontal={30}
         space="xl">
-        <Stars level={filters.level} />
         <PeopleCounter amountOfPeople={filters.people} />
+        <Text variant="primary">
+          {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
+        </Text>
       </HStack>
     </ViewContainer>
   );

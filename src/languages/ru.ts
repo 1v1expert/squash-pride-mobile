@@ -45,11 +45,8 @@ export default {
       },
       step2: {
         title: 'УРОВЕНЬ СЛОЖНОСТИ',
-        level1: 'ЛЕГКО',
-        level2: 'СЛОЖНЕЕ',
-        level3: 'СРЕДНЯЯ СЛОЖНОСТЬ',
-        level4: 'СЛОЖНО',
-        level5: 'ОЧЕНЬ СЛОЖНО',
+        amateur: 'ЛЮБИТЕЛЬ',
+        professional: 'ПРОФЕССИОНАЛ',
       },
       button: 'Далее',
     },

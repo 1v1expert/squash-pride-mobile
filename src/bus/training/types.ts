@@ -30,7 +30,7 @@ export type LocationPermission =
   | 'never_ask_again';
 
 export type FiltersType = {
-  level?: number;
+  level?: 'amateur' | 'professional';
   people?: number;
   shot?: string[];
 };

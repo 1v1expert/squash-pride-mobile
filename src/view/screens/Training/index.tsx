@@ -1,6 +1,6 @@
 import {
   ArrowLeftIcon,
-  HStack,
+  // HStack,
   SettingsIcon,
   VStack,
 } from '@gluestack-ui/themed';
@@ -8,12 +8,12 @@ import React from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import PeopleCounter from '../../components/PeopleCounter';
-import Stars from '../../components/Stars';
-import {useTraining} from '../../../bus/training';
+// import PeopleCounter from '../../components/PeopleCounter';
+// import Stars from '../../components/Stars';
+// import {useTraining} from '../../../bus/training';
 
 const Training = () => {
-  const {filters} = useTraining();
+  // const {filters} = useTraining();
   const {t} = useCustomTranslation();
 
   return (
@@ -36,7 +36,7 @@ const Training = () => {
         />
       }>
       <VStack flex={1} />
-      <HStack
+      {/* <HStack
         width="$full"
         bgColor="#1B1E20"
         height={75}
@@ -45,7 +45,7 @@ const Training = () => {
         space="xl">
         <PeopleCounter amountOfPeople={filters.people} />
         <Stars level={filters.level} />
-      </HStack>
+      </HStack> */}
     </ViewContainer>
   );
 };

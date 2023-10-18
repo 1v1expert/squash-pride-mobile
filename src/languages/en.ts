@@ -45,11 +45,8 @@ export default {
       },
       step2: {
         title: 'DIFFICULTY LEVEL',
-        level1: 'EASY',
-        level2: 'HARDER',
-        level3: 'MEDIUM DIFFICULTY',
-        level4: 'DIFFICULT',
-        level5: 'VERY DIFFICULT',
+        amateur: 'AMATEUR',
+        professional: 'PROFESSIONAL',
       },
       button: 'Next',
     },

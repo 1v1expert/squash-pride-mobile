@@ -36,13 +36,15 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             <TouchableContainer
               text={t('private.homeScreen.startTraining')}
               onPress={() =>
-                navigate(Book.Filter, {location: Book.StartTraining})
+                navigate(Book.Options, {location: Book.StartTraining})
               }
             />
-            {/* <TouchableContainer
+            <TouchableContainer
               text={t('private.homeScreen.createTraining')}
-              onPress={() => navigate(Book.CreateTraining)}
-            /> */}
+              onPress={() =>
+                navigate(Book.Options, {location: Book.CreateTraining})
+              }
+            />
             <TouchableContainer
               text={t('private.homeScreen.gameTechnique')}
               onPress={() => navigate(Book.GameTechnique)}
