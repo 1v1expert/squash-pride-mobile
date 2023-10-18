@@ -18,7 +18,7 @@ const TouchableContainer: FC<TouchableContainerProps> = ({text, onPress}) => {
         start={{x: 0.1, y: 0.7}}
         end={{x: 0, y: -0.7}}
         // locations={[0.1, 1.0]}
-        style={{padding: 25, borderRadius: 15}}>
+        style={{padding: 20, borderRadius: 15}}>
         <HStack alignItems="center" space="xl">
           {focus ? (
             <Box width={60} height={60} borderRadius={15} />

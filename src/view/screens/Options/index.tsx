@@ -19,6 +19,9 @@ import {OptionsScreenProps} from '../../navigation/types';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {useTraining} from '../../../bus/training';
 import ViewContainer from '../../components/ViewContainer';
+import {Dimensions} from 'react-native';
+
+const height = Dimensions.get('screen').height;
 
 interface OptionsForm {
   people: number;
@@ -100,7 +103,10 @@ const Options: FC<OptionsScreenProps> = ({navigation, route}) => {
               ))}
             </HStack>
           )}
-          <HStack justifyContent="center" alignItems="flex-end">
+          <HStack
+            justifyContent="center"
+            alignItems="flex-end"
+            pb={height * 0.02}>
             <CustomButton
               title={t('private.optionsScreen.button')}
               onPress={step ? handleSubmit(onPress) : nextStep}
