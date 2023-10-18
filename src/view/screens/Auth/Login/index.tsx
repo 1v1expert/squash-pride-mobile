@@ -36,7 +36,7 @@ interface LoginForm {
 }
 
 const Login = () => {
-  const {login} = useUser();
+  const {login, isLoading} = useUser();
   const [imageWidth, setImageWidth] = useState(width);
   const {t} = useCustomTranslation();
   const methods = useForm<LoginForm>({
@@ -139,6 +139,8 @@ const Login = () => {
                     <CustomButton
                       title={t('public.loginScreen.button')}
                       onPress={handleSubmit(onPress)}
+                      disabled={isLoading}
+                      isLoading={isLoading}
                     />
                   </VStack>
                 </VStack>

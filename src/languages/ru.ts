@@ -6,8 +6,7 @@ export default {
       passInputPlaceholder: 'Пароль',
       rememberMe: 'Запомнить меня',
       button: 'Войти',
-      loginRequiredError: 'Заполните, чтобы продолжить',
-      passRequiredError: 'Заполните, чтобы продолжить',
+      requiredError: 'Заполните, чтобы продолжить',
       requestError: 'Введен неверный логин или пароль',
     },
     registrationScreen: {
@@ -21,9 +20,7 @@ export default {
       genderInputPlaceholder: 'Пол',
       countryInputPlaceholder: 'Страна',
       button: 'Далее',
-      nameRequiredError: 'Заполните, чтобы продолжить',
-      emailRequiredError: 'Заполните, чтобы продолжить',
-      passRequiredError: 'Заполните, чтобы продолжить',
+      requiredError: 'Заполните, чтобы продолжить',
     },
   },
   private: {
@@ -107,5 +104,10 @@ export default {
       shot7: 'ВСЕ',
       shot8: 'ТАКТИКА',
     },
+  },
+  gender: {
+    male: 'Мужской',
+    female: 'Женский',
+    notSpecified: 'Другое',
   },
 };

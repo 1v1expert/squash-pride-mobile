@@ -36,6 +36,7 @@ export const useUser = () => {
   };
   return {
     user: useSelector(({user}) => user.user),
+    isLoading: useSelector(({user}) => user.isLoading),
     isAuthorized: useSelector(({user}) => user.isAuthorized),
     login: (values: LoginForm) => dispatch(login(values)).unwrap(),
     register: (values: RegisterForm) => dispatch(register(values)).unwrap(),

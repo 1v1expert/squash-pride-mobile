@@ -33,9 +33,9 @@ const Options: FC<OptionsScreenProps> = ({navigation, route}) => {
   const {bottom} = useSafeAreaInsets();
   const teams = Array.from({length: 4}, (_, index) => index + 1);
   const levels = [
-    {name: t('private.optionsScreen.step2.amateur'), value: 'amateur'},
+    {label: t('private.optionsScreen.step2.amateur'), value: 'amateur'},
     {
-      name: t('private.optionsScreen.step2.professional'),
+      label: t('private.optionsScreen.step2.professional'),
       value: 'professional',
     },
   ];

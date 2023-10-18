@@ -4,7 +4,7 @@ import {Pressable} from 'react-native';
 import {Controller, useFormContext} from 'react-hook-form';
 // import Stars from '../Stars';
 type LevelsProps = {
-  params: {name: string; value: string};
+  params: {label: string; value: string};
   name: string;
 };
 
@@ -34,7 +34,7 @@ const Levels: FC<LevelsProps> = ({name, params}) => {
               shadowRadius={6.68}
               elevation={11}>
               <Text variant="primary" textAlign="center">
-                {params.name}
+                {params.label}
               </Text>
               {/* <Stars
                 level={level}

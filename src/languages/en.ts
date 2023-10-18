@@ -6,8 +6,7 @@ export default {
       passInputPlaceholder: 'Password',
       rememberMe: 'Remember Me',
       button: 'Log In',
-      loginRequiredError: 'Please fill in to continue',
-      passRequiredError: 'Please fill in to continue',
+      requiredError: 'Please fill in to continue',
       requestError: 'Incorrect login or password entered',
     },
     registrationScreen: {
@@ -21,9 +20,7 @@ export default {
       genderInputPlaceholder: 'Gender',
       countryInputPlaceholder: 'Country',
       button: 'Next',
-      nameRequiredError: 'Please fill in to continue',
-      emailRequiredError: 'Please fill in to continue',
-      passRequiredError: 'Please fill in to continue',
+      requiredError: 'Please fill in to continue',
     },
   },
   private: {
@@ -109,5 +106,10 @@ export default {
       shot7: 'ALL',
       shot8: 'TACTICS',
     },
+  },
+  gender: {
+    male: 'Male',
+    female: 'Female',
+    notSpecified: 'Other',
   },
 };

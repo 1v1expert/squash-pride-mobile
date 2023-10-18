@@ -40,12 +40,12 @@ export type LoginForm = {
   rememberMe?: boolean;
 };
 export type RegisterForm = {
-  username: string;
   password: string;
-  password2: string;
   email: string;
   first_name: string;
-  last_name: string;
+  birth_year: number;
+  gender: number;
+  country: string;
 };
 export type Tokens = {
   access: string;

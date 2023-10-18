@@ -28,34 +28,20 @@ const height = Dimensions.get('screen').height;
 
 interface RegistrationForm {
   firstName: string;
-  lastName: string;
   email: string;
   password: string;
-  passwordConfirmation: string;
-  age?: string;
-  gender?: string;
-  country?: string;
+  age: number;
+  gender: number;
+  country: string;
 }
 
 const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
-  const {register} = useUser();
+  const {register, isLoading} = useUser();
   const {navigate} = navigation;
   const {t} = useCustomTranslation();
   const methods = useForm<RegistrationForm>({
     resolver: yupResolver(registrationSchema),
     mode: 'onSubmit',
-    defaultValues: async () => {
-      return {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        passwordConfirmation: '',
-        age: '',
-        gender: '',
-        country: '',
-      };
-    },
   });
   const {
     formState: {errors},
@@ -70,27 +56,19 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
 
   const onPress = async (values: RegistrationForm) => {
     console.log('values', values);
+
     try {
       await register({
-        username: values.email,
         password: values.password,
-        password2: values.passwordConfirmation,
         email: values.email,
         first_name: values.firstName,
-        last_name: values.lastName,
+        birth_year: new Date().getFullYear() - values.age,
+        gender: values.gender,
+        country: values.country,
       });
 
       navigate(Book.Login);
-    } catch (e:
-      | {
-          username?: string;
-          password?: string;
-          password2?: string;
-          email?: string;
-          first_name?: string;
-          last_name?: string;
-        }
-      | any) {
+    } catch (e: any) {
       e.email && setError('email', {message: e.email});
       e.password && setError('password', {message: e.password});
     }
@@ -138,15 +116,6 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                         required
                       />
                       <CustomInput
-                        name="lastName"
-                        placeholder={t(
-                          'public.registrationScreen.lastNameInputPlaceholder',
-                        )}
-                        error={errors.lastName}
-                        variant="secondary"
-                        required
-                      />
-                      <CustomInput
                         name="email"
                         placeholder={t(
                           'public.registrationScreen.emailInputPlaceholder',
@@ -165,17 +134,6 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                         variant="secondary"
                         required
                       />
-                      <CustomInput
-                        name="passwordConfirmation"
-                        placeholder={t(
-                          'public.registrationScreen.passConfirmInputPlaceholder',
-                        )}
-                        type="password"
-                        error={errors.passwordConfirmation}
-                        variant="secondary"
-                        required
-                      />
-
                       <CustomSelect
                         name="age"
                         placeholder={t(
@@ -189,9 +147,9 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                           'public.registrationScreen.genderInputPlaceholder',
                         )}
                         items={[
-                          {label: 'Мужской', value: 'male'},
-                          {label: 'Женский', value: 'female'},
-                          {label: 'Другое', value: 'other'},
+                          {label: t('gender.male'), value: 0},
+                          {label: t('gender.female'), value: 1},
+                          {label: t('gender.notSpecified'), value: 2},
                         ]}
                       />
                       <CustomInput
@@ -215,6 +173,8 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                   title={t('public.registrationScreen.button')}
                   onPress={handleSubmit(onPress)}
                   iconRight={ArrowRightIcon}
+                  disabled={isLoading}
+                  isLoading={isLoading}
                 />
               </HStack>
             </FormProvider>
