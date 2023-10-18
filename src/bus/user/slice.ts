@@ -11,7 +11,10 @@ const initialState: types.UserState = {
     username: '',
     email: '',
     first_name: '',
-    last_name: '',
+    birth_year: null,
+    gender: null,
+    country: '',
+    is_paid: null,
   },
 };
 

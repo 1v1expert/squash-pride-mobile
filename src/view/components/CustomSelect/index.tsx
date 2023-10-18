@@ -27,7 +27,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue ?? ''}
+      defaultValue={defaultValue}
       render={({field: {onChange, value}}) => {
         return (
           <VStack>
@@ -65,7 +65,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
               items={items}
             />
             <VStack margin={0} minHeight={22.5}>
-              <Text color={!value.length ? '#F7A936' : '#F00'}>
+              <Text color={value ? '#F00' : '#F7A936'}>
                 {error && error.message}
               </Text>
             </VStack>

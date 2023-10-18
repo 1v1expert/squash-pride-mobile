@@ -55,7 +55,10 @@ export type UserData = {
   username: string;
   email: string;
   first_name: string;
-  last_name: string;
+  birth_year: string | null;
+  gender: number | null;
+  country: string;
+  is_paid: boolean | null;
 };
 
 // Contracts

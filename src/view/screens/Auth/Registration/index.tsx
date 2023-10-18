@@ -75,19 +75,19 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingContainer}>
-      <Box flex={1} bgColor="#25282D">
-        <SafeAreaLayout top bottom style={styles.container}>
-          <VStack flex={1}>
-            <FormProvider {...methods}>
-              <VStack
-                paddingHorizontal={40}
-                space="4xl"
-                flex={1}
-                justifyContent="space-between">
-                <VStack space="xl" justifyContent="flex-end">
+    <Box flex={1} bgColor="#25282D">
+      <SafeAreaLayout top bottom style={styles.container}>
+        <VStack flex={1}>
+          <FormProvider {...methods}>
+            <VStack
+              paddingHorizontal={40}
+              space="4xl"
+              flex={1}
+              justifyContent="space-between">
+              <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.keyboardAvoidingContainer}>
+                <VStack space="xl" justifyContent="flex-end" flex={1}>
                   <VStack alignItems="center" space="2xl">
                     <Image
                       source={images.logo}
@@ -101,6 +101,7 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       {t('public.registrationScreen.title')}
                     </Text>
                   </VStack>
+
                   <ScrollView>
                     <VStack
                       space="xs"
@@ -136,6 +137,7 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       />
                       <CustomSelect
                         name="age"
+                        error={errors.age}
                         placeholder={t(
                           'public.registrationScreen.ageInputPlaceholder',
                         )}
@@ -143,6 +145,7 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       />
                       <CustomSelect
                         name="gender"
+                        error={errors.gender}
                         placeholder={t(
                           'public.registrationScreen.genderInputPlaceholder',
                         )}
@@ -162,26 +165,26 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       />
                     </VStack>
                   </ScrollView>
+
+                  <HStack
+                    justifyContent="center"
+                    alignItems="flex-end"
+                    pb={height * 0.02}>
+                    <CustomButton
+                      title={t('public.registrationScreen.button')}
+                      onPress={handleSubmit(onPress)}
+                      iconRight={ArrowRightIcon}
+                      disabled={isLoading}
+                      isLoading={isLoading}
+                    />
+                  </HStack>
                 </VStack>
-              </VStack>
-              <HStack
-                justifyContent="center"
-                alignItems="flex-end"
-                pt={10}
-                pb={height * 0.025}>
-                <CustomButton
-                  title={t('public.registrationScreen.button')}
-                  onPress={handleSubmit(onPress)}
-                  iconRight={ArrowRightIcon}
-                  disabled={isLoading}
-                  isLoading={isLoading}
-                />
-              </HStack>
-            </FormProvider>
-          </VStack>
-        </SafeAreaLayout>
-      </Box>
-    </KeyboardAvoidingView>
+              </KeyboardAvoidingView>
+            </VStack>
+          </FormProvider>
+        </VStack>
+      </SafeAreaLayout>
+    </Box>
   );
 };
 
