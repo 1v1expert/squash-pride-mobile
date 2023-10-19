@@ -104,7 +104,7 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
 
                   <ScrollView>
                     <VStack
-                      space="xs"
+                      space="sm"
                       justifyContent="center"
                       pt={height * 0.02}>
                       <CustomInput

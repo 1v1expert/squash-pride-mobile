@@ -5,7 +5,7 @@ export const loginSchema = yup.object({
   username: yup
     .string()
     .email('Please enter a valid email address')
-    .required(t('public.loginScreen.loginRequiredError')),
-  password: yup.string().required(t('public.loginScreen.passRequiredError')),
+    .required(t('public.loginScreen.requiredError')),
+  password: yup.string().required(t('public.loginScreen.requiredError')),
   rememberMe: yup.boolean(),
 });

@@ -44,7 +44,7 @@ const CustomInput: FC<CustomInputProps> = ({
       defaultValue={defaultValue ?? ''}
       render={({field: {onChange, value}}) => {
         return (
-          <VStack space="xs">
+          <VStack>
             <Input variant={variant} size="md">
               <InputField
                 autoCapitalize="none"

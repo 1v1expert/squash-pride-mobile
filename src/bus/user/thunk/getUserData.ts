@@ -9,7 +9,7 @@ export const getUserData = createAsyncThunk<UserData>(
   async (_, {rejectWithValue}) => {
     try {
       const {data} = await baseService.get<UserData>('/me/');
-
+      console.log('data', data);
       return data;
     } catch (e: any) {
       return rejectWithValue(e.response?.data.error || 'Something is wrong');
