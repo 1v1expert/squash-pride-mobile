@@ -44,7 +44,7 @@ const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
 
   return (
     <ViewContainer
-      title={t('private.gameTechnique.title')}
+      title={t('private.rules.title')}
       leftHeaderButton={
         <CustomButton
           iconLeft={ArrowLeftIcon}

@@ -2,14 +2,15 @@ import {t} from 'i18next';
 import * as yup from 'yup';
 
 export const registrationSchema = yup.object({
-  name: yup.string().required(t('public.registrationScreen.nameRequiredError')),
+  firstName: yup
+    .string()
+    .required(t('public.registrationScreen.requiredError')),
   email: yup
     .string()
-    .required(t('public.registrationScreen.emailRequiredError')),
-  password: yup
-    .string()
-    .required(t('public.registrationScreen.passRequiredError')),
-  age: yup.string(),
-  gender: yup.string(),
-  country: yup.string(),
+    .email('Please enter a valid email address')
+    .required(t('public.registrationScreen.requiredError')),
+  password: yup.string().required(t('public.registrationScreen.requiredError')),
+  age: yup.number().required(t('public.registrationScreen.requiredError')),
+  gender: yup.number().required(t('public.registrationScreen.requiredError')),
+  country: yup.string().required(t('public.registrationScreen.requiredError')),
 });

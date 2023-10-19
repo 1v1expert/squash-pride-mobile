@@ -44,9 +44,10 @@ const CustomInput: FC<CustomInputProps> = ({
       defaultValue={defaultValue ?? ''}
       render={({field: {onChange, value}}) => {
         return (
-          <VStack space="xs">
+          <VStack>
             <Input variant={variant} size="md">
               <InputField
+                autoCapitalize="none"
                 value={value}
                 onChangeText={(formatted: string) => onChange(formatted)}
                 placeholder={placeholder}
@@ -66,7 +67,7 @@ const CustomInput: FC<CustomInputProps> = ({
             </Input>
 
             <VStack margin={0} minHeight={22.5}>
-              <Text color={!value.length ? '#F7A936' : '#F00'}>
+              <Text color={value ? '#F00' : '#F7A936'}>
                 {error && error.message}
               </Text>
             </VStack>

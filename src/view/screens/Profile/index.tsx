@@ -7,7 +7,7 @@ import ViewContainer from '../../components/ViewContainer';
 import {TouchableOpacity} from 'react-native';
 
 const Profile = () => {
-  const {setAuthorize} = useUser();
+  const {logout} = useUser();
   const {t, i18n} = useCustomTranslation();
 
   const changeLanguage = () => {
@@ -45,7 +45,7 @@ const Profile = () => {
         <TouchableOpacity>
           <Text color="#F7A936">{t('private.profileScreen.saveButton')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setAuthorize(false)}>
+        <TouchableOpacity onPress={logout}>
           <Text color="#F7A936">{t('private.profileScreen.logoutButton')}</Text>
         </TouchableOpacity>
       </HStack>

@@ -20,10 +20,14 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue ?? []}
+      defaultValue={defaultValue ?? false}
       render={({field: {onChange, value}}) => {
         return (
-          <Checkbox value={value} aria-label="checkbox" onChange={onChange}>
+          <Checkbox
+            value={value}
+            isChecked={value}
+            aria-label="checkbox"
+            onChange={onChange}>
             <CheckboxIndicator mr="$2" variant="primary">
               <CheckboxIcon as={CheckIcon} color="#F7A936" />
             </CheckboxIndicator>

@@ -18,6 +18,7 @@ type CustomButtonProps = {
   width?: number;
   height?: number;
   borderRadius?: number;
+  disabled?: boolean;
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -31,36 +32,50 @@ const CustomButton: FC<CustomButtonProps> = ({
   width,
   height,
   borderRadius = 50,
+  disabled,
 }) => {
   const [pressed, setPressed] = useState(false);
+
+  const handlePressIn = () => setPressed(true);
+  const handlePressOut = () => setPressed(false);
+
+  const gradientColors = pressed
+    ? ['#FBC36B', '#fbc46bd7', '#F7AA37']
+    : [bgColor, bgColor];
+
+  const styles = {
+    container: {
+      borderRadius: borderRadius,
+      opacity: disabled ? 0.5 : 1,
+    },
+  };
   return (
     <LinearGradient
-      colors={
-        pressed ? ['#FBC36B', '#fbc46bd7', '#F7AA37'] : [bgColor, bgColor]
-      }
+      colors={gradientColors}
       start={{y: 0.0, x: 0.0}}
       end={{y: 1, x: 0.0}}
-      style={{borderRadius: borderRadius}}>
+      style={styles.container}>
       <UIButton
+        disabled={disabled}
         size={size}
         bgColor="inherit"
         minHeight={50}
         height={height}
         width={width}
         onPress={onPress}
-        onPressIn={() => setPressed(true)}
-        onPressOut={() => setPressed(false)}>
-        {iconLeft && (
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}>
+        {iconLeft && !isLoading && (
           <ButtonIcon
             mr={title ? 15 : 0}
             as={iconLeft}
             color={pressed ? '#000' : '#fff'}
           />
         )}
-        {title && (
+        {title && !isLoading && (
           <ButtonText color={pressed ? '#000' : '#fff'}>{title}</ButtonText>
         )}
-        {iconRight && (
+        {iconRight && !isLoading && (
           <ButtonIcon
             ml={title ? 15 : 0}
             as={iconRight}

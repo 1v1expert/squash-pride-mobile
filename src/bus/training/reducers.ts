@@ -4,7 +4,8 @@ export const setFilters: types.BaseContract<types.FiltersType> = (
   state,
   action,
 ) => {
+  const filters = {...state.filters, ...action.payload};
   return {
-    filters: {...state.filters, ...action.payload},
+    filters,
   };
 };

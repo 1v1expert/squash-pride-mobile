@@ -31,6 +31,34 @@ export type LocationPermission =
 
 export type UserState = {
   isAuthorized: boolean;
+  isLoading: boolean;
+  user: UserData;
+};
+export type LoginForm = {
+  username: string;
+  password: string;
+  rememberMe?: boolean;
+};
+export type RegisterForm = {
+  password: string;
+  email: string;
+  first_name: string;
+  birth_year: number;
+  gender: number;
+  country: string;
+};
+export type Tokens = {
+  access: string;
+  refresh: string;
+};
+export type UserData = {
+  username: string;
+  email: string;
+  first_name: string;
+  birth_year: string | null;
+  gender: number | null;
+  country: string;
+  is_paid: boolean | null;
 };
 
 // Contracts

@@ -36,9 +36,8 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
     mode: 'onSubmit',
   });
   const {handleSubmit} = methods;
-  const submit = (e: FilterForm) => {
-    console.log(e);
-    setFilters(e);
+  const submit = (values: FilterForm) => {
+    setFilters(values);
     location ? replace(location) : goBack();
   };
   return (

@@ -5,6 +5,7 @@ import {
   HStack,
   ArrowRightIcon,
   KeyboardAvoidingView,
+  ScrollView,
 } from '@gluestack-ui/themed';
 import React, {FC} from 'react';
 import {Dimensions, Image, Platform, StyleSheet} from 'react-native';
@@ -20,66 +21,73 @@ import {PublicStackScreenProps} from '../../../navigation/types';
 import CustomSelect from '../../../components/CustomSelect';
 import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
 import {useUser} from '../../../../bus/user';
+import {Book} from '../../../navigation/book';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 interface RegistrationForm {
-  name: string;
+  firstName: string;
   email: string;
   password: string;
-  age?: string;
-  gender?: string;
-  country?: string;
+  age: number;
+  gender: number;
+  country: string;
 }
 
 const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
-  const {setAuthorize} = useUser();
-  const {} = navigation;
+  const {register, isLoading} = useUser();
+  const {navigate} = navigation;
   const {t} = useCustomTranslation();
   const methods = useForm<RegistrationForm>({
     resolver: yupResolver(registrationSchema),
     mode: 'onSubmit',
-    defaultValues: async () => {
-      return {
-        name: '',
-        email: '',
-        password: '',
-        age: '',
-        gender: '',
-        country: '',
-      };
-    },
   });
   const {
     formState: {errors},
+    setError,
     handleSubmit,
   } = methods;
 
-  const ages = Array.from({length: 100}, (_, index) => {
-    const age = index + 1;
+  const ages = Array.from({length: 34}, (_, index) => {
+    const age = index + 12;
     return {label: String(age), value: age};
   });
 
-  const onPress = (values: RegistrationForm) => {
+  const onPress = async (values: RegistrationForm) => {
     console.log('values', values);
-    setAuthorize(true);
+
+    try {
+      await register({
+        password: values.password,
+        email: values.email,
+        first_name: values.firstName,
+        birth_year: new Date().getFullYear() - values.age,
+        gender: values.gender,
+        country: values.country,
+      });
+
+      navigate(Book.Login);
+    } catch (e: any) {
+      e.email && setError('email', {message: e.email});
+      e.password && setError('password', {message: e.password});
+    }
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingContainer}>
-      <Box flex={1} bgColor="#25282D">
-        <SafeAreaLayout top bottom style={styles.container}>
-          <VStack flex={1}>
-            <FormProvider {...methods}>
-              <VStack
-                paddingHorizontal={40}
-                space="4xl"
-                flex={1}
-                justifyContent="space-between">
-                <VStack space="xl" justifyContent="flex-end">
+    <Box flex={1} bgColor="#25282D">
+      <SafeAreaLayout top bottom style={styles.container}>
+        <VStack flex={1}>
+          <FormProvider {...methods}>
+            <VStack
+              paddingHorizontal={40}
+              space="4xl"
+              flex={1}
+              justifyContent="space-between">
+              <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.keyboardAvoidingContainer}>
+                <VStack space="xl" justifyContent="flex-end" flex={1}>
                   <VStack alignItems="center" space="2xl">
                     <Image
                       source={images.logo}
@@ -93,79 +101,90 @@ const Registration: FC<PublicStackScreenProps> = ({navigation}) => {
                       {t('public.registrationScreen.title')}
                     </Text>
                   </VStack>
-                  <VStack space="xs">
-                    <CustomInput
-                      name="name"
-                      placeholder={t(
-                        'public.registrationScreen.nameInputPlaceholder',
-                      )}
-                      error={errors.name}
-                      variant="secondary"
-                      required
+
+                  <ScrollView>
+                    <VStack
+                      space="sm"
+                      justifyContent="center"
+                      pt={height * 0.02}>
+                      <CustomInput
+                        name="firstName"
+                        placeholder={t(
+                          'public.registrationScreen.firstNameInputPlaceholder',
+                        )}
+                        error={errors.firstName}
+                        variant="secondary"
+                        required
+                      />
+                      <CustomInput
+                        name="email"
+                        placeholder={t(
+                          'public.registrationScreen.emailInputPlaceholder',
+                        )}
+                        error={errors.email}
+                        variant="secondary"
+                        required
+                      />
+                      <CustomInput
+                        name="password"
+                        placeholder={t(
+                          'public.registrationScreen.passInputPlaceholder',
+                        )}
+                        type="password"
+                        error={errors.password}
+                        variant="secondary"
+                        required
+                      />
+                      <CustomSelect
+                        name="age"
+                        error={errors.age}
+                        placeholder={t(
+                          'public.registrationScreen.ageInputPlaceholder',
+                        )}
+                        items={ages}
+                      />
+                      <CustomSelect
+                        name="gender"
+                        error={errors.gender}
+                        placeholder={t(
+                          'public.registrationScreen.genderInputPlaceholder',
+                        )}
+                        items={[
+                          {label: t('gender.male'), value: 0},
+                          {label: t('gender.female'), value: 1},
+                          {label: t('gender.notSpecified'), value: 2},
+                        ]}
+                      />
+                      <CustomInput
+                        name="country"
+                        placeholder={t(
+                          'public.registrationScreen.countryInputPlaceholder',
+                        )}
+                        error={errors.country}
+                        variant="secondary"
+                      />
+                    </VStack>
+                  </ScrollView>
+
+                  <HStack
+                    justifyContent="center"
+                    alignItems="flex-end"
+                    pb={height * 0.02}>
+                    <CustomButton
+                      title={t('public.registrationScreen.button')}
+                      onPress={handleSubmit(onPress)}
+                      iconRight={ArrowRightIcon}
+                      disabled={isLoading}
+                      isLoading={isLoading}
                     />
-                    <CustomInput
-                      name="email"
-                      placeholder={t(
-                        'public.registrationScreen.emailInputPlaceholder',
-                      )}
-                      error={errors.email}
-                      variant="secondary"
-                      required
-                    />
-                    <CustomInput
-                      name="password"
-                      placeholder={t(
-                        'public.registrationScreen.passInputPlaceholder',
-                      )}
-                      type="password"
-                      error={errors.password}
-                      variant="secondary"
-                      required
-                    />
-                    <CustomSelect
-                      name="age"
-                      placeholder={t(
-                        'public.registrationScreen.ageInputPlaceholder',
-                      )}
-                      items={ages}
-                    />
-                    <CustomSelect
-                      name="gender"
-                      placeholder={t(
-                        'public.registrationScreen.genderInputPlaceholder',
-                      )}
-                      items={[
-                        {label: 'Мужской', value: 'male'},
-                        {label: 'Женский', value: 'female'},
-                        {label: 'Другое', value: 'other'},
-                      ]}
-                    />
-                    <CustomInput
-                      name="country"
-                      placeholder={t(
-                        'public.registrationScreen.countryInputPlaceholder',
-                      )}
-                      error={errors.country}
-                      variant="secondary"
-                    />
-                  </VStack>
+                  </HStack>
                 </VStack>
-                <HStack
-                  justifyContent="center"
-                  alignItems="flex-end"
-                  pb={height * 0.025}>
-                  <CustomButton
-                    title={t('public.registrationScreen.button')}
-                    onPress={handleSubmit(onPress)}
-                    iconRight={ArrowRightIcon}
-                  />
-                </HStack>
-              </VStack>
-            </FormProvider>
-          </VStack>
-        </SafeAreaLayout>
-      </Box>
-    </KeyboardAvoidingView>
+              </KeyboardAvoidingView>
+            </VStack>
+          </FormProvider>
+        </VStack>
+      </SafeAreaLayout>
+    </Box>
   );
 };
 

@@ -5,10 +5,13 @@ import TouchableContainer from '../../components/TouchableContainer';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {Book} from '../../navigation/book';
+import {useUser} from '../../../bus/user';
 
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
+  const {user} = useUser();
   const {t} = useCustomTranslation();
+
   return (
     <Box flex={1} bgColor="#131517">
       <SafeAreaLayout top>
@@ -20,7 +23,9 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             paddingHorizontal={20}
             minHeight={160}
             space="xs">
-            <Text variant="primary">{t('private.homeScreen.title')}</Text>
+            <Text variant="primary">
+              {t('private.homeScreen.title')} {user.first_name}!
+            </Text>
             <Box bgColor="#F7A936" width="$full" height={2} />
           </VStack>
           <VStack
@@ -31,13 +36,15 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             <TouchableContainer
               text={t('private.homeScreen.startTraining')}
               onPress={() =>
-                navigate(Book.Filter, {location: Book.StartTraining})
+                navigate(Book.Options, {location: Book.StartTraining})
               }
             />
-            {/* <TouchableContainer
+            <TouchableContainer
               text={t('private.homeScreen.createTraining')}
-              onPress={() => navigate(Book.CreateTraining)}
-            /> */}
+              onPress={() =>
+                navigate(Book.Options, {location: Book.CreateTraining})
+              }
+            />
             <TouchableContainer
               text={t('private.homeScreen.gameTechnique')}
               onPress={() => navigate(Book.GameTechnique)}

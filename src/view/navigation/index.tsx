@@ -7,6 +7,7 @@ import {Private} from './Private';
 
 export const Navigation: FC = () => {
   const {isAuthorized} = useUser();
+
   return (
     <NavigationContainer>
       {isAuthorized ? <Private /> : <Public />}

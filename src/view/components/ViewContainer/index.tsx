@@ -3,6 +3,7 @@ import React, {FC, PropsWithChildren, ReactNode} from 'react';
 import SafeAreaLayout from '../SafeAreaLayout';
 
 type ViewContainerProps = {
+  header?: ReactNode;
   title?: string;
   leftHeaderButton?: ReactNode;
   rightHeaderButton?: ReactNode;
@@ -17,6 +18,7 @@ type ViewContainerProps = {
 
 const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
   children,
+  header,
   title,
   leftHeaderButton,
   rightHeaderButton,
@@ -39,9 +41,10 @@ const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
             <HStack minHeight={50} minWidth={50}>
               {leftHeaderButton}
             </HStack>
-            <HStack>
-              <Text variant="primary">{title}</Text>
-            </HStack>
+            <VStack justifyContent="center">
+              {title && <Text variant="primary">{title}</Text>}
+              {header}
+            </VStack>
             <HStack minHeight={50} minWidth={50}>
               {rightHeaderButton}
             </HStack>

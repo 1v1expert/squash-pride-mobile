@@ -17,7 +17,6 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import PeopleCounter from '../../components/PeopleCounter';
-import Stars from '../../components/Stars';
 import {Book} from '../../navigation/book';
 import {useTraining} from '../../../bus/training';
 
@@ -65,7 +64,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         <CustomButton
           iconLeft={SettingsIcon}
           bgColor="#25282D"
-          onPress={() => navigate(Book.Filter)}
+          onPress={() => navigate(Book.Options)}
           width={50}
         />
       }>
@@ -107,7 +106,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
                 />
               </HStack>
               <ScrollView>
-                <Text variant="primary" textAlign="auto" p={10}>
+                <Text variant="primary" p={10}>
                   {item.description}
                 </Text>
               </ScrollView>
@@ -123,7 +122,9 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         paddingHorizontal={30}
         space="xl">
         <PeopleCounter amountOfPeople={filters.people} />
-        <Stars level={filters.level} />
+        <Text variant="primary">
+          {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
+        </Text>
       </HStack>
     </ViewContainer>
   );

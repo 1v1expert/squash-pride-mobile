@@ -11,7 +11,6 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 >;
 
 export type PrivateStackParamList = {
-  Options: undefined;
   TabNavigator: undefined;
 };
 export type HomeScreensStackParamList = {
@@ -22,6 +21,7 @@ export type HomeScreensStackParamList = {
   Rules: undefined;
   MediaViewer: TItem;
   Filter: {location?: keyof HomeScreensStackParamList} | undefined;
+  Options: {location?: keyof HomeScreensStackParamList} | undefined;
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
@@ -39,6 +39,10 @@ export type MediaViewerScreenProps = NativeStackScreenProps<
 export type FilterScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'Filter'
+>;
+export type OptionsScreenProps = NativeStackScreenProps<
+  HomeScreensStackParamList,
+  'Options'
 >;
 
 export type TItem = {
