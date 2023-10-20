@@ -13,6 +13,15 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 export type PrivateStackParamList = {
   TabNavigator: undefined;
 };
+
+export type TabNavigatorParamList = {
+  HomeScreens: undefined;
+  Favorites: undefined;
+  Training: undefined;
+  Calendar: undefined;
+  Profile: undefined;
+};
+
 export type HomeScreensStackParamList = {
   Home: undefined;
   StartTraining: undefined;
@@ -26,6 +35,10 @@ export type HomeScreensStackParamList = {
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
+  any
+>;
+export type TabNavigatorProps = NativeStackScreenProps<
+  TabNavigatorParamList,
   any
 >;
 export type PrivateStackScreenProps = NativeStackScreenProps<

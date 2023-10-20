@@ -29,18 +29,14 @@ export type LocationPermission =
   | 'granted'
   | 'never_ask_again';
 
-export type FiltersType = {
-  level?: 'amateur' | 'professional' | null;
-  people?: number | null;
-  shot?: string[];
-};
-
-export type TrainingState = {
-  filters: FiltersType;
+export type TimeUnitType = 'years' | 'months' | 'days';
+export type CalendarState = {
+  timeUnit: TimeUnitType;
+  selected: string;
 };
 
 // Contracts
 export type BaseContract<T = any> = CaseReducer<
-  TrainingState,
+  CalendarState,
   PayloadAction<T>
 >;
