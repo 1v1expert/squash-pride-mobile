@@ -7,51 +7,14 @@ import {useCalendar} from '../../../bus/calendar';
 import {useNavigation} from '@react-navigation/native';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import ChevronDown from '../../../assets/svg/chevron_down';
-
-export const months: (
-  | 'jan'
-  | 'feb'
-  | 'mar'
-  | 'apr'
-  | 'may'
-  | 'jun'
-  | 'jul'
-  | 'aug'
-  | 'sep'
-  | 'oct'
-  | 'nov'
-  | 'dec'
-)[] = [
-  'jan',
-  'feb',
-  'mar',
-  'apr',
-  'may',
-  'jun',
-  'jul',
-  'aug',
-  'sep',
-  'oct',
-  'nov',
-  'dec',
-];
-
-export const daysOfWeek: (
-  | 'mon'
-  | 'tue'
-  | 'wed'
-  | 'thu'
-  | 'fri'
-  | 'sat'
-  | 'sun'
-)[] = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+import {DAYS_OF_WEEK, MONTHS} from '../../../assets/constants';
 
 const CustomCalendarHeader = (item: any) => {
   const {t} = useCustomTranslation();
   const {setTimeUnit} = useCalendar();
   const {navigate} = useNavigation<HomeScreensStackScreenProps['navigation']>();
 
-  const currentMonth = months[new Date(item.month).getMonth()];
+  const currentMonth = MONTHS[new Date(item.month).getMonth()];
   const currentYear = new Date(item.month).getFullYear();
 
   return (
@@ -72,7 +35,7 @@ const CustomCalendarHeader = (item: any) => {
         </TouchableOpacity>
       </HStack>
       <HStack justifyContent="space-around">
-        {daysOfWeek.map((day, i) => (
+        {DAYS_OF_WEEK.map((day, i) => (
           <Text variant="secondary" key={i}>
             {t(`private.calendarScreen.daysOfWeek.${day}`)}
           </Text>

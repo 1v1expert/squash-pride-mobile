@@ -4,19 +4,17 @@ import SafeAreaLayout from '../../components/SafeAreaLayout';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import CustomCalendar from '../../components/CustomCalendar';
 import {useCalendar} from '../../../bus/calendar';
-import {months} from '../../components/CustomCalendar/customCalendarHeader';
+import {MONTHS} from '../../../assets/constants';
 import Plus from '../../../assets/svg/plus';
 import {TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
-// import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
   const {selected} = useCalendar();
-  const currentMonth = months[new Date(selected).getMonth()];
-  const currentDay = new Date(selected).getDate();
-  // console.log(new Date(selected).getDate());]
   const [addTraining, setAddTraining] = useState(false);
+  const currentMonth = MONTHS[new Date(selected).getMonth()];
+  const currentDay = new Date(selected).getDate();
 
   const shadow = {
     shadowColor: '#000',
@@ -134,7 +132,6 @@ const Calendar = () => {
                   </TouchableOpacity>
                 </VStack>
               </Collapsible>
-              {/* <RNDateTimePicker value={new Date()} /> */}
             </VStack>
           </Box>
         </VStack>

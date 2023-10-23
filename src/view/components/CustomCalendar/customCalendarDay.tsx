@@ -12,8 +12,6 @@ type CustomCalendarDayProps = DayProps & {
 const CustomCalendarDay = (item: CustomCalendarDayProps) => {
   const {date, state, marking, onPress} = item;
 
-  // console.log('date', date);
-
   const textColor = useCallback(() => {
     switch (state) {
       case 'today':

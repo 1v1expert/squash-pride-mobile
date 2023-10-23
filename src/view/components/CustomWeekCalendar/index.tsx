@@ -2,9 +2,9 @@ import React, {useCallback} from 'react';
 import {CalendarProvider, DateData, WeekCalendar} from 'react-native-calendars';
 import {useCalendar} from '../../../bus/calendar';
 import {HStack, Text, VStack} from '@gluestack-ui/themed';
-import {daysOfWeek, months} from '../CustomCalendar/customCalendarHeader';
+import {DAYS_OF_WEEK, MONTHS} from '../../../assets/constants';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import ChevronUp from '../../../assets/svg/chevron_up';
 import CustomWeekCalendarDay from './customWeekCalendarDay';
 import {useNavigation} from '@react-navigation/native';
@@ -18,7 +18,7 @@ const CustomWeekCalendar = () => {
   const {t} = useCustomTranslation();
   const {navigate} = useNavigation<TabNavigatorProps['navigation']>();
 
-  const currentMonth = months[new Date(selected).getMonth()];
+  const currentMonth = MONTHS[new Date(selected).getMonth()];
 
   const onDayPress = useCallback(
     (day: DateData) => {
@@ -27,7 +27,7 @@ const CustomWeekCalendar = () => {
     [setSelected],
   );
   return (
-    <CalendarProvider date={selected} style={{width: '100%'}}>
+    <CalendarProvider date={selected} style={styles.container}>
       <VStack space="sm">
         <HStack
           alignItems="center"
@@ -46,7 +46,7 @@ const CustomWeekCalendar = () => {
           </TouchableOpacity>
         </HStack>
         <HStack justifyContent="space-between" paddingHorizontal={40}>
-          {daysOfWeek.map((day, i) => (
+          {DAYS_OF_WEEK.map((day, i) => (
             <Text variant="secondary" key={i}>
               {t(`private.calendarScreen.daysOfWeek.${day}`)}
             </Text>
@@ -55,12 +55,7 @@ const CustomWeekCalendar = () => {
       </VStack>
 
       <WeekCalendar
-        style={{
-          width: width - 20,
-          position: 'absolute',
-          top: 0,
-          left: 10,
-        }}
+        style={styles.weekCalendar}
         date={selected}
         onDayPress={onDayPress}
         firstDay={1}
@@ -70,9 +65,20 @@ const CustomWeekCalendar = () => {
         theme={{
           calendarBackground: 'transparent',
         }}
+        enableSwipeMonths={false}
       />
     </CalendarProvider>
   );
 };
+
+export const styles = StyleSheet.create({
+  container: {width: '100%'},
+  weekCalendar: {
+    width: width - 20,
+    position: 'absolute',
+    top: 0,
+    left: 10,
+  },
+});
 
 export default CustomWeekCalendar;
