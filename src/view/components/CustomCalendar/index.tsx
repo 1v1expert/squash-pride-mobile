@@ -9,30 +9,33 @@ import CustomCalendarMonth from './customCalendarMonth';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
-
-const CustomCalendar = () => {
+type CustomCalendarProps = {
+  action: () => void;
+};
+const CustomCalendar = ({action}: CustomCalendarProps) => {
   const {marked, selected, timeUnit, setSelected} = useCalendar();
 
   const onDayPress = useCallback(
     (day: DateData) => {
-      setSelected(day.dateString);
+      action();
+      setSelected(new Date(`${day.dateString}T04:00:00Z`).getTime());
     },
-    [setSelected],
+    [action, setSelected],
   );
+  const selectedDate = new Date(selected).toISOString().split('T')[0];
 
   switch (timeUnit) {
     case 'days': {
       return (
         <Calendar
-          current={selected}
-          key={selected}
+          current={selectedDate}
+          key={selectedDate}
           style={{
             width: width - 40,
-            minHeight: height * 0.35,
+            minHeight: height * 0.375,
           }}
           hideArrows={true}
           firstDay={1}
-          onMonthChange={i => console.log(i)}
           onDayPress={onDayPress}
           markedDates={marked}
           customHeader={CustomCalendarHeader}
@@ -44,7 +47,7 @@ const CustomCalendar = () => {
       );
     }
     case 'months': {
-      return <CustomCalendarMonth />;
+      return <CustomCalendarMonth action={action} />;
     }
     case 'years': {
       return <Text>Years</Text>;

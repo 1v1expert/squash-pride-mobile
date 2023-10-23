@@ -115,6 +115,9 @@ export default {
         nov: 'nov',
         dec: 'dec',
       },
+      ok: 'OK',
+      cancel: 'CANCEL',
+      tips: 'You have no scheduled workouts. \nClick on + to add one.',
     },
     profileScreen: {
       title: 'PROFILE',

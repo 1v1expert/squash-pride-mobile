@@ -1,27 +1,59 @@
 import {Box, Center, HStack, Text, VStack} from '@gluestack-ui/themed';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SafeAreaLayout from '../../components/SafeAreaLayout';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import CustomCalendar from '../../components/CustomCalendar';
 import {useCalendar} from '../../../bus/calendar';
 import {MONTHS} from '../../../assets/constants';
 import Plus from '../../../assets/svg/plus';
-import {TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
+import {useNavigation} from '@react-navigation/native';
+import {HomeScreensStackScreenProps} from '../../navigation/types';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
-  const {selected} = useCalendar();
+  const navigation = useNavigation<HomeScreensStackScreenProps['navigation']>();
+  const {selected, events, setSelected, setTimeUnit} = useCalendar();
   const [addTraining, setAddTraining] = useState(false);
+  const [timer, setTimer] = useState(false);
   const currentMonth = MONTHS[new Date(selected).getMonth()];
   const currentDay = new Date(selected).getDate();
+  const currentMinutes =
+    new Date(selected).getMinutes() <= 9
+      ? `0${new Date(selected).getMinutes()}`
+      : new Date(selected).getMinutes();
+  const currentTime = `${new Date(selected).getHours()}:${currentMinutes}`;
+  const minimumDate = new Date(
+    `${new Date(selected).toISOString().split('T')[0]}T04:00:00Z`,
+  );
 
-  const shadow = {
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 10},
-    shadowOpacity: 0.36,
-    shadowRadius: 6.68,
-    elevation: 11,
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      setTimeUnit('days');
+    });
+
+    return unsubscribe;
+  }, [navigation, setTimeUnit]);
+
+  const changeTime = (e: DateTimePickerEvent) => {
+    Platform.OS === 'android' && setTimer(prev => !prev);
+    setSelected(e.nativeEvent.timestamp);
+  };
+  const setVisibleTimerPopup = () => {
+    setTimer(prev => !prev);
+    setAddTraining(false);
+  };
+  const setVisibleEventPopup = () => {
+    setAddTraining(prev => !prev);
+    setTimer(false);
+  };
+  const hideAll = () => {
+    setAddTraining(false);
+    setTimer(false);
   };
 
   return (
@@ -44,17 +76,17 @@ const Calendar = () => {
             width="$full"
             pt={20}
             marginBottom={10}>
-            <CustomCalendar />
+            <CustomCalendar action={hideAll} />
           </VStack>
-          <Box paddingHorizontal={20}>
+          <Box paddingHorizontal={30}>
             <VStack
               width="$full"
               alignItems="center"
-              paddingHorizontal={10}
               space="xs"
               bgColor={addTraining ? '#131517' : 'transparent'}
               borderRadius={10}
-              style={addTraining && shadow}>
+              style={addTraining && styles.shadow}
+              mb={10}>
               <HStack
                 borderBottomColor="#F7A936"
                 borderBottomWidth={2}
@@ -63,7 +95,7 @@ const Calendar = () => {
                 alignItems="center"
                 paddingVertical={20}>
                 <HStack
-                  width={'40%'}
+                  width={'35%'}
                   paddingHorizontal={10}
                   minHeight={30}
                   alignItems="center">
@@ -74,29 +106,28 @@ const Calendar = () => {
                   </Text>
                 </HStack>
                 <HStack
-                  width={'20%'}
+                  width={'30%'}
                   justifyContent="center"
                   alignItems="center"
                   minHeight={30}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={setVisibleTimerPopup}>
                     <Center
                       bgColor="#131517"
                       paddingHorizontal={15}
                       paddingVertical={5}
                       borderRadius={10}
-                      style={shadow}>
-                      <Text variant="secondary">9:00</Text>
+                      style={styles.shadow}>
+                      <Text variant="secondary">{currentTime}</Text>
                     </Center>
                   </TouchableOpacity>
                 </HStack>
                 <HStack
-                  width={'40%'}
+                  width={'35%'}
                   justifyContent="flex-end"
                   paddingHorizontal={10}
                   alignItems="center"
                   minHeight={30}>
-                  <TouchableOpacity
-                    onPress={() => setAddTraining(prev => !prev)}>
+                  <TouchableOpacity onPress={setVisibleEventPopup} hitSlop={20}>
                     <Plus />
                   </TouchableOpacity>
                 </HStack>
@@ -133,11 +164,49 @@ const Calendar = () => {
                 </VStack>
               </Collapsible>
             </VStack>
+            <VStack paddingHorizontal={10} zIndex={100} elevation={2}>
+              {!addTraining && !events.length && (
+                <HStack>
+                  <Text variant="primary">
+                    {t('private.calendarScreen.tips')}
+                  </Text>
+                </HStack>
+              )}
+              {timer && (
+                <HStack position="absolute" bgColor="#131517" borderRadius={10}>
+                  <DateTimePicker
+                    display="spinner"
+                    value={new Date(selected)}
+                    onChange={changeTime}
+                    mode="time"
+                    textColor="#fff"
+                    accentColor="orange"
+                    locale="es-ES"
+                    themeVariant="dark"
+                    minimumDate={minimumDate}
+                    positiveButton={{
+                      label: t('private.calendarScreen.ok'),
+                      textColor: '#F7A936',
+                    }}
+                    negativeButton={{label: t('private.calendarScreen.cancel')}}
+                  />
+                </HStack>
+              )}
+            </VStack>
           </Box>
         </VStack>
       </SafeAreaLayout>
     </Box>
   );
 };
+export const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    elevation: 11,
+  },
+});
 
 export default Calendar;

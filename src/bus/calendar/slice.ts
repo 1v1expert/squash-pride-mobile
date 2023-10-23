@@ -5,7 +5,8 @@ import * as reducers from './reducers';
 
 const initialState: types.CalendarState = {
   timeUnit: 'days',
-  selected: new Date().toISOString().split('T')[0],
+  selected: new Date().getTime(),
+  events: [],
 };
 
 export const calendarSlice = createSlice({

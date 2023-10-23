@@ -32,7 +32,8 @@ export type LocationPermission =
 export type TimeUnitType = 'years' | 'months' | 'days';
 export type CalendarState = {
   timeUnit: TimeUnitType;
-  selected: string;
+  selected: number;
+  events: {date: string; name: string}[];
 };
 
 // Contracts

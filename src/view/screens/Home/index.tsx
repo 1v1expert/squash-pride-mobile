@@ -37,7 +37,6 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             justifyContent="center"
             bgColor="#131517"
             width="$full"
-            pt={20}
             height={height * 0.14}>
             <CustomWeekCalendar />
           </VStack>

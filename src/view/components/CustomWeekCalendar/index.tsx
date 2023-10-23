@@ -22,17 +22,20 @@ const CustomWeekCalendar = () => {
 
   const onDayPress = useCallback(
     (day: DateData) => {
-      setSelected(day.dateString);
+      setSelected(new Date(`${day.dateString}T04:00:00Z`).getTime());
+      navigate(Book.Calendar);
     },
-    [setSelected],
+    [navigate, setSelected],
   );
+  const selectedDate = new Date(selected).toISOString().split('T')[0];
+
   return (
-    <CalendarProvider date={selected} style={styles.container}>
+    <CalendarProvider date={selectedDate} style={styles.container}>
       <VStack space="sm">
         <HStack
           alignItems="center"
           justifyContent="space-between"
-          pl={40}
+          pl={37}
           pr={25}>
           <HStack alignItems="center" space="xs">
             <Text variant="secondary" textAlign="center">
@@ -45,7 +48,7 @@ const CustomWeekCalendar = () => {
             <ChevronUp />
           </TouchableOpacity>
         </HStack>
-        <HStack justifyContent="space-between" paddingHorizontal={40}>
+        <HStack justifyContent="space-between" paddingHorizontal={37}>
           {DAYS_OF_WEEK.map((day, i) => (
             <Text variant="secondary" key={i}>
               {t(`private.calendarScreen.daysOfWeek.${day}`)}
@@ -56,7 +59,7 @@ const CustomWeekCalendar = () => {
 
       <WeekCalendar
         style={styles.weekCalendar}
-        date={selected}
+        date={selectedDate}
         onDayPress={onDayPress}
         firstDay={1}
         markedDates={marked}
@@ -72,12 +75,16 @@ const CustomWeekCalendar = () => {
 };
 
 export const styles = StyleSheet.create({
-  container: {width: '100%'},
+  container: {
+    width: '100%',
+    justifyContent: 'flex-end',
+  },
   weekCalendar: {
     width: width - 20,
     position: 'absolute',
     top: 0,
     left: 10,
+    height: 40,
   },
 });
 

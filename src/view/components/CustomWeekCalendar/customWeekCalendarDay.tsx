@@ -1,11 +1,10 @@
 import React, {useCallback} from 'react';
 import {Text, View} from '@gluestack-ui/themed';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {DateData} from 'react-native-calendars';
 
-const height = Dimensions.get('screen').height;
 type CustomWeekCalendarDayProps = DayProps & {
   date?: DateData | undefined;
 };
@@ -45,7 +44,6 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
 export const styles = StyleSheet.create({
   container: {
     width: '60%',
-    height: height * 0.047,
   },
 });
 

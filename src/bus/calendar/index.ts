@@ -9,15 +9,18 @@ export const useCalendar = () => {
   const dispatch = useDispatch();
   const timeUnit = useSelector(({calendar}) => calendar.timeUnit);
   const selected = useSelector(({calendar}) => calendar.selected);
+  const events = useSelector(({calendar}) => calendar.events);
   const marked = useMemo(() => {
+    const selectedDate = new Date(selected).toISOString().split('T')[0];
+
     return {
-      [selected]: {
+      [selectedDate]: {
         selected: true,
         disableTouchEvent: true,
       },
     };
   }, [selected]);
-  const setSelected = (state: string) => {
+  const setSelected = (state: number) => {
     dispatch(calendarActions.setSelected(state));
   };
   const setTimeUnit = (state: TimeUnitType) => {
@@ -25,6 +28,7 @@ export const useCalendar = () => {
   };
 
   return {
+    events,
     marked,
     timeUnit,
     selected,

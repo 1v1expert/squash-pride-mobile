@@ -11,8 +11,10 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
-
-const CustomCalendarMonth = () => {
+type CustomCalendarMonthProps = {
+  action: () => void;
+};
+const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
   const {t} = useCustomTranslation();
   const {navigate} = useNavigation<HomeScreensStackScreenProps['navigation']>();
   const {selected, setSelected, setTimeUnit} = useCalendar();
@@ -24,11 +26,14 @@ const CustomCalendarMonth = () => {
     (month: number, monthName: string) => {
       if (monthName !== currentMonth) {
         const newMonth = month > 9 ? `${month}` : `0${month}`;
-        setSelected(`${currentYear}-${newMonth}-01`);
+        setSelected(
+          new Date(`${currentYear}-${newMonth}-01T04:00:00Z`).getTime(),
+        );
       }
+      action();
       setTimeUnit('days');
     },
-    [currentMonth, currentYear, setSelected, setTimeUnit],
+    [action, currentMonth, currentYear, setSelected, setTimeUnit],
   );
 
   return (

@@ -1,6 +1,6 @@
 import * as types from './types';
 
-export const setSelected: types.BaseContract<string> = (state, action) => {
+export const setSelected: types.BaseContract<number> = (state, action) => {
   return {
     ...state,
     selected: action.payload,
