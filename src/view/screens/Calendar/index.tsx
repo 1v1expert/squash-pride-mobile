@@ -34,6 +34,7 @@ const Calendar = () => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
       setTimeUnit('days');
+      hideAll();
     });
 
     return unsubscribe;
