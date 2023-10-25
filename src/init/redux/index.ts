@@ -3,11 +3,13 @@ import {middleware} from './middleware';
 
 import user from '../../bus/user/slice';
 import training from '../../bus/training/slice';
+import calendar from '../../bus/calendar/slice';
 
 export const store = configureStore({
   reducer: {
     user,
     training,
+    calendar,
   },
   middleware,
   // devTools: NODE_ENV !== 'production',

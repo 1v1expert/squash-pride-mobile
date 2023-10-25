@@ -5,8 +5,8 @@ import * as reducers from './reducers';
 
 const initialState: types.TrainingState = {
   filters: {
-    level: 0,
-    people: 0,
+    level: null,
+    people: null,
     shot: [],
   },
 };

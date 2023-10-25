@@ -13,6 +13,7 @@ import {
   Keyboard,
   Platform,
   StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {images} from '../../../../assets';
 import SafeAreaLayout from '../../../components/SafeAreaLayout';
@@ -91,64 +92,66 @@ const Login = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.keyboardAvoidingContainer}>
-      <Box flex={1} justifyContent="flex-end">
-        <ImageBackground
-          source={images.background}
-          resizeMode="cover"
-          style={styles.background}>
-          <SafeAreaLayout top bottom style={styles.container}>
-            <VStack flex={1} justifyContent="space-around">
-              <Center>
-                <Image
-                  source={images.logo}
-                  resizeMode="contain"
-                  style={{
-                    width: imageWidth,
-                    height: imageWidth,
-                  }}
-                />
-              </Center>
-              <FormProvider {...methods}>
-                <VStack paddingHorizontal={40} space="4xl">
-                  <VStack space="4xl">
-                    <VStack space="xs">
-                      <CustomInput
-                        name="username"
-                        placeholder={t(
-                          'public.loginScreen.loginInputPlaceholder',
-                        )}
-                        error={errors.username}
-                        variant="primary"
-                      />
-                      <CustomInput
-                        name="password"
-                        placeholder={t(
-                          'public.loginScreen.passInputPlaceholder',
-                        )}
-                        type="password"
-                        error={errors.password}
-                        variant="primary"
-                      />
-                      <HStack>
-                        <CustomCheckbox
-                          name="rememberMe"
-                          label={t('public.loginScreen.rememberMe')}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <Box flex={1} justifyContent="flex-end">
+          <ImageBackground
+            source={images.background}
+            resizeMode="cover"
+            style={styles.background}>
+            <SafeAreaLayout top bottom style={styles.container}>
+              <VStack flex={1} justifyContent="space-around">
+                <Center>
+                  <Image
+                    source={images.logo}
+                    resizeMode="contain"
+                    style={{
+                      width: imageWidth,
+                      height: imageWidth,
+                    }}
+                  />
+                </Center>
+                <FormProvider {...methods}>
+                  <VStack paddingHorizontal={40} space="4xl">
+                    <VStack space="4xl">
+                      <VStack space="xs">
+                        <CustomInput
+                          name="username"
+                          placeholder={t(
+                            'public.loginScreen.loginInputPlaceholder',
+                          )}
+                          error={errors.username}
+                          variant="primary"
                         />
-                      </HStack>
+                        <CustomInput
+                          name="password"
+                          placeholder={t(
+                            'public.loginScreen.passInputPlaceholder',
+                          )}
+                          type="password"
+                          error={errors.password}
+                          variant="primary"
+                        />
+                        <HStack>
+                          <CustomCheckbox
+                            name="rememberMe"
+                            label={t('public.loginScreen.rememberMe')}
+                          />
+                        </HStack>
+                      </VStack>
+                      <CustomButton
+                        title={t('public.loginScreen.button')}
+                        onPress={handleSubmit(onPress)}
+                        disabled={isLoading}
+                        isLoading={isLoading}
+                      />
                     </VStack>
-                    <CustomButton
-                      title={t('public.loginScreen.button')}
-                      onPress={handleSubmit(onPress)}
-                      disabled={isLoading}
-                      isLoading={isLoading}
-                    />
                   </VStack>
-                </VStack>
-              </FormProvider>
-            </VStack>
-          </SafeAreaLayout>
-        </ImageBackground>
-      </Box>
+                </FormProvider>
+              </VStack>
+            </SafeAreaLayout>
+          </ImageBackground>
+        </Box>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };

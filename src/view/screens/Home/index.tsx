@@ -7,6 +7,11 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {Book} from '../../navigation/book';
 import {useUser} from '../../../bus/user';
 
+import CustomWeekCalendar from '../../components/CustomWeekCalendar';
+import {Dimensions} from 'react-native';
+
+const height = Dimensions.get('screen').height;
+
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
   const {user} = useUser();
@@ -21,12 +26,19 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             width="$full"
             alignItems="center"
             paddingHorizontal={20}
-            minHeight={160}
             space="xs">
             <Text variant="primary">
               {t('private.homeScreen.title')} {user.first_name}!
             </Text>
             <Box bgColor="#F7A936" width="$full" height={2} />
+          </VStack>
+          <VStack
+            alignItems="center"
+            justifyContent="center"
+            bgColor="#131517"
+            width="$full"
+            height={height * 0.14}>
+            <CustomWeekCalendar />
           </VStack>
           <VStack
             flex={1}
