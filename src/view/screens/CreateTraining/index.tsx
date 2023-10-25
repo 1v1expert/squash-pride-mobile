@@ -1,9 +1,6 @@
 import {
   ArrowLeftIcon,
-  Center,
   HStack,
-  Image,
-  ScrollView,
   SettingsIcon,
   Text,
   VStack,
@@ -15,21 +12,22 @@ import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
-import {images} from '../../../assets';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {Dimensions, FlatList} from 'react-native';
 import {useTraining} from '../../../bus/training';
 import {Book} from '../../navigation/book';
 
+import ExerciseItem from '../../components/ExerciseItem';
+import {ExerciseType} from '../../../bus/training/types';
+
 const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height;
 
 const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {navigate, goBack} = navigation;
+  const {replace, goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters} = useTraining();
-  const imageWidth = width * 0.425;
-  const imageHeight = height * 0.25;
-
+  const {filters, exercises, isLoading} = useTraining();
+  const goToItem = (e: ExerciseType) => {
+    navigate(Book.ExerciseMediaViewer, {...e});
+  };
   return (
     <ViewContainer
       title={t('private.createTraining.title')}
@@ -45,174 +43,20 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         <CustomButton
           iconLeft={SettingsIcon}
           bgColor="#25282D"
-          onPress={() => navigate(Book.Options)}
+          onPress={() => replace(Book.Options)}
           width={50}
         />
       }>
       <VStack flex={1} width={width} alignItems="center">
-        <ScrollView paddingHorizontal={20}>
-          <HStack
-            paddingVertical={10}
-            flexWrap="wrap"
-            justifyContent="space-between"
-            space="md">
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.drive}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.drive')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.cross}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.cross')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.drop}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.drop')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.boost}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.boost')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.candle}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.candle')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.serve}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.serve')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.shot}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  position="absolute"
-                  top="$1/3"
-                  fontWeight="$bold"
-                  textAlign="center"
-                  color="#F7AB39">
-                  {t('private.createTraining.shots.allExercises')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.shot}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text position="absolute" fontWeight="$bold" color="#F7AB39">
-                  {t('private.createTraining.shots.tactics')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-          </HStack>
-        </ScrollView>
+        {!isLoading && exercises && (
+          <FlatList
+            data={exercises}
+            renderItem={({item}) => (
+              <ExerciseItem item={item} onPress={() => goToItem(item)} />
+            )}
+            style={{width, paddingTop: 20, paddingHorizontal: 20}}
+          />
+        )}
       </VStack>
 
       <HStack
@@ -222,7 +66,7 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         alignItems="center"
         paddingHorizontal={30}
         space="xl">
-        <PeopleCounter amountOfPeople={filters.people} />
+        {filters.players && <PeopleCounter amountOfPeople={filters.players} />}
         <Text variant="primary">
           {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
         </Text>

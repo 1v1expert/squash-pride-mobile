@@ -31,12 +31,28 @@ export type LocationPermission =
 
 export type FiltersType = {
   level?: 'amateur' | 'professional' | null;
-  people?: number | null;
-  shot?: string[];
+  players?: number | null;
+  group?: string[];
 };
 
 export type TrainingState = {
+  isLoading: boolean;
+  group: GroupData[];
   filters: FiltersType;
+  exercises: ExerciseType[];
+};
+export type GroupData = {
+  uid: string;
+  name: string;
+  description: string;
+};
+export type ExerciseType = {
+  uid: string;
+  video: string;
+  groups: string[];
+  level: 'amateur' | 'professional';
+  players: number;
+  description: string;
 };
 
 // Contracts

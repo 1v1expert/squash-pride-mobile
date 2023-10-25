@@ -1,4 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {ExerciseType} from '../../bus/training/types';
 
 export type PublicStackParamList = {
   Main: undefined;
@@ -31,6 +32,8 @@ export type HomeScreensStackParamList = {
   MediaViewer: TItem;
   Filter: {location?: keyof HomeScreensStackParamList} | undefined;
   Options: {location?: keyof HomeScreensStackParamList} | undefined;
+  ChooseTrainingType: {location?: keyof HomeScreensStackParamList} | undefined;
+  ExerciseMediaViewer: ExerciseType | undefined;
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
@@ -48,6 +51,10 @@ export type PrivateStackScreenProps = NativeStackScreenProps<
 export type MediaViewerScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'MediaViewer'
+>;
+export type ExerciseMediaViewerScreenProps = NativeStackScreenProps<
+  HomeScreensStackParamList,
+  'ExerciseMediaViewer'
 >;
 export type FilterScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,

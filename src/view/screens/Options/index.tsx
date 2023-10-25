@@ -20,17 +20,18 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {useTraining} from '../../../bus/training';
 import ViewContainer from '../../components/ViewContainer';
 import {Dimensions} from 'react-native';
+import {Book} from '../../navigation/book';
 
 const height = Dimensions.get('screen').height;
 
 interface OptionsForm {
-  people: number;
+  players: number;
   level: 'amateur' | 'professional';
 }
 
 const Options: FC<OptionsScreenProps> = ({navigation, route}) => {
   const {setFilters} = useTraining();
-  const {replace, goBack} = navigation;
+  const {navigate, goBack} = navigation;
   const [step, setStep] = useState(0);
   const {t} = useCustomTranslation();
   const {bottom} = useSafeAreaInsets();
@@ -49,12 +50,12 @@ const Options: FC<OptionsScreenProps> = ({navigation, route}) => {
   });
   const {handleSubmit, watch} = methods;
 
-  const person = watch('people');
+  const person = watch('players');
   const nextStep = () => person && setStep(prev => prev + 1);
   const onPress = (values: OptionsForm) => {
     console.log('values', values);
     setFilters(values);
-    location ? replace(location) : goBack();
+    location ? navigate(Book.ChooseTrainingType, {location}) : goBack();
   };
   const back = () => (step ? setStep(0) : goBack());
 
@@ -87,7 +88,7 @@ const Options: FC<OptionsScreenProps> = ({navigation, route}) => {
               space="xl"
               flexWrap="wrap">
               {teams.map(team => (
-                <Teams teamLength={team} key={team} name="people" />
+                <Teams teamLength={team} key={team} name="players" />
               ))}
             </HStack>
           ) : (

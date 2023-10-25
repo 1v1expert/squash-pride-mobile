@@ -1,17 +1,18 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import baseService from '../../../init/axios/baseService';
-import {UserData} from '../types';
+import {GroupData} from '../types';
 
-const loginAction = createAction('user/getUserData');
+const groupAction = createAction('user/getGroupData');
 
-export const getUserData = createAsyncThunk<UserData>(
-  loginAction.type,
+export const getGroupData = createAsyncThunk<GroupData[]>(
+  groupAction.type,
   async (_, {rejectWithValue}) => {
     try {
-      const {data} = await baseService.get<UserData>('/me/');
+      const {data} = await baseService.get<GroupData[]>('/group/');
 
       return data;
     } catch (e: any) {
+      console.log('test group');
       return rejectWithValue(e.response?.data.error || 'Something is wrong');
     }
   },

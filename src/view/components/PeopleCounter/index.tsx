@@ -19,7 +19,7 @@ const PeopleCounter = ({
   width = 15,
   height = 50,
 }: PeopleCounterProps) => {
-  const people = Array.from({length: amountOfPeople}, (_, index) => index + 1);
+  const players = Array.from({length: amountOfPeople}, (_, index) => index + 1);
   const choosePeople = (i: number) => {
     setSelected && setSelected(i);
     action && action();
@@ -27,7 +27,7 @@ const PeopleCounter = ({
 
   return (
     <HStack space={space}>
-      {people.map((target, i) =>
+      {players.map((target, i) =>
         !setSelected ? (
           <Image
             key={i}

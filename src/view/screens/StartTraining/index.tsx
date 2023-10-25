@@ -121,7 +121,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         alignItems="center"
         paddingHorizontal={30}
         space="xl">
-        <PeopleCounter amountOfPeople={filters.people} />
+        {filters.players && <PeopleCounter amountOfPeople={filters.players} />}
         <Text variant="primary">
           {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
         </Text>
