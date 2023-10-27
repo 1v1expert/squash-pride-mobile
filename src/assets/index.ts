@@ -25,4 +25,5 @@ export const images = {
   candle: require('./images/candle.png'),
   serve: require('./images/serve.png'),
   shot: require('./images/shot.png'),
+  fullScreen: require('./images/full_screen.png'),
 };
