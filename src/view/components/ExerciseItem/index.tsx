@@ -32,7 +32,7 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
           shadowRadius={6.68}
           elevation={11}
         />
-        <VStack space="md" maxWidth={width * 0.6}>
+        <VStack space="md" flex={1}>
           <Text
             variant="primary"
             fontSize={18}
@@ -53,9 +53,7 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
             </Text>
             <HStack space="md">
               <Center minWidth={20} minHeight={20}>
-                {/* {item.favorite && (
-                  <Image source={images.heart} width={15} height={15} alt="" />
-                )} */}
+                {/* <Image source={images.heart} width={15} height={15} alt="" /> */}
               </Center>
               <Center minWidth={20} minHeight={20}>
                 {selected && <Check />}

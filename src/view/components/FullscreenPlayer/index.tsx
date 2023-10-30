@@ -1,11 +1,18 @@
-import {CloseIcon, Image} from '@gluestack-ui/themed';
-import {Box, Icon, VStack} from '@gluestack-ui/themed';
+import {
+  // CloseIcon,
+  Image,
+} from '@gluestack-ui/themed';
+import {
+  Box,
+  //  Icon,
+  VStack,
+} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {Dimensions, Pressable, StyleSheet} from 'react-native';
-import Modal from 'react-native-modal';
 import VideoPlayer from 'react-native-video-player';
 import {images} from '../../../assets';
 import Orientation from 'react-native-orientation-locker';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 type FullscreenPlayerProps = {
   visible: boolean;
@@ -27,11 +34,15 @@ const FullscreenPlayer = ({
   const [videoStarted, setVideoStarted] = useState(false);
 
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
+
   useEffect(() => {
     Dimensions.addEventListener('change', e => {
       setWidth(e.screen.width);
       setHeight(e.screen.height);
     });
+    if (videoFullScreenPlayerRef.current) {
+      visible && videoFullScreenPlayerRef.current.resume();
+    }
   }, [visible]);
 
   useEffect(() => {
@@ -40,80 +51,88 @@ const FullscreenPlayer = ({
     }
   }, [currentTime, videoStarted]);
 
-  const closeModal = () => {
-    if (videoPlayerRef && videoFullScreenPlayerRef.current) {
-      const {
-        state: {duration, progress},
-      } = videoFullScreenPlayerRef.current;
-      videoPlayerRef.seek(duration * progress);
-      Orientation.lockToPortrait();
-      setVisible(false);
+  useEffect(() => {
+    if (videoFullScreenPlayerRef.current) {
+      videoFullScreenPlayerRef.current.stop();
     }
+  }, []);
+
+  const closeModal = () => {
+    SystemNavigationBar.fullScreen(false).then(() => {
+      if (videoPlayerRef && videoFullScreenPlayerRef.current) {
+        const {
+          state: {duration, progress},
+        } = videoFullScreenPlayerRef.current;
+        videoFullScreenPlayerRef.current.pause();
+        videoPlayerRef.seek(duration * progress);
+        Orientation.lockToPortrait();
+        setVisible(false);
+      }
+    });
   };
+
   return (
-    <Modal
-      isVisible={visible}
-      deviceWidth={width}
-      deviceHeight={height}
-      style={styles.modal}>
-      <Box
-        width={width}
-        height={height}
-        alignItems="center"
-        justifyContent="center">
-        <VStack flex={1} justifyContent="center">
-          <VideoPlayer
-            ref={videoFullScreenPlayerRef}
-            autoplay
-            currentTime={20}
-            video={{uri}}
-            disableFullscreen
-            videoWidth={width}
-            videoHeight={height}
-            style={[
-              styles.fullScreenVideoPlayer,
-              {
-                width: width,
-                height: height,
-              },
-            ]}
-            pauseOnPress
-            onBuffer={() => {
-              console.log('buffer');
-              setVideoStarted(true);
-            }}
-            onLoad={() => setVideoStarted(prev => !prev)}
-            hideControlsOnStart={false}
-            customStyles={{
-              controls: {
-                paddingHorizontal: 100,
-                backgroundColor: 'transparent',
-                position: 'absolute',
-                bottom: 10,
-                width: '100%',
-              },
-              playArrow: {color: '#FBC56E'},
-              seekBarProgress: {backgroundColor: '#FBC56E'},
-              seekBarKnob: {backgroundColor: '#FBC56E'},
-              seekBarFullWidth: {paddingHorizontal: 50, paddingBottom: 10},
-            }}
-            onEnd={() => [setVisible(false), Orientation.lockToPortrait()]}
-          />
-        </VStack>
-        <Pressable onPress={closeModal} style={styles.closeButton}>
-          <Icon as={CloseIcon} width={30} height={30} color="#fff" />
-        </Pressable>
-        <Pressable onPress={() => {}} style={styles.defaultScreenButton}>
-          <Image
-            source={images.fullScreen}
-            width={30}
-            height={30}
-            resizeMode="contain"
-            alt=""
-          />
-        </Pressable>
-      </Box>
-    </Modal>
+    <Box
+      display={visible ? 'flex' : 'none'}
+      width={width}
+      height={height}
+      alignItems="center"
+      justifyContent="center"
+      position="absolute">
+      <VStack flex={1} justifyContent="center">
+        <VideoPlayer
+          ref={videoFullScreenPlayerRef}
+          autoplay
+          currentTime={20}
+          video={{uri}}
+          disableFullscreen
+          videoWidth={width}
+          videoHeight={height}
+          style={[
+            styles.fullScreenVideoPlayer,
+            {
+              width: width,
+              height: height,
+            },
+          ]}
+          pauseOnPress
+          onBuffer={() => {
+            console.log('buffer');
+            setVideoStarted(true);
+          }}
+          onLoad={() => setVideoStarted(prev => !prev)}
+          hideControlsOnStart={false}
+          customStyles={{
+            seekBar: {
+              // backgroundColor: 'red',
+              // paddingHorizontal: 50,
+            },
+            controls: {
+              paddingRight: 100,
+              paddingLeft: 50,
+              backgroundColor: 'transparent',
+              bottom: 10,
+            },
+            playArrow: {color: '#FBC56E'},
+            seekBarProgress: {backgroundColor: '#FBC56E'},
+            seekBarKnob: {backgroundColor: '#FBC56E'},
+          }}
+          onEnd={closeModal}
+        />
+      </VStack>
+      {/* <Pressable onPress={closeModal} style={styles.closeButton}>
+        <Icon as={CloseIcon} width={30} height={30} color="#fff" />
+      </Pressable> */}
+      <Pressable onPress={closeModal} style={styles.defaultScreenButton}>
+        <Image
+          source={images.fullScreen}
+          width={30}
+          height={30}
+          resizeMode="contain"
+          alt=""
+        />
+      </Pressable>
+    </Box>
   );
 };
 const styles = StyleSheet.create({

@@ -20,6 +20,7 @@ import PeopleCounter from '../../components/PeopleCounter';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {useTraining} from '../../../bus/training';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   navigation,
@@ -50,6 +51,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   }, []);
 
   const openModal = () => {
+    SystemNavigationBar.fullScreen(true);
     if (videoPlayerRef.current) {
       const {
         state: {duration, progress},
