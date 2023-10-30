@@ -7,6 +7,7 @@ export enum Book {
   // PrivateScreen
   Options = 'Options',
   TabNavigator = 'TabNavigator',
+  CreateTrainingWithoutTab = 'CreateTrainingWithoutTab',
 
   //TabNavigator
   HomeScreens = 'HomeScreens',

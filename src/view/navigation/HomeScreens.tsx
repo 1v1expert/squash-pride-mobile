@@ -12,7 +12,7 @@ import MediaViewer from '../screens/MediaViewer';
 import Filter from '../screens/Filter';
 import Options from '../screens/Options';
 import ChooseTrainingType from '../screens/ChooseTrainingType';
-import ExerciseMediaViewer from '../screens/ExerciseMediaViewer';
+// import ExerciseMediaViewer from '../screens/ExerciseMediaViewer';
 
 const Stack = createNativeStackNavigator<HomeScreensStackParamList>();
 
@@ -50,11 +50,11 @@ export const HomeScreens: FC = () => {
           component={MediaViewer}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={Book.ExerciseMediaViewer}
           component={ExerciseMediaViewer}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name={Book.Filter}
           component={Filter}

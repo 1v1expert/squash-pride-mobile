@@ -137,7 +137,7 @@ export default {
       number3: 'THREE',
       number4: 'FOUR',
     },
-    shotAccordion: {
+    groupAccordion: {
       title: 'SHOT TYPE',
       shot1: 'DRIVE',
       shot2: 'CROSS',

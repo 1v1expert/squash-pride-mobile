@@ -13,6 +13,9 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 
 export type PrivateStackParamList = {
   TabNavigator: undefined;
+  CreateTrainingWithoutTab: undefined;
+  FilterWithoutTab: {location?: keyof HomeScreensStackParamList} | undefined;
+  ExerciseMediaViewer: ExerciseType | undefined;
 };
 
 export type TabNavigatorParamList = {
@@ -30,10 +33,12 @@ export type HomeScreensStackParamList = {
   GameTechnique: undefined;
   Rules: undefined;
   MediaViewer: TItem;
-  Filter: {location?: keyof HomeScreensStackParamList} | undefined;
+  Filter:
+    | {location?: keyof HomeScreensStackParamList | keyof PrivateStackParamList}
+    | undefined;
   Options: {location?: keyof HomeScreensStackParamList} | undefined;
   ChooseTrainingType: {location?: keyof HomeScreensStackParamList} | undefined;
-  ExerciseMediaViewer: ExerciseType | undefined;
+  ExerciseMediaViewer: {item: ExerciseType};
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
@@ -59,7 +64,8 @@ export type ExerciseMediaViewerScreenProps = NativeStackScreenProps<
 export type FilterScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'Filter'
->;
+> &
+  NativeStackScreenProps<PrivateStackParamList>;
 export type OptionsScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'Options'

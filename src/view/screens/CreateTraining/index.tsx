@@ -1,32 +1,42 @@
 import {
   ArrowLeftIcon,
+  Center,
   HStack,
-  SettingsIcon,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
-import {Dimensions, FlatList} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {useTraining} from '../../../bus/training';
 import {Book} from '../../navigation/book';
 
 import ExerciseItem from '../../components/ExerciseItem';
 import {ExerciseType} from '../../../bus/training/types';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const width = Dimensions.get('screen').width;
 
 const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {replace, goBack, navigate} = navigation;
+  const {bottom} = useSafeAreaInsets();
+  const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters, exercises, isLoading} = useTraining();
-  const goToItem = (e: ExerciseType) => {
-    navigate(Book.ExerciseMediaViewer, {...e});
+  const {filters, exercises, isLoading, stackOfExercises, resetStack} =
+    useTraining();
+  const [state, setState] = useState(false);
+  const goToItem = (item: ExerciseType) => {
+    navigate(Book.ExerciseMediaViewer, {item});
   };
   return (
     <ViewContainer
@@ -38,41 +48,90 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           onPress={goBack}
           width={50}
         />
-      }
-      rightHeaderButton={
-        <CustomButton
-          iconLeft={SettingsIcon}
-          bgColor="#25282D"
-          onPress={() => replace(Book.Options)}
-          width={50}
-        />
       }>
       <VStack flex={1} width={width} alignItems="center">
-        {!isLoading && exercises && (
+        <HStack width="$full" bgColor="#131517">
+          <TouchableOpacity
+            style={styles.touchableOpacity}
+            onPress={() => setState(false)}>
+            <Center p={5} style={!state && styles.selected}>
+              <Text variant="primary">все</Text>
+            </Center>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.touchableOpacity}
+            onPress={() => setState(true)}>
+            <Center p={5} style={state && styles.selected}>
+              <Text variant="primary">избранное</Text>
+            </Center>
+          </TouchableOpacity>
+        </HStack>
+        {!isLoading && !state && exercises && (
           <FlatList
             data={exercises}
-            renderItem={({item}) => (
-              <ExerciseItem item={item} onPress={() => goToItem(item)} />
-            )}
-            style={{width, paddingTop: 20, paddingHorizontal: 20}}
+            renderItem={({item}) => {
+              const selected =
+                stackOfExercises.filter(e => e.uid === item?.uid).length > 0;
+              return (
+                <ExerciseItem
+                  item={item}
+                  onPress={() => goToItem(item)}
+                  selected={selected}
+                />
+              );
+            }}
+            style={styles.flatList}
           />
         )}
       </VStack>
 
-      <HStack
+      <VStack
+        pb={Platform.OS === 'ios' ? bottom : 15}
         width="$full"
         bgColor="#1B1E20"
-        height={75}
-        alignItems="center"
         paddingHorizontal={30}
-        space="xl">
-        {filters.players && <PeopleCounter amountOfPeople={filters.players} />}
-        <Text variant="primary">
-          {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
-        </Text>
-      </HStack>
+        space="xs"
+        paddingVertical={10}>
+        <HStack
+          width="$full"
+          bgColor="#1B1E20"
+          alignItems="center"
+          justifyContent="space-between">
+          <HStack alignItems="center" space="xl">
+            {filters.players && (
+              <PeopleCounter amountOfPeople={filters.players} />
+            )}
+            <Text variant="primary">
+              {filters.level &&
+                t(`private.optionsScreen.step2.${filters.level}`)}
+            </Text>
+          </HStack>
+          <HStack alignItems="center" space="xl">
+            <Text variant="primary">
+              Упражнений: {stackOfExercises.length}/4
+            </Text>
+          </HStack>
+        </HStack>
+        <HStack width="$full">
+          <CustomButton
+            title="Начать тренировку"
+            onPress={() => [resetStack(), navigate(Book.StartTraining)]}
+            disabled={stackOfExercises.length < 4}
+          />
+        </HStack>
+      </VStack>
     </ViewContainer>
   );
 };
+const styles = StyleSheet.create({
+  selected: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#F7AB39',
+  },
+  touchableOpacity: {
+    width: '50%',
+  },
+  flatList: {width, paddingTop: 20, paddingHorizontal: 20},
+});
 
 export default CreateTraining;

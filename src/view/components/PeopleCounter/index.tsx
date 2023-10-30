@@ -38,7 +38,7 @@ const PeopleCounter = ({
             alt=""
           />
         ) : (
-          <Pressable key={i} onPress={() => choosePeople(target)}>
+          <Pressable key={i} onPress={() => choosePeople(target)} hitSlop={10}>
             <Image
               source={target <= selected ? images.selectedHuman : images.human}
               width={target <= selected ? width + 2.5 : width}

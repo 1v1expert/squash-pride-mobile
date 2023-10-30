@@ -6,6 +6,8 @@ import {PrivateStackParamList} from './types';
 import {TabNavigator} from './TabNavigator';
 import {useUser} from '../../bus/user';
 import {useTraining} from '../../bus/training';
+import CreateTraining from '../screens/CreateTraining';
+import ExerciseMediaViewer from '../screens/ExerciseMediaViewer';
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
@@ -24,6 +26,16 @@ export const Private: FC = () => {
         <Stack.Screen
           name={Book.TabNavigator}
           component={TabNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Book.CreateTrainingWithoutTab}
+          component={CreateTraining}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={Book.ExerciseMediaViewer}
+          component={ExerciseMediaViewer}
           options={{headerShown: false}}
         />
       </Stack.Group>

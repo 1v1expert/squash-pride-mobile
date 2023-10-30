@@ -27,7 +27,6 @@ const FullscreenPlayer = ({
   const [videoStarted, setVideoStarted] = useState(false);
 
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
-
   useEffect(() => {
     Dimensions.addEventListener('change', e => {
       setWidth(e.screen.width);

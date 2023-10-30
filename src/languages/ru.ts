@@ -135,7 +135,7 @@ export default {
       number3: 'ТРОЕ',
       number4: 'ЧЕТВЕРО',
     },
-    shotAccordion: {
+    groupAccordion: {
       title: 'ТИП УДАРА',
       shot1: 'ДРАЙВ',
       shot2: 'КРОСС',

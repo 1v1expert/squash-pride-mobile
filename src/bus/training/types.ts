@@ -40,6 +40,7 @@ export type TrainingState = {
   group: GroupData[];
   filters: FiltersType;
   exercises: ExerciseType[];
+  stackOfExercises: ExerciseType[];
 };
 export type GroupData = {
   uid: string;

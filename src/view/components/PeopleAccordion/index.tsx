@@ -1,25 +1,35 @@
 import {HStack, Text, VStack} from '@gluestack-ui/themed';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import PeopleCounter from '../PeopleCounter';
-import {Controller, useFormContext} from 'react-hook-form';
+import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import ChevronUp from '../../../assets/svg/chevron_up';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
+
 type PeopleAccordionProps = {
   name: string;
   defaultValue?: string;
+  error?: FieldError;
 };
-const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
+
+const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const {t} = useCustomTranslation();
   const toggleExpand = () => setCollapsed(prev => !prev);
-  const number: string[] = Array.from({length: 4}, (_, index) =>
-    t(`private.peopleAccordion.number${index + 1}`),
-  );
+  const number = [
+    t('private.peopleAccordion.number1'),
+    t('private.peopleAccordion.number2'),
+    t('private.peopleAccordion.number3'),
+    t('private.peopleAccordion.number4'),
+  ];
+
+  useEffect(() => {
+    error && setCollapsed(false);
+  }, [error]);
 
   const {control} = useFormContext();
   return (
@@ -38,7 +48,7 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                 alignItems="center"
                 justifyContent="space-between">
                 <Text color="#fff">{t('private.peopleAccordion.title')}</Text>
-                {collapsed ? <ChevronDown /> : <ChevronUp />}
+                {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
               </HStack>
             </TouchableOpacity>
             <Collapsible collapsed={collapsed}>
@@ -46,7 +56,10 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
                 minHeight={50}>
-                <HStack space="4xl" alignItems="center" padding={10}>
+                <HStack
+                  alignItems="center"
+                  justifyContent="space-between"
+                  p={10}>
                   <Text fontSize={12} color="#fff">
                     {t('private.peopleAccordion.text')}
                   </Text>
@@ -55,7 +68,7 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                     selected={value}
                     setSelected={onChange}
                     action={() => setCollapsed(true)}
-                    space="3xl"
+                    space="xl"
                   />
                 </HStack>
               </VStack>
@@ -71,7 +84,7 @@ const PeopleAccordion = ({name, defaultValue}: PeopleAccordionProps) => {
                   paddingHorizontal={10}>
                   <Text
                     fontSize={12}
-                    color="#fff"
+                    variant="secondary"
                     textAlign="center"
                     width="$1/2">
                     {number[value - 1]}

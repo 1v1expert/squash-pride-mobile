@@ -3,7 +3,7 @@ import {
   Center,
   HStack,
   ScrollView,
-  SettingsIcon,
+  // SettingsIcon,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
@@ -17,14 +17,17 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import PeopleCounter from '../../components/PeopleCounter';
-import {Book} from '../../navigation/book';
+// import {Book} from '../../navigation/book';
 import {useTraining} from '../../../bus/training';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {navigate, goBack} = navigation;
+  const {
+    // navigate,
+    goBack,
+  } = navigation;
   const {t} = useCustomTranslation();
   const {filters} = useTraining();
 
@@ -60,14 +63,15 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           width={50}
         />
       }
-      rightHeaderButton={
-        <CustomButton
-          iconLeft={SettingsIcon}
-          bgColor="#25282D"
-          onPress={() => navigate(Book.Options)}
-          width={50}
-        />
-      }>
+      // rightHeaderButton={
+      //   <CustomButton
+      //     iconLeft={SettingsIcon}
+      //     bgColor="#25282D"
+      //     onPress={() => navigate(Book.Options)}
+      //     width={50}
+      //   />
+      // }
+    >
       <HStack
         alignItems="center"
         justifyContent="center"

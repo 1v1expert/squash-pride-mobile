@@ -8,6 +8,7 @@ const initialState: types.TrainingState = {
   isLoading: false,
   group: [],
   exercises: [],
+  stackOfExercises: [],
   filters: {
     level: null,
     players: null,
