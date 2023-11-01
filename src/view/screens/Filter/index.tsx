@@ -45,11 +45,6 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
     formState: {errors},
   } = methods;
   const submit = (values: FilterForm) => {
-    fetchExercise({
-      players: values.players,
-      level: values.level,
-      group: values.group,
-    });
     setFilters(values);
     switch (location) {
       case 'StartTraining': {
@@ -57,6 +52,11 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
         break;
       }
       case 'CreateTrainingWithoutTab': {
+        fetchExercise({
+          players: values.players,
+          level: values.level,
+          group: values.group,
+        });
         navigate(Book.CreateTrainingWithoutTab);
         break;
       }

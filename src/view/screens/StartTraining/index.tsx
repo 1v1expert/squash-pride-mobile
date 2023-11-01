@@ -1,9 +1,7 @@
 import {
   ArrowLeftIcon,
-  Center,
   HStack,
   ScrollView,
-  // SettingsIcon,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
@@ -12,45 +10,80 @@ import React, {FC, useState} from 'react';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import Indicator from '../../components/Indicator';
-import {Dimensions} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from 'react-native';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
-import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import PeopleCounter from '../../components/PeopleCounter';
-// import {Book} from '../../navigation/book';
 import {useTraining} from '../../../bus/training';
+import Player from '../../components/Player';
+import {ExerciseType} from '../../../bus/training/types';
 
-const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height;
+const DATA: ExerciseType[] = [
+  {
+    uid: '17aa85d7-042c-4343-a980-sadasasdas',
+    video:
+      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+    groups: ['Drive1', 'Cross', 'Boost'],
+    level: 'amateur',
+    players: 2,
+    description: 'Drive1',
+  },
+  {
+    uid: '17aa85d7-042c-4343-a980-asdasdas',
+    video:
+      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+    groups: ['Drive2', 'Cross', 'Boost'],
+    level: 'amateur',
+    players: 2,
+    description: 'Drive2',
+  },
+  {
+    uid: '17aa85d7-042c-4343-a980-213123asdas',
+    video:
+      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+    groups: ['Drive3', 'Cross', 'Boost'],
+    level: 'amateur',
+    players: 2,
+    description: 'Drive3',
+  },
+  {
+    uid: '17aa85d7-042c-4343-a980-12321sadas',
+    video:
+      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+    groups: ['Drive4', 'Cross', 'Boost'],
+    level: 'amateur',
+    players: 2,
+    description: 'Drive4',
+  },
+];
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {
-    // navigate,
-    goBack,
-  } = navigation;
+  const {goBack} = navigation;
   const {t} = useCustomTranslation();
   const {filters} = useTraining();
+  const scrollRef = React.useRef<FlatList>(null);
+  const [width] = useState(Dimensions.get('screen').width);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
-  const DATA = [
-    {
-      description: t('private.startTrainingScreen.description'),
-    },
-    {
-      description: t('private.startTrainingScreen.description'),
-    },
-    {
-      description: t('private.startTrainingScreen.description'),
-    },
-    {
-      description: t('private.startTrainingScreen.description'),
-    },
-  ];
-  const scrollRef = React.useRef<SwiperFlatList>(null);
-  // const goToIndex = (index: number) => {
-  //   scrollRef.current?.scrollToIndex({index});
-  // };
+  const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const contentOffset = e.nativeEvent.contentOffset;
+    const viewSize = e.nativeEvent.layoutMeasurement;
+    const index = Math.ceil(contentOffset.x / viewSize.width);
+    index !== currentIndex && setCurrentTime(0);
+    setTimeout(() => {
+      index >= 0 && index < 4 && setCurrentIndex(index);
+    }, 100);
+  };
+  const scrollToIndex = async (index: number) => {
+    scrollRef.current?.scrollToIndex({index});
+  };
 
   return (
     <ViewContainer
@@ -62,16 +95,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           onPress={goBack}
           width={50}
         />
-      }
-      // rightHeaderButton={
-      //   <CustomButton
-      //     iconLeft={SettingsIcon}
-      //     bgColor="#25282D"
-      //     onPress={() => navigate(Book.Options)}
-      //     width={50}
-      //   />
-      // }
-    >
+      }>
       <HStack
         alignItems="center"
         justifyContent="center"
@@ -84,11 +108,21 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           space="4xl"
         />
       </HStack>
-      <SwiperFlatList
+      {DATA && (
+        <Player
+          item={DATA[currentIndex]}
+          position={currentIndex}
+          scrollToIndex={scrollToIndex}
+          currentTime={currentTime}
+          setCurrentTime={setCurrentTime}
+          setPosition={setCurrentIndex}
+        />
+      )}
+      <FlatList
         ref={scrollRef}
-        onChangeIndex={e => setCurrentIndex(e.index)}
-        index={0}
+        horizontal
         data={DATA}
+        onMomentumScrollEnd={onScrollEnd}
         renderItem={({item}) => {
           return (
             <VStack
@@ -96,19 +130,6 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               justifyContent="space-between"
               alignItems="center"
               width={width}>
-              <HStack
-                bgColor="#393A40"
-                height={height * 0.3}
-                width={width}
-                alignItems="center"
-                justifyContent="center">
-                <Center
-                  bgColor="#131517"
-                  width={width * 0.25}
-                  height={width * 0.25}
-                  borderRadius="$full"
-                />
-              </HStack>
               <ScrollView>
                 <Text variant="primary" p={10}>
                   {item.description}
@@ -117,6 +138,11 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             </VStack>
           );
         }}
+        pagingEnabled
+        keyExtractor={item => item.uid}
+        showsHorizontalScrollIndicator={false}
+        snapToAlignment="start"
+        decelerationRate={'normal'}
       />
       <HStack
         width="$full"
