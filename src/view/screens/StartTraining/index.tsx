@@ -1,5 +1,6 @@
 import {
   ArrowLeftIcon,
+  CheckIcon,
   HStack,
   ScrollView,
   Text,
@@ -22,6 +23,7 @@ import PeopleCounter from '../../components/PeopleCounter';
 import {useTraining} from '../../../bus/training';
 import Player from '../../components/Player';
 import {ExerciseType} from '../../../bus/training/types';
+import {Book} from '../../navigation/book';
 
 const DATA: ExerciseType[] = [
   {
@@ -63,14 +65,15 @@ const DATA: ExerciseType[] = [
 ];
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {goBack} = navigation;
+  const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters} = useTraining();
+  const {filters, stackOfExercises, resetStack} = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
   const [width] = useState(Dimensions.get('screen').width);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+
+  const mainStack = !stackOfExercises.length ? DATA : stackOfExercises;
 
   const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffset = e.nativeEvent.contentOffset;
@@ -84,7 +87,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const scrollToIndex = async (index: number) => {
     scrollRef.current?.scrollToIndex({index});
   };
-  const titles = DATA.map(e => e.description);
+  const titles = mainStack.map(e => e.groups[0]);
   return (
     <ViewContainer
       title={t('private.startTrainingScreen.title')}
@@ -93,6 +96,14 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           iconLeft={ArrowLeftIcon}
           bgColor="#25282D"
           onPress={goBack}
+          width={50}
+        />
+      }
+      rightHeaderButton={
+        <CustomButton
+          iconLeft={CheckIcon}
+          bgColor="#25282D"
+          onPress={() => [resetStack(), navigate(Book.Home)]}
           width={50}
         />
       }>
@@ -104,13 +115,13 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         <Indicator
           items={titles}
           selected={currentIndex}
-          length={DATA.length}
+          length={mainStack.length}
           space="4xl"
         />
       </HStack>
-      {DATA && (
+      {mainStack && (
         <Player
-          item={DATA[currentIndex]}
+          item={mainStack[currentIndex]}
           position={currentIndex}
           scrollToIndex={scrollToIndex}
           currentTime={currentTime}
@@ -121,7 +132,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
       <FlatList
         ref={scrollRef}
         horizontal
-        data={DATA}
+        data={mainStack}
         onMomentumScrollEnd={onScrollEnd}
         renderItem={({item}) => {
           return (

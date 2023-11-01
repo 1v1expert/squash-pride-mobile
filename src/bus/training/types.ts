@@ -1,4 +1,5 @@
 import {CaseReducer, PayloadAction} from '@reduxjs/toolkit';
+import {TItem} from '../../view/navigation/types';
 
 export type GeoPosition = {
   coords: {
@@ -41,6 +42,8 @@ export type TrainingState = {
   filters: FiltersType;
   exercises: ExerciseType[];
   stackOfExercises: ExerciseType[];
+  techniques: TItem[];
+  rules: TItem[];
 };
 export type GroupData = {
   uid: string;

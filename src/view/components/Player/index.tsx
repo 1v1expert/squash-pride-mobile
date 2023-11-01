@@ -100,7 +100,7 @@ const Player = ({
         )}
         {titleIsVisible && item && (
           <Center position="absolute" bottom={10} left={10}>
-            <Text variant="primary">{item.description}</Text>
+            <Text variant="primary">{item.groups[0]}</Text>
           </Center>
         )}
         {!titleIsVisible && (

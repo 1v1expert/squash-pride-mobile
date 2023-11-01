@@ -72,10 +72,9 @@ export type OptionsScreenProps = NativeStackScreenProps<
 >;
 
 export type TItem = {
-  id: string;
+  uid: string;
   title: string;
-  description: string;
-  url: string;
-  favorite?: boolean;
-  completed?: boolean;
+  video: string;
+  ru_description: string;
+  en_description: string;
 };

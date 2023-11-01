@@ -13,11 +13,15 @@ const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
 export const Private: FC = () => {
   const {fetchUser} = useUser();
-  const {fetchGroup} = useTraining();
+  const {fetchGroup, resetStack, fetchRules, fetchTechniques} = useTraining();
 
   useEffect(() => {
-    fetchUser();
-    fetchGroup();
+    fetchUser().then(() => {
+      fetchGroup();
+      fetchRules();
+      fetchTechniques();
+    });
+    resetStack();
   }, []);
 
   return (

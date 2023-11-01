@@ -119,7 +119,7 @@ const StackPlayer = ({
         )}
         {titleIsVisible && item && (
           <Center position="absolute" bottom={20} left={50}>
-            <Text variant="primary">{item.description}</Text>
+            <Text variant="primary">{item.groups[0]}</Text>
           </Center>
         )}
         <Pressable onPress={closeModal} style={styles.defaultScreenButton}>

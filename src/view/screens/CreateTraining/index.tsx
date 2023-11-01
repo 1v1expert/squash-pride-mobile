@@ -32,8 +32,7 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {bottom} = useSafeAreaInsets();
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters, exercises, isLoading, stackOfExercises, resetStack} =
-    useTraining();
+  const {filters, exercises, isLoading, stackOfExercises} = useTraining();
   const [state, setState] = useState(false);
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
@@ -115,7 +114,7 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         <HStack width="$full">
           <CustomButton
             title="Начать тренировку"
-            onPress={() => [resetStack(), navigate(Book.StartTraining)]}
+            onPress={() => [navigate(Book.StartTraining)]}
             disabled={stackOfExercises.length < 4}
           />
         </HStack>
