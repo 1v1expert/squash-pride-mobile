@@ -7,8 +7,21 @@ import {PublicStackScreenProps} from '../../../navigation/types';
 import {Book} from '../../../navigation/book';
 import CustomButton from '../../../components/CustomButton';
 import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
+import Google from '../../../../assets/svg/google';
+import Facebook from '../../../../assets/svg/facebook';
+import Vk from '../../../../assets/svg/vk';
 
 const width = Dimensions.get('screen').width;
+
+const GoogleIcon = (e: {color: string}) => {
+  return <Google width={25} height={25} {...e} />;
+};
+const FacebookIcon = (e: {color: string}) => {
+  return <Facebook width={20} height={20} {...e} />;
+};
+const VkIcon = (e: {color: string}) => {
+  return <Vk width={20} height={20} {...e} />;
+};
 
 const Main: FC<PublicStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
@@ -42,9 +55,9 @@ const Main: FC<PublicStackScreenProps> = ({navigation}) => {
                 />
               </VStack>
               <HStack alignItems="center" justifyContent="space-around">
-                <CustomButton title="+" />
-                <CustomButton title="+" />
-                <CustomButton title="+" />
+                <CustomButton width={50} height={50} mainIcon={GoogleIcon} />
+                <CustomButton width={50} height={50} mainIcon={FacebookIcon} />
+                <CustomButton width={50} height={50} mainIcon={VkIcon} />
               </HStack>
             </VStack>
           </VStack>
