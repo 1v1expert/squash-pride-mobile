@@ -32,11 +32,10 @@ const Player = ({
   useEffect(() => {
     setVideoStarted(false);
     setTitleIsVisible(true);
-    // setCurrentTime(0);
   }, [position]);
 
   useEffect(() => {
-    if (videoPlayerRef.current) {
+    if (currentTime && videoPlayerRef.current && videoStarted) {
       videoStarted && videoPlayerRef.current.seek(currentTime);
     }
   }, [currentTime, videoStarted]);
@@ -80,8 +79,11 @@ const Player = ({
             style={[styles.player, {width: width}]}
             pauseOnPress
             disableFullscreen
-            onLoadStart={() => setTitleIsVisible(false)}
-            onLoad={() => setVideoStarted(true)}
+            onLoadStart={() => [
+              setTitleIsVisible(false),
+              setVideoStarted(true),
+            ]}
+            onLoad={() => videoPlayerRef.current?.seek(currentTime)}
             onEnd={() => setCurrentTime(0)}
             customStyles={{
               controls: {

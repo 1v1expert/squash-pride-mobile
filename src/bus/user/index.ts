@@ -12,6 +12,7 @@ import {
 } from '../../init/axios/baseService';
 import {load} from '../../utils/storage';
 import {register} from './thunk/register';
+import {refresh} from './thunk/refresh';
 
 // Types
 // import * as types from './types';
@@ -25,6 +26,13 @@ export const useUser = () => {
   const logout = async () => {
     clearTokens();
     dispatch(userActions.setAuthorize(false));
+  };
+  const tokenRefresh = async (refreshToken: string) => {
+    try {
+      dispatch(refresh({refreshToken})).unwrap();
+    } catch (error) {
+      logout();
+    }
   };
   const fetchUser = async () => {
     const access = await load(accessToken);
@@ -43,5 +51,6 @@ export const useUser = () => {
     fetchUser,
     setAuthorize,
     logout,
+    tokenRefresh,
   };
 };

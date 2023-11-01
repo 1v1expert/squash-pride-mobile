@@ -84,7 +84,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const scrollToIndex = async (index: number) => {
     scrollRef.current?.scrollToIndex({index});
   };
-
+  const titles = DATA.map(e => e.description);
   return (
     <ViewContainer
       title={t('private.startTrainingScreen.title')}
@@ -102,7 +102,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         paddingHorizontal={20}
         paddingVertical={10}>
         <Indicator
-          items={['Drive', 'Drop', 'Cross', 'Тактика']}
+          items={titles}
           selected={currentIndex}
           length={DATA.length}
           space="4xl"

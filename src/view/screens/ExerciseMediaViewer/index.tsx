@@ -86,7 +86,8 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
               bgColor="#393A40"
               width={portraitWidth}
               alignItems="center"
-              justifyContent="center">
+              justifyContent="center"
+              height="30%">
               <VideoPlayer
                 ref={videoPlayerRef}
                 video={{

@@ -11,6 +11,8 @@ import SystemNavigationBar from 'react-native-system-navigation-bar';
 import VideoPlayer from 'react-native-video-player';
 import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
+import Next from '../../../assets/svg/next';
+import Prev from '../../../assets/svg/prev';
 type StackPlayer = {
   item: ExerciseType;
   visible: boolean;
@@ -64,15 +66,13 @@ const StackPlayer = ({
   };
   const next = () => {
     setCurrentTime(0);
-    setTimeout(() => {
-      setPosition(position + 1);
-    }, 100);
+
+    setPosition(position + 1);
   };
   const prev = () => {
     setCurrentTime(0);
-    setTimeout(() => {
-      setPosition(position - 1);
-    }, 100);
+
+    setPosition(position - 1);
   };
 
   return (
@@ -135,25 +135,13 @@ const StackPlayer = ({
           onPress={next}
           disabled={position === 3}
           style={styles.goToNext}>
-          <Image
-            source={images.logo}
-            width={30}
-            height={30}
-            resizeMode="contain"
-            alt=""
-          />
+          <Next color={position === 3 ? '#fff' : '#F7A936'} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={prev}
           disabled={position === 0}
           style={styles.goToPrev}>
-          <Image
-            source={images.logo}
-            width={30}
-            height={30}
-            resizeMode="contain"
-            alt=""
-          />
+          <Prev color={position === 0 ? '#fff' : '#F7A936'} />
         </TouchableOpacity>
       </VStack>
     </Modal>
