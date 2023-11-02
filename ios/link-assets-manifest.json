@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/centurygothic.ttf",
+      "sha1": "a2f9ca2ae529a6cc03cad88fefb0a0e45b7046f4"
+    },
+    {
+      "path": "assets/fonts/centurygothic_bold.ttf",
+      "sha1": "6e1179475f9a806d6a77ac475c1cb405e12f577a"
+    }
+  ]
+}

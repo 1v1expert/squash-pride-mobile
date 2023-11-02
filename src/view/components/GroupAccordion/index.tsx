@@ -78,7 +78,9 @@ const GroupAccordion = ({
                 minHeight={50}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">{t('private.groupAccordion.title')}</Text>
+                <Text variant="primary">
+                  {t('private.groupAccordion.title')}
+                </Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
               </HStack>
             </TouchableOpacity>
@@ -100,6 +102,7 @@ const GroupAccordion = ({
                     key={i}>
                     <HStack pl={20}>
                       <Text
+                        variant="primary"
                         fontSize={12}
                         color={value.includes(group.name) ? '#F7A936' : '#fff'}>
                         {group.name}
@@ -128,6 +131,7 @@ const GroupAccordion = ({
                       justifyContent="center"
                       marginVertical={5}>
                       <Text
+                        variant="primary"
                         fontSize={12}
                         color={value.includes(group) ? '#F7A936' : '#fff'}>
                         {group}

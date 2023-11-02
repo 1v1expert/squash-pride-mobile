@@ -47,7 +47,9 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
                 minHeight={50}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">{t('private.peopleAccordion.title')}</Text>
+                <Text variant="primary">
+                  {t('private.peopleAccordion.title')}
+                </Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
               </HStack>
             </TouchableOpacity>
@@ -60,7 +62,7 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
                   alignItems="center"
                   justifyContent="space-between"
                   p={10}>
-                  <Text fontSize={12} color="#fff">
+                  <Text variant="primary" fontSize={12}>
                     {t('private.peopleAccordion.text')}
                   </Text>
                   <PeopleCounter

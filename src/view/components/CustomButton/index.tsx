@@ -75,7 +75,11 @@ const CustomButton: FC<CustomButtonProps> = ({
           />
         )}
         {title && !isLoading && (
-          <ButtonText color={pressed ? '#000' : '#fff'}>{title}</ButtonText>
+          <ButtonText
+            color={pressed ? '#000' : '#fff'}
+            fontFamily="Century Gothic">
+            {title}
+          </ButtonText>
         )}
         {iconRight && !isLoading && (
           <ButtonIcon

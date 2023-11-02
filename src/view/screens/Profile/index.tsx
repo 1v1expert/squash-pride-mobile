@@ -43,10 +43,14 @@ const Profile = () => {
         paddingHorizontal={50}
         space="xl">
         <TouchableOpacity>
-          <Text color="#F7A936">{t('private.profileScreen.saveButton')}</Text>
+          <Text variant="secondary">
+            {t('private.profileScreen.saveButton')}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={logout}>
-          <Text color="#F7A936">{t('private.profileScreen.logoutButton')}</Text>
+          <Text variant="secondary">
+            {t('private.profileScreen.logoutButton')}
+          </Text>
         </TouchableOpacity>
       </HStack>
     </ViewContainer>

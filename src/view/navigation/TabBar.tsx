@@ -54,7 +54,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
               alt=""
             />
 
-            <Text lineHeight={13} fontSize={10} color="#FFF" mt={3}>
+            <Text variant="primary" lineHeight={13} fontSize={10} mt={3}>
               {options.tabBarLabel?.toString()}
             </Text>
           </TouchableOpacity>

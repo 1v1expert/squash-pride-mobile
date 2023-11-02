@@ -49,7 +49,7 @@ const LevelAccordion = ({name, defaultValue, error}: LevelAccordionProps) => {
                 minHeight={50}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">
+                <Text variant="primary">
                   {t('private.optionsScreen.step2.title')}
                 </Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
@@ -68,8 +68,8 @@ const LevelAccordion = ({name, defaultValue, error}: LevelAccordionProps) => {
                       p={10}
                       borderBottomWidth={levels.length !== i ? 1 : 0}>
                       <Text
+                        variant="primary"
                         fontSize={12}
-                        color="#fff"
                         textAlign="center"
                         width="$full">
                         {t(`private.optionsScreen.step2.${level}`)}

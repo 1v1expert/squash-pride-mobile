@@ -31,7 +31,11 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({
             <CheckboxIndicator mr="$2" variant="primary">
               <CheckboxIcon as={CheckIcon} color="#F7A936" />
             </CheckboxIndicator>
-            {label && <CheckboxLabel color="#F7A936">{label}</CheckboxLabel>}
+            {label && (
+              <CheckboxLabel color="#F7A936" fontFamily="Century Gothic">
+                {label}
+              </CheckboxLabel>
+            )}
           </Checkbox>
         );
       }}

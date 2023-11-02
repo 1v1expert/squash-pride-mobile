@@ -42,15 +42,18 @@ const CustomSelect: FC<CustomSelectProps> = ({
                   ...styles.inputContainer,
                 },
                 placeholder: {
+                  fontFamily: 'Century Gothic',
                   color: focus ? '#000' : '#fff',
                   ...styles.input,
                 },
 
                 inputIOS: {
+                  fontFamily: 'Century Gothic',
                   color: focus ? '#000' : '#fff',
                   ...styles.input,
                 },
                 inputAndroid: {
+                  fontFamily: 'Century Gothic',
                   color: focus ? '#000' : '#fff',
                   ...styles.input,
                 },
@@ -65,7 +68,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
               items={items}
             />
             <VStack margin={0} minHeight={22.5}>
-              <Text color={value ? '#F00' : '#F7A936'}>
+              <Text variant="primary" color={value ? '#F00' : '#F7A936'}>
                 {error && error.message}
               </Text>
             </VStack>

@@ -106,7 +106,7 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
         paddingHorizontal={50}
         space="xl">
         <TouchableOpacity onPress={handleSubmit(submit)}>
-          <Text color="#F7A936">{t('private.filter.saveButton')}</Text>
+          <Text variant="secondary">{t('private.filter.saveButton')}</Text>
         </TouchableOpacity>
       </HStack>
     </ViewContainer>

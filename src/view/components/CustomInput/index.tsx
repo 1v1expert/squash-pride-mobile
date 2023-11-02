@@ -58,6 +58,7 @@ const CustomInput: FC<CustomInputProps> = ({
                 maxLength={maxLength}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
+                fontFamily="Century Gothic"
               />
               {required && !focus && (
                 <InputSlot pr="$3">
@@ -67,7 +68,7 @@ const CustomInput: FC<CustomInputProps> = ({
             </Input>
 
             <VStack margin={0} minHeight={22.5}>
-              <Text color={value ? '#F00' : '#F7A936'}>
+              <Text variant="primary" color={value ? '#F00' : '#F7A936'}>
                 {error && error.message}
               </Text>
             </VStack>
