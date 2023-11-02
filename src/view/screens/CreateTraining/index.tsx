@@ -2,34 +2,41 @@ import {
   ArrowLeftIcon,
   Center,
   HStack,
-  Image,
-  ScrollView,
-  SettingsIcon,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
-import {images} from '../../../assets';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {useTraining} from '../../../bus/training';
 import {Book} from '../../navigation/book';
 
+import ExerciseItem from '../../components/ExerciseItem';
+import {ExerciseType} from '../../../bus/training/types';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
 const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height;
 
 const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {navigate, goBack} = navigation;
+  const {bottom} = useSafeAreaInsets();
+  const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters} = useTraining();
-  const imageWidth = width * 0.425;
-  const imageHeight = height * 0.25;
-
+  const {filters, exercises, isLoading, stackOfExercises} = useTraining();
+  const [state, setState] = useState(false);
+  const goToItem = (item: ExerciseType) => {
+    navigate(Book.ExerciseMediaViewer, {item});
+  };
   return (
     <ViewContainer
       title={t('private.createTraining.title')}
@@ -40,195 +47,90 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           onPress={goBack}
           width={50}
         />
-      }
-      rightHeaderButton={
-        <CustomButton
-          iconLeft={SettingsIcon}
-          bgColor="#25282D"
-          onPress={() => navigate(Book.Options)}
-          width={50}
-        />
       }>
       <VStack flex={1} width={width} alignItems="center">
-        <ScrollView paddingHorizontal={20}>
-          <HStack
-            paddingVertical={10}
-            flexWrap="wrap"
-            justifyContent="space-between"
-            space="md">
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.drive}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
+        <HStack width="$full" bgColor="#131517">
+          <TouchableOpacity
+            style={styles.touchableOpacity}
+            onPress={() => setState(false)}>
+            <Center p={5} style={!state && styles.selected}>
+              <Text variant="primary">все</Text>
+            </Center>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.touchableOpacity}
+            onPress={() => setState(true)}>
+            <Center p={5} style={state && styles.selected}>
+              <Text variant="primary">избранное</Text>
+            </Center>
+          </TouchableOpacity>
+        </HStack>
+        {!isLoading && !state && exercises && (
+          <FlatList
+            data={exercises}
+            renderItem={({item}) => {
+              const selected =
+                stackOfExercises.filter(e => e.uid === item?.uid).length > 0;
+              return (
+                <ExerciseItem
+                  item={item}
+                  onPress={() => goToItem(item)}
+                  selected={selected}
                 />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.drive')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.cross}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.cross')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.drop}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.drop')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.boost}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.boost')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.candle}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.candle')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.serve}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  variant="primary"
-                  position="absolute"
-                  left={10}
-                  bottom={10}
-                  fontWeight="$bold">
-                  {t('private.createTraining.shots.serve')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.shot}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text
-                  position="absolute"
-                  top="$1/3"
-                  fontWeight="$bold"
-                  textAlign="center"
-                  color="#F7AB39">
-                  {t('private.createTraining.shots.allExercises')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Center>
-                <Image
-                  size="2xl"
-                  source={images.shot}
-                  width={imageWidth}
-                  height={imageHeight}
-                  resizeMode="contain"
-                  alt=""
-                />
-                <Text position="absolute" fontWeight="$bold" color="#F7AB39">
-                  {t('private.createTraining.shots.tactics')}
-                </Text>
-              </Center>
-            </TouchableOpacity>
-          </HStack>
-        </ScrollView>
+              );
+            }}
+            style={styles.flatList}
+          />
+        )}
       </VStack>
 
-      <HStack
+      <VStack
+        pb={Platform.OS === 'ios' ? bottom : 15}
         width="$full"
         bgColor="#1B1E20"
-        height={75}
-        alignItems="center"
         paddingHorizontal={30}
-        space="xl">
-        <PeopleCounter amountOfPeople={filters.people} />
-        <Text variant="primary">
-          {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
-        </Text>
-      </HStack>
+        space="xs"
+        paddingVertical={10}>
+        <HStack
+          width="$full"
+          bgColor="#1B1E20"
+          alignItems="center"
+          justifyContent="space-between">
+          <HStack alignItems="center" space="xl">
+            {filters.players && (
+              <PeopleCounter amountOfPeople={filters.players} />
+            )}
+            <Text variant="primary">
+              {filters.level &&
+                t(`private.optionsScreen.step2.${filters.level}`)}
+            </Text>
+          </HStack>
+          <HStack alignItems="center" space="xl">
+            <Text variant="primary">
+              Упражнений: {stackOfExercises.length}/4
+            </Text>
+          </HStack>
+        </HStack>
+        <HStack width="$full">
+          <CustomButton
+            title="Начать тренировку"
+            onPress={() => [navigate(Book.StartTraining)]}
+            disabled={stackOfExercises.length < 4}
+          />
+        </HStack>
+      </VStack>
     </ViewContainer>
   );
 };
+const styles = StyleSheet.create({
+  selected: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#F7AB39',
+  },
+  touchableOpacity: {
+    width: '50%',
+  },
+  flatList: {width, paddingTop: 20, paddingHorizontal: 20},
+});
 
 export default CreateTraining;

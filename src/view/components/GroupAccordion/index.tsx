@@ -1,39 +1,71 @@
 import {HStack, Text, VStack} from '@gluestack-ui/themed';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
-import {Controller, useFormContext} from 'react-hook-form';
+import {
+  Controller,
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  useFormContext,
+} from 'react-hook-form';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import ChevronUp from '../../../assets/svg/chevron_up';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {useTraining} from '../../../bus/training';
+import {GroupData} from '../../../bus/training/types';
 
 const width = Dimensions.get('screen').width;
 
-type ShotAccordionProps = {
+type GroupAccordionProps = {
   name: string;
   defaultValue?: string;
+  error?: Merge<
+    FieldError,
+    (Merge<FieldError, FieldErrorsImpl<GroupData>> | undefined)[]
+  >;
+  groupLength: number;
 };
-const ShotAccordion = ({name, defaultValue}: ShotAccordionProps) => {
+const GroupAccordion = ({
+  name,
+  defaultValue,
+  error,
+  groupLength,
+}: GroupAccordionProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const {t} = useCustomTranslation();
-  const toggleExpand = () => setCollapsed(prev => !prev);
   const {control} = useFormContext();
+  const {groups} = useTraining();
 
-  const shots: string[] = Array.from({length: 8}, (_, index) =>
-    t(`private.shotAccordion.shot${index + 1}`),
-  );
-
+  const toggleExpand = () => setCollapsed(prev => !prev);
+  useEffect(() => {
+    error && setCollapsed(false);
+  }, [error]);
+  console.log('error', error);
   return (
     <Controller
       control={control}
       name={name}
       defaultValue={defaultValue ?? []}
       render={({field: {value, onChange}}) => {
-        const chooseShot = (shot: string) => {
-          if (!value.includes(shot)) {
-            onChange([...value, shot]);
+        console.log('value', value);
+        const chooseGroup = (group: string) => {
+          if (!value.includes(group) && value.length < groupLength) {
+            onChange([...value, group]);
+            if (groupLength - 1 === value.length) {
+              setCollapsed(true);
+            }
           } else {
-            onChange(value.filter((e: string) => shot !== e));
+            onChange(value.filter((e: string) => group !== e));
+          }
+        };
+        const forOne = (group: string) => {
+          onChange([group]);
+          if (!value.includes(group)) {
+            onChange([group]);
+            setCollapsed(true);
+          } else {
+            onChange([]);
           }
         };
 
@@ -46,8 +78,8 @@ const ShotAccordion = ({name, defaultValue}: ShotAccordionProps) => {
                 minHeight={50}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">{t('private.shotAccordion.title')}</Text>
-                {collapsed ? <ChevronDown /> : <ChevronUp />}
+                <Text color="#fff">{t('private.groupAccordion.title')}</Text>
+                {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
               </HStack>
             </TouchableOpacity>
             <Collapsible collapsed={collapsed}>
@@ -57,16 +89,20 @@ const ShotAccordion = ({name, defaultValue}: ShotAccordionProps) => {
                 pt={20}
                 maxHeight={220}
                 flexWrap="wrap">
-                {shots.map((shot, i) => (
+                {groups.map((group, i) => (
                   <TouchableOpacity
-                    onPress={() => chooseShot(shot)}
+                    onPress={() =>
+                      groupLength === 1
+                        ? forOne(group.name)
+                        : chooseGroup(group.name)
+                    }
                     style={styles.touchable}
                     key={i}>
                     <HStack pl={20}>
                       <Text
                         fontSize={12}
-                        color={value.includes(shot) ? '#F7A936' : '#fff'}>
-                        {shot}
+                        color={value.includes(group.name) ? '#F7A936' : '#fff'}>
+                        {group.name}
                       </Text>
                     </HStack>
                   </TouchableOpacity>
@@ -78,8 +114,9 @@ const ShotAccordion = ({name, defaultValue}: ShotAccordionProps) => {
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
                 minHeight={50}
+                justifyContent="center"
                 flexWrap="wrap">
-                {value.map((shot: string, i: number) => {
+                {value.map((group: string, i: number) => {
                   return (
                     <HStack
                       key={i}
@@ -92,8 +129,8 @@ const ShotAccordion = ({name, defaultValue}: ShotAccordionProps) => {
                       marginVertical={5}>
                       <Text
                         fontSize={12}
-                        color={value.includes(shot) ? '#F7A936' : '#fff'}>
-                        {shot}
+                        color={value.includes(group) ? '#F7A936' : '#fff'}>
+                        {group}
                       </Text>
                     </HStack>
                   );
@@ -114,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShotAccordion;
+export default GroupAccordion;

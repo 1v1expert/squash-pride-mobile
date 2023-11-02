@@ -1,9 +1,8 @@
 import {HStack, Text, VStack} from '@gluestack-ui/themed';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
-import {Controller, useFormContext} from 'react-hook-form';
-import Stars from '../Stars';
+import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import ChevronUp from '../../../assets/svg/chevron_up';
@@ -12,21 +11,32 @@ const width = Dimensions.get('screen').width;
 type LevelAccordionProps = {
   name: string;
   defaultValue?: string;
+  error?: FieldError;
 };
-const LevelAccordion = ({name, defaultValue}: LevelAccordionProps) => {
+type RenderType = {
+  field: {
+    value: 'amateur' | 'professional';
+    onChange: (e: 'amateur' | 'professional') => void;
+  };
+};
+const LevelAccordion = ({name, defaultValue, error}: LevelAccordionProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const toggleExpand = () => setCollapsed(prev => !prev);
   const {t} = useCustomTranslation();
-  const levels = Array.from({length: 5}, (_, index) => index + 1);
+  const levels: ('amateur' | 'professional')[] = ['amateur', 'professional'];
   const {control} = useFormContext();
+
+  useEffect(() => {
+    error && setCollapsed(false);
+  }, [error]);
 
   return (
     <Controller
       control={control}
       name={name}
       defaultValue={defaultValue}
-      render={({field: {onChange, value}}) => {
-        const chooseLevel = (level: number) => {
+      render={({field: {onChange, value}}: RenderType) => {
+        const chooseLevel = (level: 'amateur' | 'professional') => {
           onChange(level);
           toggleExpand();
         };
@@ -42,7 +52,7 @@ const LevelAccordion = ({name, defaultValue}: LevelAccordionProps) => {
                 <Text color="#fff">
                   {t('private.optionsScreen.step2.title')}
                 </Text>
-                {collapsed ? <ChevronDown /> : <ChevronUp />}
+                {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
               </HStack>
             </TouchableOpacity>
             <Collapsible collapsed={collapsed}>
@@ -50,23 +60,20 @@ const LevelAccordion = ({name, defaultValue}: LevelAccordionProps) => {
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
                 minHeight={50}>
-                {levels.map(level => (
-                  <TouchableOpacity
-                    onPress={() => chooseLevel(level)}
-                    key={level}>
+                {levels.map((level, i) => (
+                  <TouchableOpacity onPress={() => chooseLevel(level)} key={i}>
                     <HStack
                       justifyContent="space-between"
                       alignItems="center"
-                      paddingHorizontal={5}
-                      borderBottomWidth={levels.length !== level ? 1 : 0}>
+                      p={10}
+                      borderBottomWidth={levels.length !== i ? 1 : 0}>
                       <Text
                         fontSize={12}
                         color="#fff"
-                        width="$1/2"
-                        textAlign="center">
-                        {t(`private.optionsScreen.step2.level${level}`)}
+                        textAlign="center"
+                        width="$full">
+                        {t(`private.optionsScreen.step2.${level}`)}
                       </Text>
-                      <Stars level={level} space="sm" />
                     </HStack>
                   </TouchableOpacity>
                 ))}
@@ -80,12 +87,12 @@ const LevelAccordion = ({name, defaultValue}: LevelAccordionProps) => {
                   paddingHorizontal={5}>
                   <Text
                     fontSize={12}
-                    color="#fff"
-                    width="$1/2"
-                    textAlign="center">
-                    {t(`private.optionsScreen.step2.level${value}`)}
+                    variant="secondary"
+                    textAlign="center"
+                    p={10}
+                    width="$full">
+                    {t(`private.optionsScreen.step2.${value}`)}
                   </Text>
-                  <Stars level={value} space="sm" />
                 </HStack>
               </VStack>
             )}

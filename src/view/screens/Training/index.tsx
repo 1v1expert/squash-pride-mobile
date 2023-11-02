@@ -43,7 +43,7 @@ const Training = () => {
         alignItems="center"
         paddingHorizontal={30}
         space="xl">
-        <PeopleCounter amountOfPeople={filters.people} />
+        <PeopleCounter amountOfPeople={filters.players} />
         <Stars level={filters.level} />
       </HStack> */}
     </ViewContainer>

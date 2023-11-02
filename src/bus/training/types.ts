@@ -1,4 +1,5 @@
 import {CaseReducer, PayloadAction} from '@reduxjs/toolkit';
+import {TItem} from '../../view/navigation/types';
 
 export type GeoPosition = {
   coords: {
@@ -31,12 +32,31 @@ export type LocationPermission =
 
 export type FiltersType = {
   level?: 'amateur' | 'professional' | null;
-  people?: number | null;
-  shot?: string[];
+  players?: number | null;
+  group?: string[];
 };
 
 export type TrainingState = {
+  isLoading: boolean;
+  group: GroupData[];
   filters: FiltersType;
+  exercises: ExerciseType[];
+  stackOfExercises: ExerciseType[];
+  techniques: TItem[];
+  rules: TItem[];
+};
+export type GroupData = {
+  uid: string;
+  name: string;
+  description: string;
+};
+export type ExerciseType = {
+  uid: string;
+  video: string;
+  groups: string[];
+  level: 'amateur' | 'professional';
+  players: number;
+  description: string;
 };
 
 // Contracts

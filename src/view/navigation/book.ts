@@ -7,6 +7,7 @@ export enum Book {
   // PrivateScreen
   Options = 'Options',
   TabNavigator = 'TabNavigator',
+  CreateTrainingWithoutTab = 'CreateTrainingWithoutTab',
 
   //TabNavigator
   HomeScreens = 'HomeScreens',
@@ -22,5 +23,7 @@ export enum Book {
   GameTechnique = 'GameTechnique',
   Rules = 'Rules',
   MediaViewer = 'MediaViewer',
+  ExerciseMediaViewer = 'ExerciseMediaViewer',
   Filter = 'Filter',
+  ChooseTrainingType = 'ChooseTrainingType',
 }

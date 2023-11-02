@@ -8,10 +8,12 @@ import {getUserData} from './thunk/getUserData';
 import {
   accessToken,
   clearTokens,
+  refreshToken,
   setAuthHeader,
 } from '../../init/axios/baseService';
 import {load} from '../../utils/storage';
 import {register} from './thunk/register';
+import {refresh} from './thunk/refresh';
 
 // Types
 // import * as types from './types';
@@ -26,12 +28,21 @@ export const useUser = () => {
     clearTokens();
     dispatch(userActions.setAuthorize(false));
   };
-  const fetchUser = async () => {
-    const access = await load(accessToken);
-
-    if (access) {
-      setAuthHeader(access);
+  const tokenRefresh = async (refreshToken: string) => {
+    try {
+      dispatch(refresh({refreshToken})).unwrap();
+    } catch (error) {
+      logout();
     }
+  };
+  const fetchUser = async () => {
+    const access_token = await load(accessToken);
+    const refresh_token = await load(refreshToken);
+
+    if (access_token) {
+      setAuthHeader(access_token);
+    }
+    tokenRefresh(refresh_token);
     dispatch(getUserData());
   };
   return {
@@ -43,5 +54,6 @@ export const useUser = () => {
     fetchUser,
     setAuthorize,
     logout,
+    tokenRefresh,
   };
 };

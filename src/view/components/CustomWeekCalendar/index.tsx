@@ -45,7 +45,7 @@ const CustomWeekCalendar = () => {
           <TouchableOpacity
             onPress={() => navigate(Book.Calendar)}
             hitSlop={10}>
-            <ChevronUp />
+            <ChevronUp color="#F7AB39" />
           </TouchableOpacity>
         </HStack>
         <HStack justifyContent="space-between" paddingHorizontal={37}>

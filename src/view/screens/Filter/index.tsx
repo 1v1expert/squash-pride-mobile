@@ -13,32 +13,57 @@ import {FilterScreenProps} from '../../navigation/types';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import PeopleAccordion from '../../components/PeopleAccordion';
 import {FormProvider, useForm} from 'react-hook-form';
-import {filterSchema} from './schema';
+import {filterSchemaWithGroup, filterSchemaWithoutGroup} from './schema';
 import {yupResolver} from '@hookform/resolvers/yup';
 import LevelAccordion from '../../components/LevelAccordion';
-import ShotAccordion from '../../components/ShotAccordion';
+import GroupAccordion from '../../components/GroupAccordion';
 import {useTraining} from '../../../bus/training';
+import {Book} from '../../navigation/book';
 
 type FilterForm = {
-  level?: number;
-  people?: number;
-  shot?: string[];
+  players: number;
+  level: 'amateur' | 'professional';
+  group?: string[];
 };
 const width = Dimensions.get('screen').width;
 const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
-  const {setFilters} = useTraining();
+  const {setFilters, fetchExercise} = useTraining();
   const {t} = useCustomTranslation();
-  const {goBack, replace} = navigation;
+  const {goBack, navigate} = navigation;
   const location = route.params?.location;
 
   const methods = useForm<FilterForm>({
-    resolver: yupResolver(filterSchema),
+    resolver: yupResolver(
+      location === 'CreateTrainingWithoutTab'
+        ? filterSchemaWithGroup
+        : filterSchemaWithoutGroup,
+    ),
     mode: 'onSubmit',
   });
-  const {handleSubmit} = methods;
+  const {
+    handleSubmit,
+    formState: {errors},
+  } = methods;
   const submit = (values: FilterForm) => {
     setFilters(values);
-    location ? replace(location) : goBack();
+    switch (location) {
+      case 'StartTraining': {
+        navigate(Book.StartTraining);
+        break;
+      }
+      case 'CreateTrainingWithoutTab': {
+        fetchExercise({
+          players: values.players,
+          level: values.level,
+          group: values.group,
+        });
+        navigate(Book.CreateTrainingWithoutTab);
+        break;
+      }
+      default: {
+        goBack();
+      }
+    }
   };
   return (
     <ViewContainer
@@ -59,9 +84,15 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
           width={width}
           space="xl">
           <FormProvider {...methods}>
-            <LevelAccordion name="level" />
-            <PeopleAccordion name="people" />
-            <ShotAccordion name="shot" />
+            <LevelAccordion name="level" error={errors.level} />
+            <PeopleAccordion name="players" error={errors.players} />
+            {location === 'CreateTrainingWithoutTab' && (
+              <GroupAccordion
+                name="group"
+                error={errors.group}
+                groupLength={1}
+              />
+            )}
           </FormProvider>
         </VStack>
       </ScrollView>

@@ -1,4 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {ExerciseType} from '../../bus/training/types';
 
 export type PublicStackParamList = {
   Main: undefined;
@@ -12,6 +13,9 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 
 export type PrivateStackParamList = {
   TabNavigator: undefined;
+  CreateTrainingWithoutTab: undefined;
+  FilterWithoutTab: {location?: keyof HomeScreensStackParamList} | undefined;
+  ExerciseMediaViewer: ExerciseType | undefined;
 };
 
 export type TabNavigatorParamList = {
@@ -29,8 +33,12 @@ export type HomeScreensStackParamList = {
   GameTechnique: undefined;
   Rules: undefined;
   MediaViewer: TItem;
-  Filter: {location?: keyof HomeScreensStackParamList} | undefined;
+  Filter:
+    | {location?: keyof HomeScreensStackParamList | keyof PrivateStackParamList}
+    | undefined;
   Options: {location?: keyof HomeScreensStackParamList} | undefined;
+  ChooseTrainingType: {location?: keyof HomeScreensStackParamList} | undefined;
+  ExerciseMediaViewer: {item: ExerciseType};
 };
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
@@ -49,20 +57,24 @@ export type MediaViewerScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'MediaViewer'
 >;
+export type ExerciseMediaViewerScreenProps = NativeStackScreenProps<
+  HomeScreensStackParamList,
+  'ExerciseMediaViewer'
+>;
 export type FilterScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'Filter'
->;
+> &
+  NativeStackScreenProps<PrivateStackParamList>;
 export type OptionsScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'Options'
 >;
 
 export type TItem = {
-  id: string;
+  uid: string;
   title: string;
-  description: string;
-  url: string;
-  favorite?: boolean;
-  completed?: boolean;
+  video: string;
+  ru_description: string;
+  en_description: string;
 };

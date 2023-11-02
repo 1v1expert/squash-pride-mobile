@@ -1,42 +1,47 @@
 import React, {FC} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
-import {ArrowLeftIcon} from '@gluestack-ui/themed';
+import {ArrowLeftIcon, Text} from '@gluestack-ui/themed';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {HomeScreensStackScreenProps, TItem} from '../../navigation/types';
 import {Book} from '../../navigation/book';
 import {Dimensions, FlatList} from 'react-native';
 import Item from '../../components/Item';
+import {useTraining} from '../../../bus/training';
 
 const width = Dimensions.get('screen').width;
 
-const DATA: TItem[] = [
-  {
-    id: '1',
-    title: 'Правила подачи',
-    description:
-      'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
-    url: 'test',
-  },
-  {
-    id: '2',
-    title: 'Правила 2',
-    description:
-      'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
-    url: 'test',
-  },
-  {
-    id: '3',
-    title: 'Правила 3',
-    description:
-      'Прямой удар в переднюю стену корта, при котором мяч по прямой направляется бьющим игроком паралельно одной из боковых стен корта в его заднюю часть. Драйв может наноситься с любой части корта (передней, центральной задней). Это основной удар в игре.',
-    url: 'test',
-  },
-];
+// const DATA: TItem[] = [
+//   {
+//     uid: '3221312-2131231-21312312',
+//     title: 'Test',
+//     video:
+//       'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+//     ru_description: 'test',
+//     en_description: 'test',
+//   },
+//   {
+//     uid: '3221312-2131231-4543534',
+//     title: 'Test2',
+//     video:
+//       'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+//     ru_description: 'test2',
+//     en_description: 'test2',
+//   },
+//   {
+//     uid: '3221312-2131231-234325523',
+//     title: 'Test3',
+//     video:
+//       'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+//     ru_description: 'test3',
+//     en_description: 'test3',
+//   },
+// ];
 
 const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {t} = useCustomTranslation();
   const {navigate, goBack} = navigation;
+  const {rules} = useTraining();
 
   const goToItem = (e: TItem) => {
     navigate(Book.MediaViewer, {...e});
@@ -53,8 +58,13 @@ const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           width={50}
         />
       }>
+      {!rules.length && (
+        <Text variant="primary" pt={20}>
+          No data
+        </Text>
+      )}
       <FlatList
-        data={DATA}
+        data={rules}
         renderItem={({item}) => <Item item={item} onPress={goToItem} />}
         style={{width, paddingTop: 20, paddingHorizontal: 20}}
       />

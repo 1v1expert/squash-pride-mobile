@@ -19,6 +19,7 @@ type CustomButtonProps = {
   height?: number;
   borderRadius?: number;
   disabled?: boolean;
+  mainIcon?: any;
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -33,6 +34,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   height,
   borderRadius = 50,
   disabled,
+  mainIcon,
 }) => {
   const [pressed, setPressed] = useState(false);
 
@@ -79,6 +81,13 @@ const CustomButton: FC<CustomButtonProps> = ({
           <ButtonIcon
             ml={title ? 15 : 0}
             as={iconRight}
+            color={pressed ? '#000' : '#fff'}
+          />
+        )}
+        {mainIcon && (
+          <ButtonIcon
+            mr={title ? 15 : 0}
+            as={() => mainIcon({color: pressed ? '#000' : '#fff'})}
             color={pressed ? '#000' : '#fff'}
           />
         )}
