@@ -50,11 +50,6 @@ export const HomeScreens: FC = () => {
           component={MediaViewer}
           options={{headerShown: false}}
         />
-        {/* <Stack.Screen
-          name={Book.ExerciseMediaViewer}
-          component={ExerciseMediaViewer}
-          options={{headerShown: false}}
-        /> */}
         <Stack.Screen
           name={Book.Filter}
           component={Filter}

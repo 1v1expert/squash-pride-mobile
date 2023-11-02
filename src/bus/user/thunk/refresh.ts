@@ -14,7 +14,6 @@ export const refresh = createAsyncThunk<Tokens, {refreshToken: string}>(
 
       return data;
     } catch (e: any) {
-      console.log('refreshToken error', e);
       return rejectWithValue(e.response?.data.error || 'Something is wrong');
     }
   },

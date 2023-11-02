@@ -1,4 +1,8 @@
 export enum Book {
+  PreLoader = 'PreLoader',
+  Private = 'Private',
+  Public = 'Public',
+
   //Public
   Main = 'Main',
   Login = 'Login',

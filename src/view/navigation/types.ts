@@ -14,7 +14,6 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 export type PrivateStackParamList = {
   TabNavigator: undefined;
   CreateTrainingWithoutTab: undefined;
-  FilterWithoutTab: {location?: keyof HomeScreensStackParamList} | undefined;
   ExerciseMediaViewer: ExerciseType | undefined;
 };
 
@@ -58,7 +57,7 @@ export type MediaViewerScreenProps = NativeStackScreenProps<
   'MediaViewer'
 >;
 export type ExerciseMediaViewerScreenProps = NativeStackScreenProps<
-  HomeScreensStackParamList,
+  PrivateStackParamList,
   'ExerciseMediaViewer'
 >;
 export type FilterScreenProps = NativeStackScreenProps<
