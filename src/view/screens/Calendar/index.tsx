@@ -185,6 +185,7 @@ const Calendar = () => {
                     locale="es-ES"
                     themeVariant="dark"
                     minimumDate={minimumDate}
+                    minuteInterval={15}
                     positiveButton={{
                       label: t('private.calendarScreen.ok'),
                       textColor: '#F7A936',
