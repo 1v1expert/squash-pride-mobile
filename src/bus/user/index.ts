@@ -8,6 +8,7 @@ import {getUserData} from './thunk/getUserData';
 import {
   accessToken,
   clearTokens,
+  refreshToken,
   setAuthHeader,
 } from '../../init/axios/baseService';
 import {load} from '../../utils/storage';
@@ -27,12 +28,10 @@ export const useUser = () => {
     clearTokens();
     dispatch(userActions.setAuthorize(false));
   };
-  const tokenRefresh = async (refreshToken: string) => {
-    try {
-      dispatch(refresh({refreshToken})).unwrap();
-    } catch (error) {
-      logout();
-    }
+  const tokenRefresh = async () => {
+    const token = await load(refreshToken);
+
+    token && dispatch(refresh({refreshToken: token})).unwrap();
   };
   const fetchUser = async () => {
     const access_token = await load(accessToken);

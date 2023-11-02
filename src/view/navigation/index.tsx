@@ -4,30 +4,22 @@ import {NavigationContainer} from '@react-navigation/native';
 import {Public} from './Public';
 import {useUser} from '../../bus/user';
 import {Private} from './Private';
-import {useTraining} from '../../bus/training';
 import PreLoader from '../screens/PreLoader';
 
 export const Navigation: FC = () => {
-  const {fetchUser, isAuthorized} = useUser();
-  const {fetchGroup, resetStack, fetchRules, fetchTechniques} = useTraining();
+  const {isAuthorized, tokenRefresh} = useUser();
   const [loading, setLoading] = useState(true);
 
+  const initializeApp = async () => {
+    await tokenRefresh().finally(() => {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    });
+  };
+
   useEffect(() => {
-    const init = () => {
-      fetchUser()
-        .then(() => {
-          fetchGroup();
-          fetchRules();
-          fetchTechniques();
-        })
-        .finally(() => {
-          setTimeout(() => {
-            setLoading(false);
-          }, 500);
-        });
-      resetStack();
-    };
-    init();
+    initializeApp();
   }, []);
 
   return (

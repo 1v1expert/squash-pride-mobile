@@ -2,7 +2,7 @@ export default {
   public: {
     mainScreen: {registrationButton: 'РЕГИСТРАЦИЯ', loginButton: 'АВТОРИЗАЦИЯ'},
     loginScreen: {
-      loginInputPlaceholder: 'Логин',
+      loginInputPlaceholder: 'Почта',
       passInputPlaceholder: 'Пароль',
       rememberMe: 'Запомнить меня',
       button: 'Войти',

@@ -2,7 +2,7 @@ export default {
   public: {
     mainScreen: {registrationButton: 'REGISTER', loginButton: 'LOGIN'},
     loginScreen: {
-      loginInputPlaceholder: 'Username',
+      loginInputPlaceholder: 'E-mail',
       passInputPlaceholder: 'Password',
       rememberMe: 'Remember Me',
       button: 'Log In',
