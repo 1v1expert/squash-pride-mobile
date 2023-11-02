@@ -7,7 +7,9 @@ import {images} from '../../../assets';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {ExerciseType} from '../../../bus/training/types';
 import StackPlayer from '../StackPlayer';
+
 const width = Dimensions.get('screen').width;
+
 type PlayerProps = {
   item: ExerciseType;
   position: number;
@@ -78,6 +80,7 @@ const Player = ({
             }}
             style={[styles.player, {width: width}]}
             pauseOnPress
+            resizeMode="stretch"
             disableFullscreen
             onLoadStart={() => [
               setTitleIsVisible(false),

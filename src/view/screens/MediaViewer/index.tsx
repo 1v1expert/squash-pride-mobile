@@ -75,6 +75,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                     width: portraitWidth,
                   },
                 ]}
+                resizeMode="stretch"
                 pauseOnPress
                 disableFullscreen
                 onLoadStart={() => setVideoStarted(true)}

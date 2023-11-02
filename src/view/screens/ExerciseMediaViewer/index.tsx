@@ -76,89 +76,88 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
             width={50}
           />
         }>
-        <VStack flex={1}>
-          <VStack
-            flex={1}
-            justifyContent="space-between"
+        <VStack
+          flex={1}
+          justifyContent="space-between"
+          alignItems="center"
+          width={portraitWidth}>
+          <HStack
+            bgColor="#393A40"
+            width={portraitWidth}
             alignItems="center"
-            width={portraitWidth}>
-            <HStack
-              bgColor="#393A40"
-              width={portraitWidth}
-              alignItems="center"
-              justifyContent="center"
-              height="30%">
-              <VideoPlayer
-                ref={videoPlayerRef}
-                video={{
-                  uri: item?.video,
-                }}
-                currentTime={currentTime}
-                style={[
-                  styles.videoPlayer,
-                  {
-                    width: portraitWidth,
-                  },
-                ]}
-                pauseOnPress
-                disableFullscreen
-                onLoadStart={() => setVideoStarted(true)}
-                onEnd={() => setCurrentTime(0.001)}
-                customStyles={{
-                  controls: {
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    paddingRight: 50,
-                    backgroundColor: 'transparent',
-                  },
-                  playArrow: {color: '#FBC56E'},
-                  seekBarProgress: {backgroundColor: '#FBC56E'},
-                  seekBarKnob: {backgroundColor: '#FBC56E'},
-                }}
-              />
-              {videoStarted && (
-                <Pressable onPress={openModal} style={styles.fullScreenButton}>
-                  <Image
-                    source={images.fullScreen}
-                    width={30}
-                    height={30}
-                    resizeMode="contain"
-                    alt=""
-                  />
-                </Pressable>
-              )}
-            </HStack>
-            <ScrollView>
-              <View paddingHorizontal={30} paddingVertical={20}>
-                <Text variant="primary" textAlign="auto">
-                  {item?.description}
-                </Text>
-              </View>
-            </ScrollView>
-            <VStack
-              pb={Platform.OS === 'ios' ? bottom : 15}
-              width="$full"
-              paddingHorizontal={30}
-              space="xs"
-              paddingVertical={10}>
-              <HStack alignItems="center" space="xl">
-                {filters.players && (
-                  <PeopleCounter amountOfPeople={filters.players} />
-                )}
-                <Text variant="primary">
-                  {filters.level &&
-                    t(`private.optionsScreen.step2.${filters.level}`)}
-                </Text>
-              </HStack>
-
-              <HStack width="$full">
-                <CustomButton
-                  title={selected ? 'Убрать' : 'Добавить'}
-                  onPress={onPress}
-                  width={portraitWidth * 0.4}
+            justifyContent="center"
+            height="30%">
+            <VideoPlayer
+              ref={videoPlayerRef}
+              video={{
+                uri: item?.video,
+              }}
+              currentTime={currentTime}
+              style={[
+                styles.videoPlayer,
+                {
+                  width: portraitWidth,
+                },
+              ]}
+              resizeMode="stretch"
+              pauseOnPress
+              disableFullscreen
+              onLoadStart={() => setVideoStarted(true)}
+              onEnd={() => setCurrentTime(0.001)}
+              customStyles={{
+                controls: {
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingRight: 50,
+                  backgroundColor: 'transparent',
+                },
+                playArrow: {color: '#FBC56E'},
+                seekBarProgress: {backgroundColor: '#FBC56E'},
+                seekBarKnob: {backgroundColor: '#FBC56E'},
+              }}
+            />
+            {videoStarted && (
+              <Pressable onPress={openModal} style={styles.fullScreenButton}>
+                <Image
+                  source={images.fullScreen}
+                  width={30}
+                  height={30}
+                  resizeMode="contain"
+                  alt=""
                 />
-              </HStack>
-            </VStack>
+              </Pressable>
+            )}
+          </HStack>
+          <ScrollView>
+            <View paddingHorizontal={30} paddingVertical={20}>
+              <Text variant="primary" textAlign="auto">
+                {item?.description}
+              </Text>
+            </View>
+          </ScrollView>
+          <VStack
+            pb={Platform.OS === 'ios' ? bottom : 15}
+            width="$full"
+            paddingHorizontal={30}
+            space="xs"
+            paddingVertical={10}>
+            <HStack alignItems="center" space="xl">
+              {filters.players && (
+                <PeopleCounter amountOfPeople={filters.players} />
+              )}
+              <Text variant="primary">
+                {filters.level &&
+                  t(`private.optionsScreen.step2.${filters.level}`)}
+              </Text>
+            </HStack>
+
+            <HStack width="$full">
+              <CustomButton
+                title={selected ? 'Убрать' : 'Добавить'}
+                onPress={onPress}
+                width={portraitWidth * 0.4}
+              />
+            </HStack>
           </VStack>
         </VStack>
       </ViewContainer>

@@ -86,8 +86,7 @@ const FullscreenPlayer = ({
           currentTime={20}
           video={{uri}}
           disableFullscreen
-          videoWidth={width}
-          videoHeight={height}
+          resizeMode="stretch"
           style={[
             styles.fullScreenVideoPlayer,
             {

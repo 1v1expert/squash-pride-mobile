@@ -11,10 +11,10 @@ export const Navigation: FC = () => {
   const [loading, setLoading] = useState(true);
 
   const initializeApp = async () => {
-    await tokenRefresh().finally(() => {
+    await tokenRefresh().then(() => {
       setTimeout(() => {
         setLoading(false);
-      }, 500);
+      }, 1000);
     });
   };
 

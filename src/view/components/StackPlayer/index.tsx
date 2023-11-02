@@ -96,6 +96,7 @@ const StackPlayer = ({
                 height: height,
               },
             ]}
+            resizeMode="stretch"
             pauseOnPress
             onLoadStart={() => setTitleIsVisible(false)}
             onLoad={() =>
