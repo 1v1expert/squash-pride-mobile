@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import {useCalendar} from '../../../bus/calendar';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -45,7 +46,10 @@ const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
         <TouchableOpacity onPress={() => console.log('years')}>
           <HStack alignItems="center" space="sm">
             <ArrowLeft />
-            <Text variant="secondary" textAlign="center">
+            <Text
+              variant="secondary"
+              textAlign="center"
+              fontSize={fontSize.title}>
               {currentYear}
             </Text>
           </HStack>
@@ -71,7 +75,8 @@ const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
                     variant="primary"
                     paddingHorizontal={5}
                     paddingVertical={5}
-                    color={i === new Date().getMonth() ? '#F7A936' : '#fff'}>
+                    color={i === new Date().getMonth() ? '#F7A936' : '#fff'}
+                    fontSize={fontSize.title}>
                     {t(`private.calendarScreen.monthNamesShort.${month}`)}
                   </Text>
                 </Center>

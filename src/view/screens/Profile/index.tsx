@@ -5,6 +5,7 @@ import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import {TouchableOpacity} from 'react-native';
+import {fontSize} from '../../../assets/fontsSize';
 
 const Profile = () => {
   const {logout} = useUser();
@@ -43,12 +44,12 @@ const Profile = () => {
         paddingHorizontal={50}
         space="xl">
         <TouchableOpacity>
-          <Text variant="secondary">
+          <Text variant="secondary" fontSize={fontSize.text}>
             {t('private.profileScreen.saveButton')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={logout}>
-          <Text variant="secondary">
+          <Text variant="secondary" fontSize={fontSize.text}>
             {t('private.profileScreen.logoutButton')}
           </Text>
         </TouchableOpacity>

@@ -16,6 +16,7 @@ import VideoPlayer from 'react-native-video-player';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import Orientation from 'react-native-orientation-locker';
 import FullscreenPlayer from '../../components/FullscreenPlayer';
+import {fontSize} from '../../../assets/fontsSize';
 
 const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const {goBack} = navigation;
@@ -105,7 +106,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
               )}
             </HStack>
             <ScrollView padding={30}>
-              <Text variant="primary" textAlign="auto">
+              <Text variant="primary" textAlign="auto" fontSize={fontSize.text}>
                 {description}
               </Text>
             </ScrollView>

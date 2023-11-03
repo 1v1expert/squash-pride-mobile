@@ -7,6 +7,7 @@ import {images} from '../../../assets';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {ExerciseType} from '../../../bus/training/types';
 import StackPlayer from '../StackPlayer';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
@@ -103,7 +104,9 @@ const Player = ({
         )}
         {titleIsVisible && item && (
           <Center position="absolute" bottom={10} left={10}>
-            <Text variant="primary">{item.groups[0]}</Text>
+            <Text variant="primary" fontSize={fontSize.text}>
+              {item.groups[0]}
+            </Text>
           </Center>
         )}
         {!titleIsVisible && (

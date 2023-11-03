@@ -25,6 +25,7 @@ import {Book} from '../../navigation/book';
 import ExerciseItem from '../../components/ExerciseItem';
 import {ExerciseType} from '../../../bus/training/types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
@@ -54,14 +55,18 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             style={styles.touchableOpacity}
             onPress={() => setState(false)}>
             <Center p={5} style={!state && styles.selected}>
-              <Text variant="primary">все</Text>
+              <Text variant="primary" fontSize={fontSize.title}>
+                все
+              </Text>
             </Center>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.touchableOpacity}
             onPress={() => setState(true)}>
             <Center p={5} style={state && styles.selected}>
-              <Text variant="primary">избранное</Text>
+              <Text variant="primary" fontSize={fontSize.title}>
+                избранное
+              </Text>
             </Center>
           </TouchableOpacity>
         </HStack>
@@ -100,13 +105,13 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             {filters.players && (
               <PeopleCounter amountOfPeople={filters.players} />
             )}
-            <Text variant="primary">
+            <Text variant="primary" fontSize={fontSize.title}>
               {filters.level &&
                 t(`private.optionsScreen.step2.${filters.level}`)}
             </Text>
           </HStack>
           <HStack alignItems="center" space="xl">
-            <Text variant="primary">
+            <Text variant="primary" fontSize={fontSize.title}>
               Упражнений: {stackOfExercises.length}/4
             </Text>
           </HStack>

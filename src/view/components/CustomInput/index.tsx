@@ -10,6 +10,8 @@ import React, {FC, useState} from 'react';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import Star from '../../../assets/svg/star';
 import {KeyboardType} from 'react-native';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
 
 type CustomInputProps = {
   placeholder?: string;
@@ -59,6 +61,7 @@ const CustomInput: FC<CustomInputProps> = ({
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 fontFamily="Century Gothic"
+                fontSize={perfectSize(17)}
               />
               {required && !focus && (
                 <InputSlot pr="$3">
@@ -68,7 +71,10 @@ const CustomInput: FC<CustomInputProps> = ({
             </Input>
 
             <VStack margin={0} minHeight={22.5}>
-              <Text variant="primary" color={value ? '#F00' : '#F7A936'}>
+              <Text
+                variant="primary"
+                color={value ? '#F00' : '#F7A936'}
+                fontSize={fontSize.title}>
                 {error && error.message}
               </Text>
             </VStack>

@@ -6,6 +6,7 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 // import {tabBarIcons} from './tabBarIcons';
 import {Image} from '@gluestack-ui/themed';
 import {tabBarIcons} from './tabBarIcons';
+import {perfectSize} from '../../tools/helpers/perfectSize';
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const {bottom} = useSafeAreaInsets();
@@ -16,7 +17,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
       alignItems="center"
       justifyContent="space-evenly"
       pt={15}
-      pb={Platform.OS === 'ios' ? bottom : 15}>
+      pb={Platform.OS === 'ios' ? bottom : perfectSize(15)}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;
@@ -43,8 +44,8 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
             key={index}
             style={styles.tab}>
             <Image
-              width={20}
-              height={20}
+              width={perfectSize(20)}
+              height={perfectSize(20)}
               resizeMode="contain"
               source={
                 isFocused
@@ -54,7 +55,11 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
               alt=""
             />
 
-            <Text variant="primary" lineHeight={13} fontSize={10} mt={3}>
+            <Text
+              variant="primary"
+              lineHeight={13}
+              fontSize={perfectSize(10)}
+              mt={3}>
               {options.tabBarLabel?.toString()}
             </Text>
           </TouchableOpacity>

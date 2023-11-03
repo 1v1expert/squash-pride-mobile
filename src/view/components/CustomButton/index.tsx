@@ -6,6 +6,7 @@ import {
 } from '@gluestack-ui/themed';
 import React, {FC, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 type CustomButtonProps = {
   title?: string;
@@ -77,7 +78,8 @@ const CustomButton: FC<CustomButtonProps> = ({
         {title && !isLoading && (
           <ButtonText
             color={pressed ? '#000' : '#fff'}
-            fontFamily="Century Gothic">
+            fontFamily="Century Gothic"
+            fontSize={perfectSize(17)}>
             {title}
           </ButtonText>
         )}

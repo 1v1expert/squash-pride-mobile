@@ -2,6 +2,7 @@ import {CheckIcon, CheckboxLabel} from '@gluestack-ui/themed';
 import {Checkbox, CheckboxIndicator, CheckboxIcon} from '@gluestack-ui/themed';
 import React, {FC} from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
+import {fontSize} from '../../../assets/fontsSize';
 
 type CustomCheckboxProps = {
   name: string;
@@ -32,7 +33,10 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({
               <CheckboxIcon as={CheckIcon} color="#F7A936" />
             </CheckboxIndicator>
             {label && (
-              <CheckboxLabel color="#F7A936" fontFamily="Century Gothic">
+              <CheckboxLabel
+                color="#F7A936"
+                fontFamily="Century Gothic"
+                fontSize={fontSize.title}>
                 {label}
               </CheckboxLabel>
             )}

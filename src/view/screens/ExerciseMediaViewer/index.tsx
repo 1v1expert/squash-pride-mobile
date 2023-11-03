@@ -21,6 +21,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {useTraining} from '../../../bus/training';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
+import {fontSize} from '../../../assets/fontsSize';
 
 const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   navigation,
@@ -130,7 +131,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
           </HStack>
           <ScrollView>
             <View paddingHorizontal={30} paddingVertical={20}>
-              <Text variant="primary" textAlign="auto">
+              <Text variant="primary" textAlign="auto" fontSize={fontSize.text}>
                 {item?.description}
               </Text>
             </View>
@@ -145,7 +146,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
               {filters.players && (
                 <PeopleCounter amountOfPeople={filters.players} />
               )}
-              <Text variant="primary">
+              <Text variant="primary" fontSize={fontSize.title}>
                 {filters.level &&
                   t(`private.optionsScreen.step2.${filters.level}`)}
               </Text>

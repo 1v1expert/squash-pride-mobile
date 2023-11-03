@@ -24,6 +24,7 @@ import {useTraining} from '../../../bus/training';
 import Player from '../../components/Player';
 import {ExerciseType} from '../../../bus/training/types';
 import {Book} from '../../navigation/book';
+import {fontSize} from '../../../assets/fontsSize';
 
 const DATA: ExerciseType[] = [
   {
@@ -142,7 +143,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               alignItems="center"
               width={width}>
               <ScrollView>
-                <Text variant="primary" p={10}>
+                <Text variant="primary" p={10} fontSize={fontSize.text}>
                   {item.description}
                 </Text>
               </ScrollView>

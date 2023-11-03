@@ -4,6 +4,7 @@ import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {DateData} from 'react-native-calendars';
+import {fontSize} from '../../../assets/fontsSize';
 
 const height = Dimensions.get('screen').height;
 type CustomCalendarDayProps = DayProps & {
@@ -33,7 +34,7 @@ const CustomCalendarDay = (item: CustomCalendarDayProps) => {
         height="$full"
         alignItems="center"
         justifyContent="center">
-        <Text variant="primary" color={textColor()}>
+        <Text variant="primary" color={textColor()} fontSize={fontSize.title}>
           {date?.day}
         </Text>
       </View>

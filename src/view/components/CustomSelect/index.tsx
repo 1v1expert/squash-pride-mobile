@@ -3,6 +3,8 @@ import React, {FC, useState} from 'react';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import {Dimensions, StyleSheet} from 'react-native';
 import RNPickerSelect, {Item} from 'react-native-picker-select';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
 
 type CustomSelectProps = {
   placeholder?: string;
@@ -68,7 +70,10 @@ const CustomSelect: FC<CustomSelectProps> = ({
               items={items}
             />
             <VStack margin={0} minHeight={22.5}>
-              <Text variant="primary" color={value ? '#F00' : '#F7A936'}>
+              <Text
+                variant="primary"
+                color={value ? '#F00' : '#F7A936'}
+                fontSize={fontSize.title}>
                 {error && error.message}
               </Text>
             </VStack>
@@ -81,7 +86,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    fontSize: 16,
+    fontSize: perfectSize(17),
     fontWeight: '400',
   },
   inputContainer: {

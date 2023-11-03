@@ -4,6 +4,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {DateData} from 'react-native-calendars';
+import {fontSize} from '../../../assets/fontsSize';
 
 type CustomWeekCalendarDayProps = DayProps & {
   date?: DateData | undefined;
@@ -33,7 +34,7 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
         alignItems="center"
         borderBottomWidth={marking?.selected ? 2 : 0}
         borderColor="#F7A936">
-        <Text variant="primary" color={textColor()}>
+        <Text variant="primary" color={textColor()} fontSize={fontSize.title}>
           {date?.day}
         </Text>
       </View>

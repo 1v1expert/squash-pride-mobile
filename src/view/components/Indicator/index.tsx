@@ -1,6 +1,7 @@
 import {Text, VStack} from '@gluestack-ui/themed';
 import {Box, HStack} from '@gluestack-ui/themed';
 import React from 'react';
+import {fontSize} from '../../../assets/fontsSize';
 
 interface TabIndicatorProps {
   selected: number;
@@ -31,7 +32,11 @@ const Indicator = ({
       {position.map((text, i) => {
         return (
           <VStack alignItems="center" space="md" key={i}>
-            {items && <Text variant="primary">{text}</Text>}
+            {items && (
+              <Text variant="primary" fontSize={fontSize.text}>
+                {text}
+              </Text>
+            )}
             <Box
               bgColor={i === selected ? '#F7AB39' : '#D9D9D9'}
               width={10}

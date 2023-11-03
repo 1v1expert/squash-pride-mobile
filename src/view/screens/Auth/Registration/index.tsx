@@ -12,6 +12,7 @@ import SafeAreaLayout from '../../../components/SafeAreaLayout';
 import {PublicStackScreenProps} from '../../../navigation/types';
 import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
 import RegistrationForm from '../../../forms/RegistrationForm';
+import {fontSize} from '../../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
@@ -32,7 +33,10 @@ const Registration: FC<PublicStackScreenProps> = () => {
                 }}
                 alt=""
               />
-              <Text textAlign="center" variant="secondary">
+              <Text
+                textAlign="center"
+                variant="secondary"
+                fontSize={fontSize.title}>
                 {t('public.registrationScreen.title')}
               </Text>
             </VStack>

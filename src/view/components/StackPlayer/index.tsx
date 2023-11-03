@@ -13,6 +13,7 @@ import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
 import Next from '../../../assets/svg/next';
 import Prev from '../../../assets/svg/prev';
+import {fontSize} from '../../../assets/fontsSize';
 type StackPlayer = {
   item: ExerciseType;
   visible: boolean;
@@ -120,7 +121,9 @@ const StackPlayer = ({
         )}
         {titleIsVisible && item && (
           <Center position="absolute" bottom={20} left={50}>
-            <Text variant="primary">{item.groups[0]}</Text>
+            <Text variant="primary" fontSize={fontSize.text}>
+              {item.groups[0]}
+            </Text>
           </Center>
         )}
         <Pressable onPress={closeModal} style={styles.defaultScreenButton}>

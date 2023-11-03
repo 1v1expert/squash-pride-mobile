@@ -13,6 +13,7 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import {useNavigation} from '@react-navigation/native';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
+import {fontSize} from '../../../assets/fontsSize';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
@@ -67,7 +68,9 @@ const Calendar = () => {
             alignItems="center"
             paddingHorizontal={20}
             space="xs">
-            <Text variant="primary">{t('private.calendarScreen.title')}</Text>
+            <Text variant="primary" fontSize={fontSize.title}>
+              {t('private.calendarScreen.title')}
+            </Text>
             <Box bgColor="#F7A936" width="$full" height={2} />
           </VStack>
           <VStack
@@ -100,7 +103,7 @@ const Calendar = () => {
                   paddingHorizontal={10}
                   minHeight={30}
                   alignItems="center">
-                  <Text variant="secondary">
+                  <Text variant="secondary" fontSize={fontSize.title}>
                     {`${currentDay} ${t(
                       `private.calendarScreen.monthsNames.${currentMonth}`,
                     )}`}
@@ -118,7 +121,9 @@ const Calendar = () => {
                       paddingVertical={5}
                       borderRadius={10}
                       style={styles.shadow}>
-                      <Text variant="secondary">{currentTime}</Text>
+                      <Text variant="secondary" fontSize={fontSize.title}>
+                        {currentTime}
+                      </Text>
                     </Center>
                   </TouchableOpacity>
                 </HStack>
@@ -139,7 +144,10 @@ const Calendar = () => {
                   <TouchableOpacity
                     onPress={() => setAddTraining(prev => !prev)}>
                     <HStack padding={10}>
-                      <Text variant="primary" fontSize={14} width="$full">
+                      <Text
+                        variant="primary"
+                        width="$full"
+                        fontSize={fontSize.text}>
                         Добавить готовую тренировку
                       </Text>
                     </HStack>
@@ -148,7 +156,10 @@ const Calendar = () => {
                   <TouchableOpacity
                     onPress={() => setAddTraining(prev => !prev)}>
                     <HStack padding={10}>
-                      <Text variant="primary" fontSize={14} width="$full">
+                      <Text
+                        variant="primary"
+                        width="$full"
+                        fontSize={fontSize.text}>
                         Добавить новую тренировку
                       </Text>
                     </HStack>
@@ -157,7 +168,10 @@ const Calendar = () => {
                   <TouchableOpacity
                     onPress={() => setAddTraining(prev => !prev)}>
                     <HStack padding={10}>
-                      <Text variant="primary" fontSize={14} width="$full">
+                      <Text
+                        variant="primary"
+                        width="$full"
+                        fontSize={fontSize.text}>
                         Добавить тренировку из пройденных
                       </Text>
                     </HStack>
@@ -168,7 +182,7 @@ const Calendar = () => {
             <VStack paddingHorizontal={10} zIndex={100} elevation={2}>
               {!addTraining && !events.length && (
                 <HStack>
-                  <Text variant="primary">
+                  <Text variant="primary" fontSize={fontSize.title}>
                     {t('private.calendarScreen.tips')}
                   </Text>
                 </HStack>

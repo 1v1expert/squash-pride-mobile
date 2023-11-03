@@ -8,6 +8,7 @@ import {Dimensions, TouchableOpacity} from 'react-native';
 import Check from '../../../assets/svg/check';
 // import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 type ExerciseItemProps = {
@@ -35,7 +36,7 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
         <VStack space="md" flex={1}>
           <Text
             variant="primary"
-            fontSize={18}
+            fontSize={fontSize.body}
             fontWeight="$bold"
             flexWrap="wrap"
             alignItems="center">
@@ -44,7 +45,7 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
           <HStack justifyContent="space-between">
             <Text
               variant="primary"
-              fontSize={9}
+              fontSize={fontSize.body}
               flexWrap="wrap"
               lineHeight={12}
               width="70%"

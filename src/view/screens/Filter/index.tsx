@@ -19,6 +19,8 @@ import LevelAccordion from '../../components/LevelAccordion';
 import GroupAccordion from '../../components/GroupAccordion';
 import {useTraining} from '../../../bus/training';
 import {Book} from '../../navigation/book';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
 
 type FilterForm = {
   players: number;
@@ -100,13 +102,15 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
       <HStack
         width="$full"
         bgColor="#1B1E20"
-        height={75}
+        height={perfectSize(75)}
         alignItems="center"
         justifyContent="flex-end"
         paddingHorizontal={50}
         space="xl">
         <TouchableOpacity onPress={handleSubmit(submit)}>
-          <Text variant="secondary">{t('private.filter.saveButton')}</Text>
+          <Text variant="secondary" fontSize={fontSize.text}>
+            {t('private.filter.saveButton')}
+          </Text>
         </TouchableOpacity>
       </HStack>
     </ViewContainer>

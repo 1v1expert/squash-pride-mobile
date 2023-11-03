@@ -1,6 +1,7 @@
 import {Box, HStack, Text, VStack} from '@gluestack-ui/themed';
 import React, {FC, PropsWithChildren, ReactNode} from 'react';
 import SafeAreaLayout from '../SafeAreaLayout';
+import {fontSize} from '../../../assets/fontsSize';
 
 type ViewContainerProps = {
   header?: ReactNode;
@@ -42,7 +43,11 @@ const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
               {leftHeaderButton}
             </HStack>
             <VStack justifyContent="center">
-              {title && <Text variant="primary">{title}</Text>}
+              {title && (
+                <Text variant="primary" fontSize={fontSize.title}>
+                  {title}
+                </Text>
+              )}
               {header}
             </VStack>
             <HStack minHeight={50} minWidth={50}>

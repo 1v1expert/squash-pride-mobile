@@ -9,6 +9,7 @@ import {useUser} from '../../../bus/user';
 
 import CustomWeekCalendar from '../../components/CustomWeekCalendar';
 import {Dimensions} from 'react-native';
+import {fontSize} from '../../../assets/fontsSize';
 
 const height = Dimensions.get('screen').height;
 
@@ -27,7 +28,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             alignItems="center"
             paddingHorizontal={20}
             space="xs">
-            <Text variant="primary">
+            <Text variant="primary" fontSize={fontSize.title}>
               {t('private.homeScreen.title')} {user.first_name}!
             </Text>
             <Box bgColor="#F7A936" width="$full" height={2} />
