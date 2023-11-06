@@ -24,12 +24,19 @@ const CustomCalendarDay = (item: CustomCalendarDayProps) => {
     }
   }, [state]);
 
+  const onDayPress = () => {
+    state === 'disabled' && console.log('fetch event', date?.month);
+    onPress?.(date);
+  };
+
   return (
-    <TouchableOpacity onPress={() => onPress?.(date)} style={styles.container}>
+    <TouchableOpacity onPress={onDayPress} style={styles.container}>
       <View
         bgColor={
           marking?.selected ? 'rgba(251, 197, 110, 0.30)' : 'transparent'
         }
+        borderBottomColor="#F7AB39"
+        borderBottomWidth={marking?.marked ? 1 : 0}
         width="$full"
         height="$full"
         alignItems="center"

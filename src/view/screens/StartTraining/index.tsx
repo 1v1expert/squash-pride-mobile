@@ -22,59 +22,59 @@ import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
 import {useTraining} from '../../../bus/training';
 import Player from '../../components/Player';
-import {ExerciseType} from '../../../bus/training/types';
+// import {ExerciseType} from '../../../bus/training/types';
 import {Book} from '../../navigation/book';
 import {fontSize} from '../../../assets/fontsSize';
 
-const DATA: ExerciseType[] = [
-  {
-    uid: '17aa85d7-042c-4343-a980-sadasasdas',
-    video:
-      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
-    groups: ['Drive1', 'Cross', 'Boost'],
-    level: 'amateur',
-    players: 2,
-    description: 'Drive1',
-  },
-  {
-    uid: '17aa85d7-042c-4343-a980-asdasdas',
-    video:
-      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
-    groups: ['Drive2', 'Cross', 'Boost'],
-    level: 'amateur',
-    players: 2,
-    description: 'Drive2',
-  },
-  {
-    uid: '17aa85d7-042c-4343-a980-213123asdas',
-    video:
-      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
-    groups: ['Drive3', 'Cross', 'Boost'],
-    level: 'amateur',
-    players: 2,
-    description: 'Drive3',
-  },
-  {
-    uid: '17aa85d7-042c-4343-a980-12321sadas',
-    video:
-      'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
-    groups: ['Drive4', 'Cross', 'Boost'],
-    level: 'amateur',
-    players: 2,
-    description: 'Drive4',
-  },
-];
+// const DATA: ExerciseType[] = [
+//   {
+//     uid: '17aa85d7-042c-4343-a980-sadasasdas',
+//     video:
+//       'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+//     groups: ['Drive1', 'Cross', 'Boost'],
+//     level: 'amateur',
+//     players: 2,
+//     description: 'Drive1',
+//   },
+//   {
+//     uid: '17aa85d7-042c-4343-a980-asdasdas',
+//     video:
+//       'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+//     groups: ['Drive2', 'Cross', 'Boost'],
+//     level: 'amateur',
+//     players: 2,
+//     description: 'Drive2',
+//   },
+//   {
+//     uid: '17aa85d7-042c-4343-a980-213123asdas',
+//     video:
+//       'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+//     groups: ['Drive3', 'Cross', 'Boost'],
+//     level: 'amateur',
+//     players: 2,
+//     description: 'Drive3',
+//   },
+//   {
+//     uid: '17aa85d7-042c-4343-a980-12321sadas',
+//     video:
+//       'https://squash-pride.ru/api/media/drive-boost-cross-2players-amat.MOV',
+//     groups: ['Drive4', 'Cross', 'Boost'],
+//     level: 'amateur',
+//     players: 2,
+//     description: 'Drive4',
+//   },
+// ];
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters, stackOfExercises, resetStack} = useTraining();
+  const {filters, stackOfExercises, resetStack, exercises} = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
   const [width] = useState(Dimensions.get('screen').width);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
-  const mainStack = !stackOfExercises.length ? DATA : stackOfExercises;
+  const mainStack = !stackOfExercises.length ? exercises : stackOfExercises;
 
   const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffset = e.nativeEvent.contentOffset;
@@ -82,7 +82,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     const index = Math.ceil(contentOffset.x / viewSize.width);
     index !== currentIndex && setCurrentTime(0);
     setTimeout(() => {
-      index >= 0 && index < 4 && setCurrentIndex(index);
+      index >= 0 && index < mainStack.length && setCurrentIndex(index);
     }, 100);
   };
   const scrollToIndex = async (index: number) => {
@@ -128,6 +128,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           currentTime={currentTime}
           setCurrentTime={setCurrentTime}
           setPosition={setCurrentIndex}
+          length={mainStack.length}
         />
       )}
       <FlatList

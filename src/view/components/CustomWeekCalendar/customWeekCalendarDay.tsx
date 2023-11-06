@@ -32,7 +32,7 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
         width="$full"
         height="$full"
         alignItems="center"
-        borderBottomWidth={marking?.selected ? 2 : 0}
+        borderBottomWidth={marking?.marked ? 2 : 0}
         borderColor="#F7A936">
         <Text variant="primary" color={textColor()} fontSize={fontSize.title}>
           {date?.day}

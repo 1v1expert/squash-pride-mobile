@@ -29,12 +29,17 @@ import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
-const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
+const CreateTraining: FC<HomeScreensStackScreenProps> = ({
+  navigation,
+  route,
+}) => {
   const {bottom} = useSafeAreaInsets();
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
   const {filters, exercises, isLoading, stackOfExercises} = useTraining();
   const [state, setState] = useState(false);
+  const from = route.params.from;
+  console.log('TabNavigatorParamList', from);
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
   };
@@ -118,8 +123,8 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         </HStack>
         <HStack width="$full">
           <CustomButton
-            title="Начать тренировку"
-            onPress={() => [navigate(Book.StartTraining)]}
+            title={from ? 'Запланировать' : 'Начать тренировку'}
+            onPress={() => [navigate(Book.StartTraining, {from})]}
             disabled={stackOfExercises.length < 4}
           />
         </HStack>

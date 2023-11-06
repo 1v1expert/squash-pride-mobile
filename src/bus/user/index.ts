@@ -28,10 +28,13 @@ export const useUser = () => {
     clearTokens();
     dispatch(userActions.setAuthorize(false));
   };
-  const tokenRefresh = async () => {
+  const tokenRefresh = async (callback?: () => void) => {
     const token = await load(refreshToken);
 
-    token && dispatch(refresh({refreshToken: token})).unwrap();
+    token &&
+      dispatch(refresh({refreshToken: token}))
+        .unwrap()
+        .then(() => callback && callback());
   };
   const fetchUser = async () => {
     const access_token = await load(accessToken);
@@ -47,7 +50,7 @@ export const useUser = () => {
     isAuthorized: useSelector(({user}) => user.isAuthorized),
     login: (values: LoginForm) => dispatch(login(values)).unwrap(),
     register: (values: RegisterForm) => dispatch(register(values)).unwrap(),
-    fetchUser,
+    fetchUser: () => tokenRefresh(fetchUser),
     setAuthorize,
     logout,
     tokenRefresh,

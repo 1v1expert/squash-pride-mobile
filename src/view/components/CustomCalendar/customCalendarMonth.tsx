@@ -33,6 +33,7 @@ const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
       }
       action();
       setTimeUnit('days');
+      console.log('fetch event', month);
     },
     [action, currentMonth, currentYear, setSelected, setTimeUnit],
   );

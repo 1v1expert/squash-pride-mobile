@@ -22,6 +22,7 @@ type StackPlayer = {
   currentTime: number;
   setCurrentTime: (e: number) => void;
   setPosition: (e: number) => void;
+  length: number;
 };
 const StackPlayer = ({
   item,
@@ -31,6 +32,7 @@ const StackPlayer = ({
   currentTime,
   setCurrentTime,
   setPosition,
+  length,
 }: StackPlayer) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
@@ -139,7 +141,7 @@ const StackPlayer = ({
           onPress={next}
           disabled={position === 3}
           style={styles.goToNext}>
-          <Next color={position === 3 ? '#fff' : '#F7A936'} />
+          <Next color={position === length - 1 ? '#fff' : '#F7A936'} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={prev}

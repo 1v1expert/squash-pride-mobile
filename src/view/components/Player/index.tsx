@@ -18,6 +18,7 @@ type PlayerProps = {
   currentTime: number;
   setCurrentTime: (e: number) => void;
   setPosition: (e: number) => void;
+  length: number;
 };
 const Player = ({
   item,
@@ -26,6 +27,7 @@ const Player = ({
   currentTime,
   setCurrentTime,
   setPosition,
+  length,
 }: PlayerProps) => {
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const [videoStarted, setVideoStarted] = useState(false);
@@ -130,6 +132,7 @@ const Player = ({
           currentTime={currentTime}
           setCurrentTime={setCurrentTime}
           setPosition={setPosition}
+          length={length}
         />
       )}
     </>

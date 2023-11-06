@@ -14,10 +14,12 @@ import DateTimePicker, {
 import {useNavigation} from '@react-navigation/native';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import {fontSize} from '../../../assets/fontsSize';
+import {Book} from '../../navigation/book';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
-  const navigation = useNavigation<HomeScreensStackScreenProps['navigation']>();
+  const {addListener, navigate} =
+    useNavigation<HomeScreensStackScreenProps['navigation']>();
   const {selected, events, setSelected, setTimeUnit} = useCalendar();
   const [addTraining, setAddTraining] = useState(false);
   const [timer, setTimer] = useState(false);
@@ -33,13 +35,13 @@ const Calendar = () => {
   );
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
+    const unsubscribe = addListener('blur', () => {
       setTimeUnit('days');
       hideAll();
     });
 
     return unsubscribe;
-  }, [navigation, setTimeUnit]);
+  }, [addListener, setTimeUnit]);
 
   const changeTime = (e: DateTimePickerEvent) => {
     Platform.OS === 'android' && setTimer(prev => !prev);
@@ -57,6 +59,18 @@ const Calendar = () => {
     setAddTraining(false);
     setTimer(false);
   };
+  const addReadyTraining = () => {
+    setAddTraining(prev => !prev);
+    navigate(Book.Filter, {location: Book.StartTraining, from: Book.Calendar});
+  };
+  const addNewTraining = () => {
+    setAddTraining(prev => !prev);
+    navigate(Book.Filter, {
+      location: 'CreateTrainingWithoutTab',
+      from: Book.Calendar,
+    });
+  };
+  // const addDoneTraining = () => {};
 
   return (
     <Box flex={1} bgColor="#131517">
@@ -141,8 +155,7 @@ const Calendar = () => {
 
               <Collapsible collapsed={!addTraining}>
                 <VStack width="$full">
-                  <TouchableOpacity
-                    onPress={() => setAddTraining(prev => !prev)}>
+                  <TouchableOpacity onPress={addReadyTraining}>
                     <HStack padding={10}>
                       <Text
                         variant="primary"
@@ -153,8 +166,7 @@ const Calendar = () => {
                     </HStack>
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() => setAddTraining(prev => !prev)}>
+                  <TouchableOpacity onPress={addNewTraining}>
                     <HStack padding={10}>
                       <Text
                         variant="primary"
