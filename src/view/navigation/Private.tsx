@@ -8,11 +8,12 @@ import CreateTraining from '../screens/CreateTraining';
 import ExerciseMediaViewer from '../screens/ExerciseMediaViewer';
 import {useUser} from '../../bus/user';
 import {useTraining} from '../../bus/training';
+import IsPaid from '../screens/IsPaid';
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
 export const Private: FC = () => {
-  const {fetchUser} = useUser();
+  const {fetchUser, user} = useUser();
   const {fetchGroup, fetchRules, fetchTechniques, resetStack} = useTraining();
 
   useEffect(() => {
@@ -28,8 +29,16 @@ export const Private: FC = () => {
   }, []);
 
   return (
-    <Stack.Navigator initialRouteName={Book.TabNavigator}>
+    <Stack.Navigator
+      initialRouteName={!user.is_paid ? Book.IsPaid : Book.TabNavigator}>
       <Stack.Group>
+        {!user.is_paid && (
+          <Stack.Screen
+            name={Book.IsPaid}
+            component={IsPaid}
+            options={{headerShown: false}}
+          />
+        )}
         <Stack.Screen
           name={Book.TabNavigator}
           component={TabNavigator}

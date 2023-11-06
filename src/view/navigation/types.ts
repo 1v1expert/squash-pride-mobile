@@ -15,6 +15,7 @@ export type PrivateStackParamList = {
   TabNavigator: undefined;
   CreateTrainingWithoutTab: undefined;
   ExerciseMediaViewer: {item: ExerciseType};
+  IsPaid: undefined;
 };
 
 export type TabNavigatorParamList = {

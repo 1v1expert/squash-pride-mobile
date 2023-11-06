@@ -26,4 +26,5 @@ export const images = {
   serve: require('./images/serve.png'),
   shot: require('./images/shot.png'),
   fullScreen: require('./images/full_screen.png'),
+  crown: require('./images/crown.png'),
 };

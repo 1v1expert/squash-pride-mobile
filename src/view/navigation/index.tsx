@@ -14,7 +14,7 @@ export const Navigation: FC = () => {
     await tokenRefresh().then(() => {
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 2000);
     });
   };
 
