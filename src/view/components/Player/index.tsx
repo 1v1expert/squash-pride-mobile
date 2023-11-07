@@ -1,4 +1,4 @@
-import {Center, Image, Text} from '@gluestack-ui/themed';
+import {Box, Center, Image, Spinner, Text} from '@gluestack-ui/themed';
 import {HStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {Dimensions, Pressable, StyleSheet} from 'react-native';
@@ -33,6 +33,7 @@ const Player = ({
   const [videoStarted, setVideoStarted] = useState(false);
   const [titleIsVisible, setTitleIsVisible] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     setVideoStarted(false);
@@ -88,7 +89,9 @@ const Player = ({
             onLoadStart={() => [
               setTitleIsVisible(false),
               setVideoStarted(true),
+              setLoader(true),
             ]}
+            onBuffer={event => setLoader(event.isBuffering)}
             onLoad={() => videoPlayerRef.current?.seek(currentTime)}
             onEnd={() => setCurrentTime(0)}
             customStyles={{
@@ -103,6 +106,11 @@ const Player = ({
               seekBarKnob: {backgroundColor: '#FBC56E'},
             }}
           />
+        )}
+        {loader && (
+          <Box position="absolute">
+            <Spinner color="#F7AB39" />
+          </Box>
         )}
         {titleIsVisible && item && (
           <Center position="absolute" bottom={10} left={10}>

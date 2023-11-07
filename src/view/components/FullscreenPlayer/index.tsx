@@ -1,12 +1,5 @@
-import {
-  // CloseIcon,
-  Image,
-} from '@gluestack-ui/themed';
-import {
-  Box,
-  //  Icon,
-  VStack,
-} from '@gluestack-ui/themed';
+import {Image, Spinner} from '@gluestack-ui/themed';
+import {Box, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {Dimensions, Pressable, StyleSheet} from 'react-native';
 import VideoPlayer from 'react-native-video-player';
@@ -32,6 +25,7 @@ const FullscreenPlayer = ({
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
   const [videoStarted, setVideoStarted] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
 
@@ -95,17 +89,14 @@ const FullscreenPlayer = ({
             },
           ]}
           pauseOnPress
-          onBuffer={() => {
-            console.log('buffer');
+          onLoadStart={() => setLoader(true)}
+          onBuffer={event => {
             setVideoStarted(true);
+            setLoader(event.isBuffering);
           }}
           onLoad={() => setVideoStarted(prev => !prev)}
           hideControlsOnStart={false}
           customStyles={{
-            seekBar: {
-              // backgroundColor: 'red',
-              // paddingHorizontal: 50,
-            },
             controls: {
               paddingRight: 100,
               paddingLeft: 50,
@@ -119,9 +110,11 @@ const FullscreenPlayer = ({
           onEnd={closeModal}
         />
       </VStack>
-      {/* <Pressable onPress={closeModal} style={styles.closeButton}>
-        <Icon as={CloseIcon} width={30} height={30} color="#fff" />
-      </Pressable> */}
+      {loader && (
+        <Box position="absolute">
+          <Spinner color="#F7AB39" />
+        </Box>
+      )}
       <Pressable onPress={closeModal} style={styles.defaultScreenButton}>
         <Image
           source={images.fullScreen}

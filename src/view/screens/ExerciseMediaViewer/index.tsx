@@ -1,7 +1,9 @@
 import {
   ArrowLeftIcon,
+  Box,
   HStack,
   ScrollView,
+  Spinner,
   Text,
   VStack,
   View,
@@ -31,14 +33,17 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const {item} = route.params;
   const {bottom} = useSafeAreaInsets();
   const {t} = useCustomTranslation();
+  const videoPlayerRef = useRef<VideoPlayer>(null);
   const {filters, addToStack, removeFromStack, stackOfExercises} =
     useTraining();
+
+  const [loader, setLoader] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
   const [portraitWidth] = useState(Dimensions.get('screen').width);
+
   const selected = stackOfExercises.filter(e => e.uid === item?.uid).length > 0;
-  const videoPlayerRef = useRef<VideoPlayer>(null);
 
   const onPress = () => {
     if (item) {
@@ -100,10 +105,14 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                   width: portraitWidth,
                 },
               ]}
+              onBuffer={event => setLoader(event.isBuffering)}
               resizeMode="stretch"
               pauseOnPress
               disableFullscreen
-              onLoadStart={() => setVideoStarted(true)}
+              onLoadStart={() => {
+                setVideoStarted(true);
+                setLoader(true);
+              }}
               onEnd={() => setCurrentTime(0.001)}
               customStyles={{
                 controls: {
@@ -117,6 +126,11 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                 seekBarKnob: {backgroundColor: '#FBC56E'},
               }}
             />
+            {loader && (
+              <Box position="absolute">
+                <Spinner color="#F7AB39" />
+              </Box>
+            )}
             {videoStarted && (
               <Pressable onPress={openModal} style={styles.fullScreenButton}>
                 <Image
@@ -151,7 +165,6 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                   t(`private.optionsScreen.step2.${filters.level}`)}
               </Text>
             </HStack>
-
             <HStack width="$full">
               <CustomButton
                 title={selected ? 'Убрать' : 'Добавить'}
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
   },
   fullScreenButton: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 5,
     right: 10,
   },
 });

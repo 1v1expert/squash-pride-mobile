@@ -6,7 +6,7 @@ import {
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC, lazy, useState} from 'react';
+import React, {FC, useState} from 'react';
 
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
@@ -21,8 +21,7 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
 import {useTraining} from '../../../bus/training';
-// import Player from '../../components/Player';
-// import {ExerciseType} from '../../../bus/training/types';
+import Player from '../../components/Player';
 import {Book} from '../../navigation/book';
 import {fontSize} from '../../../assets/fontsSize';
 
@@ -65,7 +64,6 @@ import {fontSize} from '../../../assets/fontsSize';
 //   },
 // ];
 
-const VideoViewer = lazy(() => import('../../components/Player'));
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
@@ -124,7 +122,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           />
         </HStack>
         {mainStack.length ? (
-          <VideoViewer
+          <Player
             item={mainStack[currentIndex]}
             position={currentIndex}
             scrollToIndex={scrollToIndex}

@@ -1,4 +1,12 @@
-import {Center, Image, Modal, Text, VStack} from '@gluestack-ui/themed';
+import {
+  Box,
+  Center,
+  Image,
+  Modal,
+  Spinner,
+  Text,
+  VStack,
+} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
@@ -37,6 +45,7 @@ const StackPlayer = ({
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
   const [titleIsVisible, setTitleIsVisible] = useState(true);
+  const [loader, setLoader] = useState(false);
 
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
   useEffect(() => {
@@ -101,7 +110,11 @@ const StackPlayer = ({
             ]}
             resizeMode="stretch"
             pauseOnPress
-            onLoadStart={() => setTitleIsVisible(false)}
+            onBuffer={event => setLoader(event.isBuffering)}
+            onLoadStart={() => {
+              setTitleIsVisible(false);
+              setLoader(true);
+            }}
             onLoad={() =>
               currentTime &&
               videoFullScreenPlayerRef?.current?.seek(currentTime)
@@ -120,6 +133,11 @@ const StackPlayer = ({
             }}
             onEnd={closeModal}
           />
+        )}
+        {loader && (
+          <Box position="absolute">
+            <Spinner color="#F7AB39" />
+          </Box>
         )}
         {titleIsVisible && item && (
           <Center position="absolute" bottom={20} left={50}>
@@ -168,12 +186,12 @@ const styles = StyleSheet.create({
   },
   goToNext: {
     position: 'absolute',
-    bottom: '50%',
+    // bottom: '50%',
     right: 50,
   },
   goToPrev: {
     position: 'absolute',
-    bottom: '50%',
+    // bottom: '50%',
     left: 50,
   },
 });
