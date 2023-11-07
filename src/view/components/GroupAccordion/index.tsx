@@ -44,7 +44,7 @@ const GroupAccordion = ({
   useEffect(() => {
     error && setCollapsed(false);
   }, [error]);
-  console.log('error', error);
+
   return (
     <Controller
       control={control}

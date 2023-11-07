@@ -39,7 +39,7 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({
   const {filters, exercises, isLoading, stackOfExercises} = useTraining();
   const [state, setState] = useState(false);
   const from = route.params.from;
-  console.log('TabNavigatorParamList', from);
+
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
   };

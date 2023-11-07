@@ -34,6 +34,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         return (
           <VStack>
             <RNPickerSelect
+              value={value}
               onOpen={() => setFocus(true)}
               onClose={() => setFocus(false)}
               useNativeAndroidPickerStyle={false}

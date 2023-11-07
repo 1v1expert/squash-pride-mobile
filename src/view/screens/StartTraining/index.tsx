@@ -6,7 +6,7 @@ import {
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC, useState} from 'react';
+import React, {FC, lazy, useState} from 'react';
 
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
@@ -21,7 +21,7 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
 import {useTraining} from '../../../bus/training';
-import Player from '../../components/Player';
+// import Player from '../../components/Player';
 // import {ExerciseType} from '../../../bus/training/types';
 import {Book} from '../../navigation/book';
 import {fontSize} from '../../../assets/fontsSize';
@@ -65,6 +65,7 @@ import {fontSize} from '../../../assets/fontsSize';
 //   },
 // ];
 
+const VideoViewer = lazy(() => import('../../components/Player'));
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
@@ -86,9 +87,10 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     }, 100);
   };
   const scrollToIndex = async (index: number) => {
-    scrollRef.current?.scrollToIndex({index});
+    mainStack.length && scrollRef.current?.scrollToIndex({index});
   };
   const titles = mainStack.map(e => e.groups[0]);
+
   return (
     <ViewContainer
       title={t('private.startTrainingScreen.title')}
@@ -108,67 +110,71 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           width={50}
         />
       }>
-      <HStack
-        alignItems="center"
-        justifyContent="center"
-        paddingHorizontal={20}
-        paddingVertical={10}>
-        <Indicator
-          items={titles}
-          selected={currentIndex}
-          length={mainStack.length}
-          space="4xl"
+      <>
+        <HStack
+          alignItems="center"
+          justifyContent="center"
+          paddingHorizontal={20}
+          paddingVertical={10}>
+          <Indicator
+            items={titles}
+            selected={currentIndex}
+            length={mainStack.length}
+            space="4xl"
+          />
+        </HStack>
+        {mainStack.length ? (
+          <VideoViewer
+            item={mainStack[currentIndex]}
+            position={currentIndex}
+            scrollToIndex={scrollToIndex}
+            currentTime={currentTime}
+            setCurrentTime={setCurrentTime}
+            setPosition={setCurrentIndex}
+            length={mainStack.length}
+          />
+        ) : null}
+        <FlatList
+          ref={scrollRef}
+          horizontal
+          data={mainStack}
+          onMomentumScrollEnd={onScrollEnd}
+          renderItem={({item}) => {
+            return (
+              <VStack
+                flex={1}
+                justifyContent="space-between"
+                alignItems="center"
+                width={width}>
+                <ScrollView>
+                  <Text variant="primary" p={10} fontSize={fontSize.text}>
+                    {item.description}
+                  </Text>
+                </ScrollView>
+              </VStack>
+            );
+          }}
+          pagingEnabled
+          keyExtractor={item => item.uid}
+          showsHorizontalScrollIndicator={false}
+          snapToAlignment="start"
+          decelerationRate={'normal'}
         />
-      </HStack>
-      {mainStack && (
-        <Player
-          item={mainStack[currentIndex]}
-          position={currentIndex}
-          scrollToIndex={scrollToIndex}
-          currentTime={currentTime}
-          setCurrentTime={setCurrentTime}
-          setPosition={setCurrentIndex}
-          length={mainStack.length}
-        />
-      )}
-      <FlatList
-        ref={scrollRef}
-        horizontal
-        data={mainStack}
-        onMomentumScrollEnd={onScrollEnd}
-        renderItem={({item}) => {
-          return (
-            <VStack
-              flex={1}
-              justifyContent="space-between"
-              alignItems="center"
-              width={width}>
-              <ScrollView>
-                <Text variant="primary" p={10} fontSize={fontSize.text}>
-                  {item.description}
-                </Text>
-              </ScrollView>
-            </VStack>
-          );
-        }}
-        pagingEnabled
-        keyExtractor={item => item.uid}
-        showsHorizontalScrollIndicator={false}
-        snapToAlignment="start"
-        decelerationRate={'normal'}
-      />
-      <HStack
-        width="$full"
-        bgColor="#1B1E20"
-        height={75}
-        alignItems="center"
-        paddingHorizontal={30}
-        space="xl">
-        {filters.players && <PeopleCounter amountOfPeople={filters.players} />}
-        <Text variant="primary">
-          {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
-        </Text>
-      </HStack>
+        <HStack
+          width="$full"
+          bgColor="#1B1E20"
+          height={75}
+          alignItems="center"
+          paddingHorizontal={30}
+          space="xl">
+          {filters.players && (
+            <PeopleCounter amountOfPeople={filters.players} />
+          )}
+          <Text variant="primary">
+            {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
+          </Text>
+        </HStack>
+      </>
     </ViewContainer>
   );
 };

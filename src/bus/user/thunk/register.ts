@@ -14,7 +14,6 @@ export const register = createAsyncThunk<UserData, RegisterForm>(
 
       return data;
     } catch (e: any) {
-      console.log('regis', e);
       return rejectWithValue(e.response?.data || 'Something is wrong');
     }
   },

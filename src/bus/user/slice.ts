@@ -13,7 +13,7 @@ const initialState: types.UserState = {
     first_name: '',
     birth_year: null,
     gender: null,
-    country: '',
+    country: null,
     is_paid: null,
   },
 };
