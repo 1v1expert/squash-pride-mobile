@@ -1,11 +1,10 @@
-import {t} from 'i18next';
 import * as yup from 'yup';
 
 export const loginSchema = yup.object({
   username: yup
     .string()
     .email('Please enter a valid email address')
-    .required(t('public.loginScreen.requiredError')),
-  password: yup.string().required(t('public.loginScreen.requiredError')),
+    .required('public.loginScreen.requiredError'),
+  password: yup.string().required('public.loginScreen.requiredError'),
   rememberMe: yup.boolean(),
 });

@@ -5,6 +5,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 import RNPickerSelect, {Item} from 'react-native-picker-select';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {fontSize} from '../../../assets/fontsSize';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 type CustomSelectProps = {
   placeholder?: string;
@@ -24,6 +25,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
 }) => {
   const {control} = useFormContext();
   const [focus, setFocus] = useState(false);
+  const {t} = useCustomTranslation();
 
   return (
     <Controller
@@ -75,7 +77,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
                 variant="primary"
                 color={value ? '#F00' : '#F7A936'}
                 fontSize={fontSize.title}>
-                {error && error.message}
+                {error && t(error.message)}
               </Text>
             </VStack>
           </VStack>

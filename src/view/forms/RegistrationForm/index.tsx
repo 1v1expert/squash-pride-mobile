@@ -13,6 +13,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomInput from '../../components/CustomInput';
 import CustomSelect from '../../components/CustomSelect';
 import CustomButton from '../../components/CustomButton';
+import CustomCountryPicker from '../../components/CountryPicker';
 
 const height = Dimensions.get('screen').height;
 
@@ -107,11 +108,10 @@ const RegistrationForm = () => {
               {label: t('gender.notSpecified'), value: 2},
             ]}
           />
-          <CustomInput
-            name="country"
+          <CustomCountryPicker
+            name={'country'}
             placeholder={t('public.registrationScreen.countryInputPlaceholder')}
             error={errors.country}
-            variant="secondary"
           />
         </VStack>
         <VStack
