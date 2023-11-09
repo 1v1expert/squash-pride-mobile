@@ -1,12 +1,12 @@
 import {
   ArrowLeftIcon,
-  CheckIcon,
+  CalendarDaysIcon,
   HStack,
   ScrollView,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
@@ -22,8 +22,10 @@ import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
 import {useTraining} from '../../../bus/training';
 import Player from '../../components/Player';
-import {Book} from '../../navigation/book';
+// import {Book} from '../../navigation/book';
 import {fontSize} from '../../../assets/fontsSize';
+import CalendarModal from '../../components/CalendarModal';
+import {useCalendar} from '../../../bus/calendar';
 
 // const DATA: ExerciseType[] = [
 //   {
@@ -65,13 +67,23 @@ import {fontSize} from '../../../assets/fontsSize';
 // ];
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {goBack, navigate} = navigation;
+  const {
+    goBack,
+    //  navigate
+  } = navigation;
   const {t} = useCustomTranslation();
-  const {filters, stackOfExercises, resetStack, exercises} = useTraining();
+  const {
+    filters,
+    stackOfExercises,
+    //  resetStack,
+    exercises,
+  } = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
+  const {setTimeUnit} = useCalendar();
   const [width] = useState(Dimensions.get('screen').width);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [calendarIsVisible, setCalendarIsVisible] = useState(false);
 
   const mainStack = !stackOfExercises.length ? exercises : stackOfExercises;
 
@@ -89,6 +101,14 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   };
   const titles = mainStack.map(e => e.groups[0]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      setTimeUnit('days');
+    });
+
+    return unsubscribe;
+  }, [navigation, setTimeUnit]);
+
   return (
     <ViewContainer
       title={t('private.startTrainingScreen.title')}
@@ -102,77 +122,78 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
       }
       rightHeaderButton={
         <CustomButton
-          iconLeft={CheckIcon}
+          iconLeft={CalendarDaysIcon}
           bgColor="#25282D"
-          onPress={() => [resetStack(), navigate(Book.Home)]}
+          // onPress={() => [resetStack(), navigate(Book.Home)]}
+          onPress={() => setCalendarIsVisible(true)}
           width={50}
         />
       }>
-      <>
-        <HStack
-          alignItems="center"
-          justifyContent="center"
-          paddingHorizontal={20}
-          paddingVertical={10}>
-          <Indicator
-            items={titles}
-            selected={currentIndex}
-            length={mainStack.length}
-            space="4xl"
-          />
-        </HStack>
-        {mainStack.length ? (
-          <Player
-            item={mainStack[currentIndex]}
-            position={currentIndex}
-            scrollToIndex={scrollToIndex}
-            currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
-            setPosition={setCurrentIndex}
-            length={mainStack.length}
-          />
-        ) : null}
-        <FlatList
-          ref={scrollRef}
-          horizontal
-          data={mainStack}
-          onMomentumScrollEnd={onScrollEnd}
-          renderItem={({item}) => {
-            return (
-              <VStack
-                flex={1}
-                justifyContent="space-between"
-                alignItems="center"
-                width={width}>
-                <ScrollView>
-                  <Text variant="primary" p={10} fontSize={fontSize.text}>
-                    {item.description}
-                  </Text>
-                </ScrollView>
-              </VStack>
-            );
-          }}
-          pagingEnabled
-          keyExtractor={item => item.uid}
-          showsHorizontalScrollIndicator={false}
-          snapToAlignment="start"
-          decelerationRate={'normal'}
+      <HStack
+        alignItems="center"
+        justifyContent="center"
+        paddingHorizontal={20}
+        paddingVertical={10}>
+        <Indicator
+          items={titles}
+          selected={currentIndex}
+          length={mainStack.length}
+          space="4xl"
         />
-        <HStack
-          width="$full"
-          bgColor="#1B1E20"
-          height={75}
-          alignItems="center"
-          paddingHorizontal={30}
-          space="xl">
-          {filters.players && (
-            <PeopleCounter amountOfPeople={filters.players} />
-          )}
-          <Text variant="primary">
-            {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
-          </Text>
-        </HStack>
-      </>
+      </HStack>
+      {mainStack.length ? (
+        <Player
+          item={mainStack[currentIndex]}
+          position={currentIndex}
+          scrollToIndex={scrollToIndex}
+          currentTime={currentTime}
+          setCurrentTime={setCurrentTime}
+          setPosition={setCurrentIndex}
+          length={mainStack.length}
+        />
+      ) : null}
+      <FlatList
+        ref={scrollRef}
+        horizontal
+        data={mainStack}
+        onMomentumScrollEnd={onScrollEnd}
+        renderItem={({item}) => {
+          return (
+            <VStack
+              flex={1}
+              justifyContent="space-between"
+              alignItems="center"
+              width={width}>
+              <ScrollView>
+                <Text variant="primary" p={10} fontSize={fontSize.text}>
+                  {item.description}
+                </Text>
+              </ScrollView>
+            </VStack>
+          );
+        }}
+        pagingEnabled
+        keyExtractor={item => item.uid}
+        showsHorizontalScrollIndicator={false}
+        snapToAlignment="start"
+        decelerationRate={'normal'}
+      />
+      <HStack
+        width="$full"
+        bgColor="#1B1E20"
+        height={75}
+        alignItems="center"
+        paddingHorizontal={30}
+        space="xl">
+        {filters.players && <PeopleCounter amountOfPeople={filters.players} />}
+        <Text variant="primary">
+          {filters.level && t(`private.optionsScreen.step2.${filters.level}`)}
+        </Text>
+      </HStack>
+      <CalendarModal
+        visible={calendarIsVisible}
+        setVisible={setCalendarIsVisible}
+      />
     </ViewContainer>
   );
 };

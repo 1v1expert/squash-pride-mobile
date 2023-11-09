@@ -21,6 +21,7 @@ type CustomButtonProps = {
   borderRadius?: number;
   disabled?: boolean;
   mainIcon?: any;
+  outline?: boolean;
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -36,6 +37,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   borderRadius = 50,
   disabled,
   mainIcon,
+  outline,
 }) => {
   const [pressed, setPressed] = useState(false);
 
@@ -50,6 +52,8 @@ const CustomButton: FC<CustomButtonProps> = ({
     container: {
       borderRadius: borderRadius,
       opacity: disabled ? 0.5 : 1,
+      borderColor: '#F7AA37',
+      borderWidth: outline ? 1 : 0,
     },
   };
   return (

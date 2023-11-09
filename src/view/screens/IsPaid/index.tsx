@@ -44,7 +44,6 @@ const IsPaid = ({navigation}: any) => {
       }
 
       appState.current = nextAppState;
-      console.log('AppState', appState.current);
     });
 
     return () => {

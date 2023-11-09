@@ -18,11 +18,10 @@ import {Book} from '../../navigation/book';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
-  const {addListener, navigate} =
-    useNavigation<HomeScreensStackScreenProps['navigation']>();
+  const navigation = useNavigation<HomeScreensStackScreenProps['navigation']>();
   const {selected, events, setSelected, setTimeUnit} = useCalendar();
   const [addTraining, setAddTraining] = useState(false);
-  const [timer, setTimer] = useState(false);
+  const [time, setTime] = useState(false);
   const currentMonth = MONTHS[new Date(selected).getMonth()];
   const currentDay = new Date(selected).getDate();
   const currentMinutes =
@@ -35,37 +34,40 @@ const Calendar = () => {
   );
 
   useEffect(() => {
-    const unsubscribe = addListener('blur', () => {
+    const unsubscribe = navigation.addListener('blur', () => {
       setTimeUnit('days');
       hideAll();
     });
 
     return unsubscribe;
-  }, [addListener, setTimeUnit]);
+  }, [navigation, setTimeUnit]);
 
   const changeTime = (e: DateTimePickerEvent) => {
-    Platform.OS === 'android' && setTimer(prev => !prev);
+    Platform.OS === 'android' && setTime(prev => !prev);
     setSelected(e.nativeEvent.timestamp);
   };
-  const setVisibleTimerPopup = () => {
-    setTimer(prev => !prev);
+  const setVisibleTimePopup = () => {
+    setTime(prev => !prev);
     setAddTraining(false);
   };
   const setVisibleEventPopup = () => {
     setAddTraining(prev => !prev);
-    setTimer(false);
+    setTime(false);
   };
   const hideAll = () => {
     setAddTraining(false);
-    setTimer(false);
+    setTime(false);
   };
   const addReadyTraining = () => {
     setAddTraining(prev => !prev);
-    navigate(Book.Filter, {location: Book.StartTraining, from: Book.Calendar});
+    navigation.navigate(Book.Filter, {
+      location: Book.StartTraining,
+      from: Book.Calendar,
+    });
   };
   const addNewTraining = () => {
     setAddTraining(prev => !prev);
-    navigate(Book.Filter, {
+    navigation.navigate(Book.Filter, {
       location: 'CreateTrainingWithoutTab',
       from: Book.Calendar,
     });
@@ -94,7 +96,7 @@ const Calendar = () => {
             width="$full"
             pt={20}
             marginBottom={10}>
-            <CustomCalendar action={hideAll} />
+            <CustomCalendar action={hideAll} navigation={navigation} />
           </VStack>
           <Box paddingHorizontal={30}>
             <VStack
@@ -128,7 +130,7 @@ const Calendar = () => {
                   justifyContent="center"
                   alignItems="center"
                   minHeight={30}>
-                  <TouchableOpacity onPress={setVisibleTimerPopup}>
+                  <TouchableOpacity onPress={setVisibleTimePopup}>
                     <Center
                       bgColor="#131517"
                       paddingHorizontal={15}
@@ -199,7 +201,7 @@ const Calendar = () => {
                   </Text>
                 </HStack>
               )}
-              {timer && (
+              {time && (
                 <HStack position="absolute" bgColor="#131517" borderRadius={10}>
                   <DateTimePicker
                     display="spinner"
