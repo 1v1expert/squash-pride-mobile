@@ -34,6 +34,9 @@ export const useTraining = () => {
   const resetStack = () => {
     dispatch(trainingActions.resetStack());
   };
+  const resetExercises = () => {
+    dispatch(trainingActions.resetExercises());
+  };
   const fetchGroup = async () => {
     tokenRefresh(() => dispatch(getGroupData()));
   };
@@ -63,5 +66,6 @@ export const useTraining = () => {
     fetchTechniques,
     fetchExercise,
     fetchGroup,
+    resetExercises,
   };
 };

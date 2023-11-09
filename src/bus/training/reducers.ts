@@ -41,3 +41,9 @@ export const resetStack = (state: types.TrainingState) => {
     stackOfExercises: [],
   };
 };
+export const resetExercises = (state: types.TrainingState) => {
+  return {
+    ...state,
+    exercises: [],
+  };
+};

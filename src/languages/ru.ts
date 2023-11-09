@@ -27,8 +27,8 @@ export default {
     navigator: {
       home: 'Домой',
       favorites: 'Избранное',
-      training: 'Тренироки',
-      calendar: 'Каленьдарь',
+      training: 'Тренировки',
+      calendar: 'Календарь',
       profile: 'Профиль',
     },
     optionsScreen: {

@@ -19,6 +19,7 @@ type PlayerProps = {
   setCurrentTime: (e: number) => void;
   setPosition: (e: number) => void;
   length: number;
+  onEnd?: (e: number) => void;
 };
 const Player = ({
   item,
@@ -28,6 +29,7 @@ const Player = ({
   setCurrentTime,
   setPosition,
   length,
+  onEnd,
 }: PlayerProps) => {
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const [videoStarted, setVideoStarted] = useState(false);
@@ -93,7 +95,7 @@ const Player = ({
             ]}
             onBuffer={event => setLoader(event.isBuffering)}
             onLoad={() => videoPlayerRef.current?.seek(currentTime)}
-            onEnd={() => setCurrentTime(0)}
+            onEnd={() => onEnd && onEnd(position)}
             customStyles={{
               controls: {
                 alignItems: 'center',
@@ -141,6 +143,7 @@ const Player = ({
           setCurrentTime={setCurrentTime}
           setPosition={setPosition}
           length={length}
+          onEnd={onEnd}
         />
       )}
     </>

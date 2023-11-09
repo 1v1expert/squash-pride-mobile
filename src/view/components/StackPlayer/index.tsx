@@ -31,6 +31,7 @@ type StackPlayer = {
   setCurrentTime: (e: number) => void;
   setPosition: (e: number) => void;
   length: number;
+  onEnd?: (e: number) => void;
 };
 const StackPlayer = ({
   item,
@@ -41,6 +42,7 @@ const StackPlayer = ({
   setCurrentTime,
   setPosition,
   length,
+  onEnd,
 }: StackPlayer) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
@@ -74,6 +76,7 @@ const StackPlayer = ({
         Orientation.lockToPortrait();
         setVisible(false);
       }
+      onEnd && onEnd(position);
     });
   };
   const next = () => {

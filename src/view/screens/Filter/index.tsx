@@ -29,7 +29,7 @@ type FilterForm = {
 };
 const width = Dimensions.get('screen').width;
 const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
-  const {setFilters, fetchExercise} = useTraining();
+  const {setFilters, fetchExercise, resetStack, resetExercises} = useTraining();
   const {t} = useCustomTranslation();
   const {goBack, navigate} = navigation;
   const location = route.params?.location;
@@ -45,19 +45,22 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   } = methods;
   const submit = (values: FilterForm) => {
     setFilters(values);
+    resetExercises();
+
     switch (location) {
       case 'StartTraining': {
+        resetStack();
         fetchExercise({
           players: values.players,
           level: values.level,
           group: values.group,
           readyTraining: true,
+        }).then(() => {
+          navigate(Book.StartTraining, {from});
         });
-        navigate(Book.StartTraining, {from});
         break;
       }
       case 'CreateTrainingWithoutTab': {
-        console.log('test');
         fetchExercise({
           players: values.players,
           level: values.level,

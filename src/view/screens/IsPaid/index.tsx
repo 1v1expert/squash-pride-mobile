@@ -1,13 +1,6 @@
-import {Box, Center, CloseIcon, Icon, Text, VStack} from '@gluestack-ui/themed';
+import {Box, Center, CloseIcon, Text, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef} from 'react';
-import {
-  AppState,
-  Dimensions,
-  Image,
-  Linking,
-  Pressable,
-  StyleSheet,
-} from 'react-native';
+import {AppState, Dimensions, Image, Linking, StyleSheet} from 'react-native';
 import {images} from '../../../assets';
 import SafeAreaLayout from '../../components/SafeAreaLayout';
 import CustomButton from '../../components/CustomButton';
@@ -60,11 +53,13 @@ const IsPaid = ({navigation}: any) => {
           alignItems="center"
           width="$full"
           space="4xl">
-          <Pressable
+          <CustomButton
+            iconLeft={CloseIcon}
+            bgColor="#25282D"
             onPress={() => replace(Book.TabNavigator)}
-            style={styles.close}>
-            <Icon as={CloseIcon} width={30} height={30} color="#fff" />
-          </Pressable>
+            width={50}
+            style={styles.close}
+          />
           <VStack alignItems="center" space="4xl">
             <Image
               source={images.crown}

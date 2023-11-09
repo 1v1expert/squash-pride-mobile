@@ -22,6 +22,7 @@ type CustomButtonProps = {
   disabled?: boolean;
   mainIcon?: any;
   outline?: boolean;
+  style?: any;
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -38,6 +39,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   disabled,
   mainIcon,
   outline,
+  style,
 }) => {
   const [pressed, setPressed] = useState(false);
 
@@ -54,6 +56,7 @@ const CustomButton: FC<CustomButtonProps> = ({
       opacity: disabled ? 0.5 : 1,
       borderColor: '#F7AA37',
       borderWidth: outline ? 1 : 0,
+      ...style,
     },
   };
   return (
@@ -76,7 +79,7 @@ const CustomButton: FC<CustomButtonProps> = ({
           <ButtonIcon
             mr={title ? 15 : 0}
             as={iconLeft}
-            color={pressed ? '#000' : '#fff'}
+            color={pressed ? '#000' : '#F7AA37'}
           />
         )}
         {title && !isLoading && (
@@ -91,7 +94,7 @@ const CustomButton: FC<CustomButtonProps> = ({
           <ButtonIcon
             ml={title ? 15 : 0}
             as={iconRight}
-            color={pressed ? '#000' : '#fff'}
+            color={pressed ? '#000' : '#F7AA37'}
           />
         )}
         {mainIcon && (
