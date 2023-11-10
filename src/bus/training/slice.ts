@@ -16,6 +16,8 @@ const initialState: types.TrainingState = {
   },
   techniques: [],
   rules: [],
+  favorites: [],
+  trainings: [],
 };
 
 export const trainingSlice = createSlice({

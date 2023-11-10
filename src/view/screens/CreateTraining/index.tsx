@@ -43,6 +43,8 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
   };
+
+  console.log('stackOfExercises', stackOfExercises);
   return (
     <ViewContainer
       title={t('private.createTraining.title')}
@@ -125,7 +127,7 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({
           <CustomButton
             title={from ? 'Запланировать' : 'Начать тренировку'}
             onPress={() => [navigate(Book.StartTraining, {from})]}
-            disabled={stackOfExercises.length < 4}
+            disabled={!stackOfExercises.length}
           />
         </HStack>
       </VStack>

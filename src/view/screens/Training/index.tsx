@@ -2,6 +2,7 @@ import {
   ArrowLeftIcon,
   Center,
   HStack,
+  ScrollView,
   // HStack,
   SettingsIcon,
   Text,
@@ -13,6 +14,7 @@ import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {fontSize} from '../../../assets/fontsSize';
+import TrainingItem from '../../components/TrainingItem';
 // import PeopleCounter from '../../components/PeopleCounter';
 // import Stars from '../../components/Stars';
 // import {useTraining} from '../../../bus/training';
@@ -41,7 +43,7 @@ const Training = () => {
           width={50}
         />
       }>
-      <VStack flex={1}>
+      <VStack flex={1} width="$full">
         <HStack width="$full" bgColor="#131517">
           <TouchableOpacity
             style={styles.touchableOpacity}
@@ -62,6 +64,12 @@ const Training = () => {
             </Center>
           </TouchableOpacity>
         </HStack>
+        <VStack flex={1} alignItems="center" paddingHorizontal={20} pt={20}>
+          <ScrollView width="$full">
+            <TrainingItem />
+            <TrainingItem />
+          </ScrollView>
+        </VStack>
       </VStack>
       {/* <HStack
         width="$full"

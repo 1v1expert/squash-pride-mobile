@@ -44,6 +44,8 @@ export type TrainingState = {
   stackOfExercises: ExerciseType[];
   techniques: TItem[];
   rules: TItem[];
+  favorites: any[];
+  trainings: any[];
 };
 export type GroupData = {
   uid: string;
