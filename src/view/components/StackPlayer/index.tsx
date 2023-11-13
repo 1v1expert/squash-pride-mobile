@@ -22,6 +22,7 @@ import {ExerciseType} from '../../../bus/training/types';
 import Next from '../../../assets/svg/next';
 import Prev from '../../../assets/svg/prev';
 import {fontSize} from '../../../assets/fontsSize';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 type StackPlayer = {
   item: ExerciseType;
   visible: boolean;
@@ -32,6 +33,8 @@ type StackPlayer = {
   setPosition: (e: number) => void;
   length: number;
   onEnd?: (e: number) => void;
+  favorite?: boolean;
+  setFavorite?: (e: boolean) => void;
 };
 const StackPlayer = ({
   item,
@@ -43,6 +46,8 @@ const StackPlayer = ({
   setPosition,
   length,
   onEnd,
+  favorite,
+  setFavorite,
 }: StackPlayer) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
@@ -63,6 +68,7 @@ const StackPlayer = ({
 
   useEffect(() => {
     setTitleIsVisible(true);
+    setLoader(false);
   }, [position, visible]);
 
   const closeModal = () => {
@@ -137,6 +143,18 @@ const StackPlayer = ({
             onEnd={closeModal}
           />
         )}
+        <TouchableOpacity
+          hitSlop={10}
+          style={styles.heartIcon}
+          onPress={() => setFavorite && setFavorite(!favorite)}>
+          <Image
+            source={favorite ? images.heart : images.unselectedHeart}
+            alt=""
+            width={perfectSize(25)}
+            height={perfectSize(25)}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
         {loader && (
           <Box position="absolute">
             <Spinner color="#F7AB39" />
@@ -196,6 +214,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // bottom: '50%',
     left: 50,
+  },
+  heartIcon: {
+    position: 'absolute',
+    top: perfectSize(20),
+    right: 50,
   },
 });
 

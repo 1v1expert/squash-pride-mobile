@@ -1,11 +1,17 @@
 import {Image, Spinner} from '@gluestack-ui/themed';
 import {Box, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
-import {Dimensions, Pressable, StyleSheet} from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import VideoPlayer from 'react-native-video-player';
 import {images} from '../../../assets';
 import Orientation from 'react-native-orientation-locker';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 type FullscreenPlayerProps = {
   visible: boolean;
@@ -13,6 +19,8 @@ type FullscreenPlayerProps = {
   uri: string;
   currentTime: number;
   videoPlayerRef: VideoPlayer | null;
+  favorite?: boolean;
+  onLikePress: () => void;
 };
 
 const FullscreenPlayer = ({
@@ -21,6 +29,8 @@ const FullscreenPlayer = ({
   uri,
   currentTime,
   videoPlayerRef,
+  favorite,
+  onLikePress,
 }: FullscreenPlayerProps) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
@@ -110,6 +120,18 @@ const FullscreenPlayer = ({
           onEnd={closeModal}
         />
       </VStack>
+      <TouchableOpacity
+        hitSlop={10}
+        style={styles.heartIcon}
+        onPress={onLikePress}>
+        <Image
+          source={favorite ? images.heart : images.unselectedHeart}
+          alt=""
+          width={perfectSize(25)}
+          height={perfectSize(25)}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
       {loader && (
         <Box position="absolute">
           <Spinner color="#F7AB39" />
@@ -138,6 +160,11 @@ const styles = StyleSheet.create({
   defaultScreenButton: {
     position: 'absolute',
     bottom: 20,
+    right: 50,
+  },
+  heartIcon: {
+    position: 'absolute',
+    top: perfectSize(20),
     right: 50,
   },
 });

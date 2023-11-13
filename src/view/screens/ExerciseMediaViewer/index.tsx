@@ -11,7 +11,13 @@ import {
 import React, {FC, useEffect, useRef, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
-import {Dimensions, Platform, Pressable, StyleSheet} from 'react-native';
+import {
+  Dimensions,
+  Platform,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {ExerciseMediaViewerScreenProps} from '../../navigation/types';
 import VideoPlayer from 'react-native-video-player';
 import Orientation from 'react-native-orientation-locker';
@@ -24,18 +30,28 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {useTraining} from '../../../bus/training';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {fontSize} from '../../../assets/fontsSize';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   navigation,
   route,
 }) => {
   const {goBack} = navigation;
-  const {item} = route.params;
+  const {item, fromFavorites} = route.params;
   const {bottom} = useSafeAreaInsets();
   const {t} = useCustomTranslation();
   const videoPlayerRef = useRef<VideoPlayer>(null);
-  const {filters, addToStack, removeFromStack, stackOfExercises} =
-    useTraining();
+  const {
+    filters,
+    addToStack,
+    removeFromStack,
+    stackOfExercises,
+    getFavoriteItem,
+    addFavoriteItem,
+    removeFavoriteItem,
+  } = useTraining();
+
+  const favorite = getFavoriteItem(item);
 
   const [loader, setLoader] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
@@ -49,6 +65,18 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
     if (item) {
       selected ? removeFromStack(item.uid) : [addToStack(item), goBack()];
     }
+  };
+  const onLikePress = () => {
+    !favorite
+      ? addFavoriteItem({
+          date: new Date().getTime(),
+          type: 'exercise',
+          exercise: item,
+        })
+      : removeFavoriteItem({
+          type: 'exercise',
+          exercise: item,
+        });
   };
 
   useEffect(() => {
@@ -126,6 +154,18 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                 seekBarKnob: {backgroundColor: '#FBC56E'},
               }}
             />
+            <TouchableOpacity
+              hitSlop={10}
+              style={styles.heartIcon}
+              onPress={onLikePress}>
+              <Image
+                source={favorite ? images.heart : images.unselectedHeart}
+                alt=""
+                width={perfectSize(20)}
+                height={perfectSize(20)}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
             {loader && (
               <Box position="absolute">
                 <Spinner color="#F7AB39" />
@@ -165,13 +205,15 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                   t(`private.optionsScreen.step2.${filters.level}`)}
               </Text>
             </HStack>
-            <HStack width="$full">
-              <CustomButton
-                title={selected ? 'Убрать' : 'Добавить'}
-                onPress={onPress}
-                width={portraitWidth * 0.4}
-              />
-            </HStack>
+            {!fromFavorites && (
+              <HStack width="$full">
+                <CustomButton
+                  title={selected ? 'Убрать' : 'Добавить'}
+                  onPress={onPress}
+                  width={portraitWidth * 0.4}
+                />
+              </HStack>
+            )}
           </VStack>
         </VStack>
       </ViewContainer>
@@ -181,6 +223,8 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
         uri={item?.video || ''}
         currentTime={currentTime}
         videoPlayerRef={videoPlayerRef.current || null}
+        favorite={favorite}
+        onLikePress={onLikePress}
       />
     </>
   );
@@ -193,6 +237,11 @@ const styles = StyleSheet.create({
   fullScreenButton: {
     position: 'absolute',
     bottom: 5,
+    right: 10,
+  },
+  heartIcon: {
+    position: 'absolute',
+    top: 10,
     right: 10,
   },
 });

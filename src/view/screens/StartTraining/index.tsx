@@ -72,8 +72,16 @@ type TitlesType = {title: string; done: boolean};
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters, stackOfExercises, resetStack, exercises, isLoading} =
-    useTraining();
+  const {
+    filters,
+    stackOfExercises,
+    resetStack,
+    exercises,
+    isLoading,
+    getFavoriteItem,
+    addFavoriteItem,
+    removeFavoriteItem,
+  } = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
   const {setTimeUnit} = useCalendar();
   const [width] = useState(Dimensions.get('screen').width);
@@ -83,7 +91,12 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
   const [finished, setFinished] = useState(false);
 
+  const currentMonth = new Date().getMonth() + 1;
+  const currentDay = new Date().getDate();
+  const currentYear = new Date().getFullYear();
+
   const mainStack = !stackOfExercises.length ? exercises : stackOfExercises;
+  const favorite = getFavoriteItem(mainStack);
 
   const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffset = e.nativeEvent.contentOffset;
@@ -96,6 +109,19 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   };
   const scrollToIndex = async (index: number) => {
     scrollRef.current?.scrollToIndex({index});
+  };
+
+  const onLikePress = () => {
+    !favorite
+      ? addFavoriteItem({
+          date: new Date().getTime(),
+          type: 'training',
+          training: mainStack,
+        })
+      : removeFavoriteItem({
+          type: 'training',
+          training: mainStack,
+        });
   };
 
   useEffect(() => {
@@ -135,7 +161,11 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
 
   return (
     <ViewContainer
-      title={t('private.startTrainingScreen.title')}
+      title={
+        finished
+          ? `${currentDay}.${currentMonth}.${currentYear}`
+          : t('private.startTrainingScreen.title')
+      }
       leftHeaderButton={
         !finished ? (
           <CustomButton
@@ -185,6 +215,8 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             setPosition={setCurrentIndex}
             length={mainStack.length}
             onEnd={onEnd}
+            favorite={favorite}
+            setFavorite={onLikePress}
           />
           <FlatList
             ref={scrollRef}

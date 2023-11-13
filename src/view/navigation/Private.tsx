@@ -9,16 +9,27 @@ import ExerciseMediaViewer from '../screens/ExerciseMediaViewer';
 import {useUser} from '../../bus/user';
 import {useTraining} from '../../bus/training';
 import IsPaid from '../screens/IsPaid';
+import {load} from '../../utils/storage';
+import {FavoriteType} from '../../bus/training/types';
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
 export const Private: FC = () => {
   const {fetchUser, user} = useUser();
-  const {fetchGroup, fetchRules, fetchTechniques, resetStack} = useTraining();
+  const {
+    fetchGroup,
+    fetchRules,
+    fetchTechniques,
+    resetStack,
+    addFavoriteItem,
+    favorites,
+  } = useTraining();
 
   useEffect(() => {
     const init = () => {
-      fetchUser().then(() => {
+      fetchUser().then(async () => {
+        !favorites.length &&
+          load('favorites').then((res: FavoriteType[]) => addFavoriteItem(res));
         fetchGroup();
         fetchRules();
         fetchTechniques();

@@ -1,13 +1,19 @@
 import {Box, Center, Image, Spinner, Text} from '@gluestack-ui/themed';
 import {HStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
-import {Dimensions, Pressable, StyleSheet} from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import VideoPlayer from 'react-native-video-player';
 import {images} from '../../../assets';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {ExerciseType} from '../../../bus/training/types';
 import StackPlayer from '../StackPlayer';
 import {fontSize} from '../../../assets/fontsSize';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 const width = Dimensions.get('screen').width;
 
@@ -20,6 +26,8 @@ type PlayerProps = {
   setPosition: (e: number) => void;
   length: number;
   onEnd?: (e: number) => void;
+  favorite?: boolean;
+  setFavorite?: (e: boolean) => void;
 };
 const Player = ({
   item,
@@ -30,6 +38,8 @@ const Player = ({
   setPosition,
   length,
   onEnd,
+  favorite,
+  setFavorite,
 }: PlayerProps) => {
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const [videoStarted, setVideoStarted] = useState(false);
@@ -40,6 +50,7 @@ const Player = ({
   useEffect(() => {
     setVideoStarted(false);
     setTitleIsVisible(true);
+    setLoader(false);
   }, [position]);
 
   useEffect(() => {
@@ -94,6 +105,7 @@ const Player = ({
               setLoader(true),
             ]}
             onBuffer={event => setLoader(event.isBuffering)}
+            onReadyForDisplay={() => setLoader(false)}
             onLoad={() => videoPlayerRef.current?.seek(currentTime)}
             onEnd={() => onEnd && onEnd(position)}
             customStyles={{
@@ -109,6 +121,18 @@ const Player = ({
             }}
           />
         )}
+        <TouchableOpacity
+          hitSlop={10}
+          style={styles.heartIcon}
+          onPress={() => setFavorite && setFavorite(!favorite)}>
+          <Image
+            source={favorite ? images.heart : images.unselectedHeart}
+            alt=""
+            width={perfectSize(20)}
+            height={perfectSize(20)}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
         {loader && (
           <Box position="absolute">
             <Spinner color="#F7AB39" />
@@ -144,6 +168,8 @@ const Player = ({
           setPosition={setPosition}
           length={length}
           onEnd={onEnd}
+          favorite={favorite}
+          setFavorite={setFavorite}
         />
       )}
     </>
@@ -154,6 +180,11 @@ const styles = StyleSheet.create({
   defaultScreenButton: {
     position: 'absolute',
     bottom: 10,
+    right: 10,
+  },
+  heartIcon: {
+    position: 'absolute',
+    top: 10,
     right: 10,
   },
 });

@@ -2,6 +2,7 @@ import {
   ArrowLeftIcon,
   Center,
   HStack,
+  Spinner,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
@@ -36,15 +37,16 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({
   const {bottom} = useSafeAreaInsets();
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters, exercises, isLoading, stackOfExercises} = useTraining();
+  const {filters, exercises, stackOfExercises, favorites, isLoading} =
+    useTraining();
   const [state, setState] = useState(false);
   const from = route.params.from;
+  const favoriteItems = favorites.map(e => e.exercise);
 
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
   };
 
-  console.log('stackOfExercises', stackOfExercises);
   return (
     <ViewContainer
       title={t('private.createTraining.title')}
@@ -77,7 +79,9 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({
             </Center>
           </TouchableOpacity>
         </HStack>
-        {!isLoading && !state && exercises && (
+        {isLoading ? (
+          <Spinner size="large" pt={20} color="#F7AB39" />
+        ) : !state ? (
           <FlatList
             data={exercises}
             renderItem={({item}) => {
@@ -89,6 +93,24 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({
                   onPress={() => goToItem(item)}
                   selected={selected}
                 />
+              );
+            }}
+            style={styles.flatList}
+          />
+        ) : (
+          <FlatList
+            data={favoriteItems}
+            renderItem={({item}) => {
+              const selected =
+                stackOfExercises.filter(e => e.uid === item?.uid).length > 0;
+              return item ? (
+                <ExerciseItem
+                  item={item}
+                  onPress={() => goToItem(item)}
+                  selected={selected}
+                />
+              ) : (
+                <></>
               );
             }}
             style={styles.flatList}

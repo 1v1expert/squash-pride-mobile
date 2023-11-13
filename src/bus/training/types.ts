@@ -35,7 +35,12 @@ export type FiltersType = {
   players?: number | null;
   group?: string[];
 };
-
+export type FavoriteType = {
+  date?: number;
+  type: 'training' | 'exercise';
+  training?: ExerciseType[];
+  exercise?: ExerciseType;
+};
 export type TrainingState = {
   isLoading: boolean;
   group: GroupData[];
@@ -44,7 +49,7 @@ export type TrainingState = {
   stackOfExercises: ExerciseType[];
   techniques: TItem[];
   rules: TItem[];
-  favorites: any[];
+  favorites: FavoriteType[];
   trainings: any[];
 };
 export type GroupData = {
@@ -59,6 +64,8 @@ export type ExerciseType = {
   level: 'amateur' | 'professional';
   players: number;
   description: string;
+  title: string;
+  ru_description: string;
 };
 
 // Contracts

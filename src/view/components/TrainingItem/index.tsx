@@ -7,18 +7,75 @@ import {fontSize} from '../../../assets/fontsSize';
 import ThreeDots from '../../../assets/svg/three_dots';
 import {images} from '../../../assets';
 import CalendarModal from '../CalendarModal';
+import {FavoriteType} from '../../../bus/training/types';
+import {useTraining} from '../../../bus/training';
+import {useNavigation} from '@react-navigation/native';
+import {Book} from '../../navigation/book';
+import {PrivateStackScreenProps} from '../../navigation/types';
 
 const width = Dimensions.get('screen').width;
 
-const TrainingItem = () => {
+type TrainingItemProps = {
+  item: FavoriteType;
+};
+
+const TrainingItem = ({item}: TrainingItemProps) => {
+  const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const [option, setOption] = useState(false);
-  const [favorite, setFavorite] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
+  const {
+    getFavoriteItem,
+    addFavoriteItem,
+    removeFavoriteItem,
+    addToStack,
+    resetStack,
+  } = useTraining();
+  const currentItem = item.training || item.exercise;
+
+  const favorite = getFavoriteItem(currentItem);
+
+  const currentMonth = new Date().getMonth() + 1;
+  const currentDay = new Date().getDate();
+  const currentYear = new Date().getFullYear();
+
+  const onLikePress = () => {
+    !favorite
+      ? addFavoriteItem({
+          date: new Date().getTime(),
+          type: item.type,
+          training: item.training,
+          exercise: item.exercise,
+        })
+      : removeFavoriteItem({
+          type: 'training',
+          training: item.training,
+          exercise: item.exercise,
+        });
+  };
+
+  const onPress = () => {
+    switch (item.type) {
+      case 'exercise': {
+        return (
+          item.exercise &&
+          navigate(Book.ExerciseMediaViewer, {
+            item: item.exercise,
+            fromFavorites: true,
+          })
+        );
+      }
+      case 'training': {
+        resetStack();
+        item.training && addToStack(item.training);
+        navigate(Book.StartTraining);
+      }
+    }
+  };
 
   return (
     <>
       {!option ? (
-        <TouchableOpacity onPress={() => {}} style={styles.container}>
+        <TouchableOpacity onPress={onPress} style={styles.container}>
           <HStack
             alignItems="center"
             marginBottom={20}
@@ -40,7 +97,7 @@ const TrainingItem = () => {
                 <TouchableOpacity
                   hitSlop={10}
                   style={styles.heartIcon}
-                  onPress={() => setFavorite(prev => !prev)}>
+                  onPress={onLikePress}>
                   <Image
                     source={favorite ? images.heart : images.unselectedHeart}
                     alt=""
@@ -69,7 +126,7 @@ const TrainingItem = () => {
                   fontWeight="$bold"
                   flexWrap="wrap"
                   alignItems="center">
-                  Тренировка
+                  {item.type === 'training' ? 'Тренировка' : 'Упражнение'}
                 </Text>
 
                 <Text
@@ -78,7 +135,9 @@ const TrainingItem = () => {
                   flexWrap="wrap"
                   lineHeight={12}
                   numberOfLines={3}>
-                  Drive-Drop-Cross-тактика
+                  {item.type === 'exercise'
+                    ? item.exercise?.groups[0]
+                    : item.training?.[0].title}
                 </Text>
                 <Text
                   variant="primary"
@@ -86,7 +145,7 @@ const TrainingItem = () => {
                   flexWrap="wrap"
                   lineHeight={12}
                   numberOfLines={3}>
-                  15.05.2016
+                  {`${currentDay}.${currentMonth}.${currentYear}`}
                 </Text>
               </VStack>
             </HStack>

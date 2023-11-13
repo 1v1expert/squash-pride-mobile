@@ -2,7 +2,7 @@ import {trainingActions} from './slice';
 
 // Tools
 import {useSelector, useDispatch} from '../../tools/hooks';
-import {ExerciseType, FiltersType} from './types';
+import {ExerciseType, FavoriteType, FiltersType} from './types';
 import {getGroupData} from './thunk/group';
 import {getExercise} from './thunk/exercise';
 import {getRules} from './thunk/rules';
@@ -21,11 +21,31 @@ export const useTraining = () => {
   const stackOfExercises = useSelector(
     ({training}) => training.stackOfExercises,
   );
+  const favorites = useSelector(({training}) => training.favorites);
+
+  const addFavoriteItem = (item: FavoriteType | FavoriteType[]) => {
+    dispatch(trainingActions.addFavorite(item));
+  };
+  const removeFavoriteItem = (item: FavoriteType) => {
+    dispatch(trainingActions.removeFavorite(item));
+  };
+
+  const getFavoriteItem = (item: ExerciseType | ExerciseType[] | undefined) => {
+    if (item) {
+      if (Array.isArray(item)) {
+        return !!favorites.filter(
+          e => e.training?.toString() === item.toString(),
+        ).length;
+      } else {
+        return !!favorites.filter(e => e.exercise?.uid === item.uid).length;
+      }
+    }
+  };
 
   const setFilters = (state: FiltersType) => {
     dispatch(trainingActions.setFilters(state));
   };
-  const addToStack = (state: ExerciseType) => {
+  const addToStack = (state: ExerciseType | ExerciseType[]) => {
     dispatch(trainingActions.addToStack(state));
   };
   const removeFromStack = (state: ExerciseType['uid']) => {
@@ -58,6 +78,7 @@ export const useTraining = () => {
     techniques,
     isLoading,
     stackOfExercises,
+    favorites,
     setFilters,
     addToStack,
     removeFromStack,
@@ -67,5 +88,8 @@ export const useTraining = () => {
     fetchExercise,
     fetchGroup,
     resetExercises,
+    addFavoriteItem,
+    removeFavoriteItem,
+    getFavoriteItem,
   };
 };

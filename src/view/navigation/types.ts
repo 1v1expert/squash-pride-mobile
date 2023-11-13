@@ -14,7 +14,7 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 export type PrivateStackParamList = {
   TabNavigator: undefined;
   CreateTrainingWithoutTab: {from?: keyof TabNavigatorParamList};
-  ExerciseMediaViewer: {item: ExerciseType};
+  ExerciseMediaViewer: {item: ExerciseType; fromFavorites?: boolean};
   IsPaid: undefined;
 };
 
