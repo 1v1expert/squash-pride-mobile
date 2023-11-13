@@ -46,10 +46,10 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   const submit = (values: FilterForm) => {
     setFilters(values);
     resetExercises();
+    resetStack();
 
     switch (location) {
       case 'StartTraining': {
-        resetStack();
         fetchExercise({
           players: values.players,
           level: values.level,
