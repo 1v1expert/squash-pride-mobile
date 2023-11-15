@@ -1,6 +1,6 @@
 import {CalendarDaysIcon, Icon, Image, Text} from '@gluestack-ui/themed';
 import {Center, HStack, VStack} from '@gluestack-ui/themed';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {fontSize} from '../../../assets/fontsSize';
@@ -17,9 +17,10 @@ const width = Dimensions.get('screen').width;
 
 type TrainingItemProps = {
   item: FavoriteType;
+  state: boolean;
 };
 
-const TrainingItem = ({item}: TrainingItemProps) => {
+const TrainingItem = ({item, state}: TrainingItemProps) => {
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const [option, setOption] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
@@ -38,6 +39,10 @@ const TrainingItem = ({item}: TrainingItemProps) => {
   const currentDay = new Date().getDate();
   const currentYear = new Date().getFullYear();
 
+  useEffect(() => {
+    setOption(false);
+  }, [state]);
+
   const onLikePress = () => {
     !favorite
       ? addFavoriteItem({
@@ -47,7 +52,7 @@ const TrainingItem = ({item}: TrainingItemProps) => {
           exercise: item.exercise,
         })
       : removeFavoriteItem({
-          type: 'training',
+          type: item.type,
           training: item.training,
           exercise: item.exercise,
         });
@@ -81,7 +86,7 @@ const TrainingItem = ({item}: TrainingItemProps) => {
             marginBottom={20}
             space="xl"
             justifyContent="space-between">
-            <HStack alignItems="center" space="xl">
+            <HStack alignItems="center" space="xl" flex={1}>
               <Center
                 width={width * 0.3}
                 height={width * 0.3}
@@ -106,20 +111,22 @@ const TrainingItem = ({item}: TrainingItemProps) => {
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  hitSlop={10}
-                  style={styles.calendarIcon}
-                  onPress={() => setCalendarIsVisible(true)}>
-                  <Center
-                    width={perfectSize(30)}
-                    height={perfectSize(30)}
-                    bgColor="#25282D"
-                    borderRadius={30}>
-                    <Icon as={CalendarDaysIcon} size="sm" color="#F7AB39" />
-                  </Center>
-                </TouchableOpacity>
+                {item.type === 'training' && (
+                  <TouchableOpacity
+                    hitSlop={10}
+                    style={styles.calendarIcon}
+                    onPress={() => setCalendarIsVisible(true)}>
+                    <Center
+                      width={perfectSize(30)}
+                      height={perfectSize(30)}
+                      bgColor="#25282D"
+                      borderRadius={30}>
+                      <Icon as={CalendarDaysIcon} size="sm" color="#F7AB39" />
+                    </Center>
+                  </TouchableOpacity>
+                )}
               </Center>
-              <VStack space="md">
+              <VStack space="md" flex={1}>
                 <Text
                   variant="primary"
                   fontSize={perfectSize(14)}
@@ -134,7 +141,7 @@ const TrainingItem = ({item}: TrainingItemProps) => {
                   fontSize={fontSize.body}
                   flexWrap="wrap"
                   lineHeight={12}
-                  numberOfLines={3}>
+                  numberOfLines={1}>
                   {item.type === 'exercise'
                     ? item.exercise?.groups[0]
                     : item.training?.[0].title}
@@ -165,7 +172,8 @@ const TrainingItem = ({item}: TrainingItemProps) => {
           justifyContent="space-between"
           borderRadius={20}
           bgColor="#131517"
-          width="$full">
+          width="$full"
+          minHeight={width * 0.3}>
           <VStack
             width="$full"
             flex={1}
@@ -173,7 +181,7 @@ const TrainingItem = ({item}: TrainingItemProps) => {
             justifyContent="center"
             space="4xl"
             marginVertical={25}>
-            <TouchableOpacity onPress={() => setOption(false)}>
+            {/* <TouchableOpacity onPress={() => setOption(false)}>
               <Text
                 variant="secondary"
                 fontSize={fontSize.body}
@@ -182,7 +190,7 @@ const TrainingItem = ({item}: TrainingItemProps) => {
                 numberOfLines={3}>
                 Изменить название
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={() => setOption(false)}>
               <Text
                 variant="secondary"
@@ -190,10 +198,12 @@ const TrainingItem = ({item}: TrainingItemProps) => {
                 flexWrap="wrap"
                 lineHeight={12}
                 numberOfLines={3}>
-                Редактировать тренировку
+                {`Редактировать ${
+                  item.type === 'training' ? 'тренировку' : 'упражнение'
+                }`}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setOption(false)}>
+            <TouchableOpacity onPress={() => [onLikePress(), setOption(false)]}>
               <Text
                 variant="secondary"
                 fontSize={fontSize.body}
@@ -206,17 +216,20 @@ const TrainingItem = ({item}: TrainingItemProps) => {
           </VStack>
 
           <TouchableOpacity
-            style={[styles.threeDots, {paddingBottom: perfectSize(30)}]}
+            style={styles.threeDots}
             onPress={() => setOption(false)}
             hitSlop={20}>
             <ThreeDots color={'#F7AB39'} />
           </TouchableOpacity>
         </HStack>
       )}
-      <CalendarModal
-        visible={calendarIsVisible}
-        setVisible={setCalendarIsVisible}
-      />
+      {item.training && (
+        <CalendarModal
+          item={item.training}
+          visible={calendarIsVisible}
+          setVisible={setCalendarIsVisible}
+        />
+      )}
     </>
   );
 };

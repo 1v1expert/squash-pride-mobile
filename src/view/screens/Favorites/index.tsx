@@ -42,7 +42,7 @@ const Favorites = () => {
           <FlatList
             data={training}
             renderItem={({item}) => {
-              return <TrainingItem item={item} />;
+              return <TrainingItem item={item} state={state} />;
             }}
             style={styles.flatList}
           />
@@ -50,7 +50,7 @@ const Favorites = () => {
           <FlatList
             data={exercise}
             renderItem={({item}) => {
-              return <TrainingItem item={item} />;
+              return <TrainingItem item={item} state={state} />;
             }}
             style={styles.flatList}
           />

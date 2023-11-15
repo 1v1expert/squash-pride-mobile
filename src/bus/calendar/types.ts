@@ -1,4 +1,5 @@
 import {CaseReducer, PayloadAction} from '@reduxjs/toolkit';
+import {UserData} from '../user/types';
 
 export type GeoPosition = {
   coords: {
@@ -33,7 +34,31 @@ export type TimeUnitType = 'years' | 'months' | 'days' | 'time';
 export type CalendarState = {
   timeUnit: TimeUnitType;
   selected: number;
-  events: {date: string; name: string}[];
+  events: EventsType[];
+  isLoading: boolean;
+};
+
+export type EventsType = {
+  uid: string;
+  start_at: string;
+  trainings: {
+    uid: string;
+    video: string;
+    groups: string[];
+    level: 'amateur' | 'professional';
+    players: number;
+    description: string;
+    title: string;
+    ru_description: string;
+  }[];
+  user: UserData;
+};
+export type EventPayload = {
+  start_at: string;
+  trainings: {
+    group: string;
+    exercise: string;
+  }[];
 };
 
 // Contracts

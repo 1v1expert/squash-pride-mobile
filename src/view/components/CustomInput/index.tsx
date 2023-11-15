@@ -6,7 +6,7 @@ import {
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import Star from '../../../assets/svg/star';
 import {KeyboardType} from 'react-native';
@@ -37,9 +37,13 @@ const CustomInput: FC<CustomInputProps> = ({
   required,
   keyboardType,
 }) => {
-  const {control} = useFormContext();
+  const {control, setValue} = useFormContext();
   const [focus, setFocus] = useState(false);
   const {t} = useCustomTranslation();
+
+  useEffect(() => {
+    setValue(name, defaultValue);
+  }, [defaultValue, name, setValue]);
 
   return (
     <Controller

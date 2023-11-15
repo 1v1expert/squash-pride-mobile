@@ -21,17 +21,16 @@ import CustomCountryPicker from '../../components/CountryPicker';
 
 interface ProfileForm {
   firstName: string;
+  username: string;
   email: string;
-  password: string;
   age: number;
-  gender: number;
+  gender: string;
   country: string;
 }
 
 const Profile = () => {
-  const {logout} = useUser();
+  const {logout, updateUser, user} = useUser();
   const {t, i18n} = useCustomTranslation();
-  const {user} = useUser();
   const {addListener} = useNavigation();
 
   const methods = useForm<ProfileForm>({
@@ -42,17 +41,18 @@ const Profile = () => {
         new Date().getFullYear() - (user.birth_year ? user.birth_year : 0);
       return {
         firstName: user.first_name,
+        username: user.username,
         email: user.email,
         password: '',
         age: userAge,
-        gender: Number(user.gender),
+        gender: user.gender || '',
         country: user.country?.code || '',
       };
     },
   });
 
   const {
-    formState: {errors},
+    formState: {errors, defaultValues},
     handleSubmit,
     reset,
   } = methods;
@@ -70,16 +70,37 @@ const Profile = () => {
     }
   };
 
-  const saveChanges = (values: ProfileForm) => {
-    console.log('values', values);
-  };
   useEffect(() => {
-    const unsubscribe = addListener('blur', () => {
-      reset();
+    const unsubscribe = addListener('focus', () => {
+      const {first_name, username, email, gender, country, birth_year} = user;
+      const userAge = new Date().getFullYear() - (birth_year ? birth_year : 0);
+      reset({
+        firstName: first_name,
+        username: username,
+        email: email,
+        age: userAge,
+        gender: gender || '',
+        country: country?.code || '',
+      });
     });
 
     return unsubscribe;
-  }, [addListener, reset]);
+  }, [addListener, reset, user]);
+
+  const saveChanges = (values: ProfileForm) => {
+    console.log('values', values);
+    console.log('defaultValues', defaultValues);
+    const changed = JSON.stringify(values) !== JSON.stringify(defaultValues);
+    changed &&
+      updateUser({
+        username: values.username,
+        email: values.email,
+        first_name: values.firstName,
+        birth_year: new Date().getFullYear() - values.age,
+        gender: values.gender,
+        country: values.country,
+      });
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -97,20 +118,19 @@ const Profile = () => {
                   variant="secondary"
                 />
                 <CustomInput
+                  name="username"
+                  placeholder={t(
+                    'public.registrationScreen.usernameInputPlaceholder',
+                  )}
+                  error={errors.username}
+                  variant="secondary"
+                />
+                <CustomInput
                   name="email"
                   placeholder={t(
                     'public.registrationScreen.emailInputPlaceholder',
                   )}
                   error={errors.email}
-                  variant="secondary"
-                />
-                <CustomInput
-                  name="password"
-                  placeholder={t(
-                    'public.registrationScreen.passInputPlaceholder',
-                  )}
-                  type="password"
-                  error={errors.password}
                   variant="secondary"
                 />
                 <CustomSelect
@@ -128,9 +148,9 @@ const Profile = () => {
                     'public.registrationScreen.genderInputPlaceholder',
                   )}
                   items={[
-                    {label: t('gender.male'), value: 0},
-                    {label: t('gender.female'), value: 1},
-                    {label: t('gender.notSpecified'), value: 2},
+                    {label: t('gender.male'), value: 'male'},
+                    {label: t('gender.female'), value: 'female'},
+                    {label: t('gender.notSpecified'), value: 'not specified'},
                   ]}
                 />
                 <CustomCountryPicker

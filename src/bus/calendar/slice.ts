@@ -7,6 +7,7 @@ const initialState: types.CalendarState = {
   timeUnit: 'days',
   selected: new Date().getTime(),
   events: [],
+  isLoading: false,
 };
 
 export const calendarSlice = createSlice({

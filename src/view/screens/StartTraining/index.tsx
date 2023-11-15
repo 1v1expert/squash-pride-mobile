@@ -260,6 +260,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             </Text>
           </HStack>
           <CalendarModal
+            item={mainStack}
             visible={calendarIsVisible}
             setVisible={setCalendarIsVisible}
           />

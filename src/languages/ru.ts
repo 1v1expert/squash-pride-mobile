@@ -13,6 +13,7 @@ export default {
       title: 'Создай аккаунт и получи доступ к тренировкам',
       firstNameInputPlaceholder: 'Имя',
       lastNameInputPlaceholder: 'Фамилия',
+      usernameInputPlaceholder: 'Имя пользователя',
       emailInputPlaceholder: 'E-mail',
       passInputPlaceholder: 'Пароль',
       passConfirmInputPlaceholder: 'Подтвердите пароль',

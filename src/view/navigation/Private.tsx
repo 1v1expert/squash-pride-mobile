@@ -10,7 +10,7 @@ import {useUser} from '../../bus/user';
 import {useTraining} from '../../bus/training';
 import IsPaid from '../screens/IsPaid';
 import {load} from '../../utils/storage';
-import {FavoriteType} from '../../bus/training/types';
+import {useCalendar} from '../../bus/calendar';
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
@@ -24,15 +24,18 @@ export const Private: FC = () => {
     addFavoriteItem,
     favorites,
   } = useTraining();
+  const {fetchEvents} = useCalendar();
 
   useEffect(() => {
     const init = () => {
       fetchUser().then(async () => {
-        !favorites.length &&
-          load('favorites').then((res: FavoriteType[]) => addFavoriteItem(res));
         fetchGroup();
         fetchRules();
         fetchTechniques();
+        fetchEvents();
+
+        const favoriteItems = await load('favorites');
+        !favorites.length && favoriteItems && addFavoriteItem(favoriteItems);
       });
       resetStack();
     };

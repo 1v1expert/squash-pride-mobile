@@ -72,7 +72,6 @@ const Calendar = () => {
       from: Book.Calendar,
     });
   };
-  // const addDoneTraining = () => {};
 
   return (
     <Box flex={1} bgColor="#131517">

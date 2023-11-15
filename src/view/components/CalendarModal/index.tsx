@@ -8,16 +8,42 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import CustomButton from '../CustomButton';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {useCalendar} from '../../../bus/calendar';
+import {ExerciseType} from '../../../bus/training/types';
 
 const width = Dimensions.get('screen').width;
 
-type CalendarModalProps = {visible: boolean; setVisible: (e: boolean) => void};
+type CalendarModalProps = {
+  item: ExerciseType[];
+  visible: boolean;
+  setVisible: (e: boolean) => void;
+};
 
-const CalendarModal = ({visible, setVisible}: CalendarModalProps) => {
+const CalendarModal = ({visible, setVisible, item}: CalendarModalProps) => {
   const {t} = useCustomTranslation();
-  const {setTimeUnit} = useCalendar();
+  const {
+    setTimeUnit,
+    //  addEvent,
+    selected,
+  } = useCalendar();
 
   const {bottom} = useSafeAreaInsets();
+  const resetToDefault = () => {
+    setVisible(false);
+    setTimeUnit('days');
+  };
+  const createEvent = () => {
+    const trainings = item.map(e => {
+      return {
+        group: e.groups[0],
+        exercise: e.uid,
+      };
+    });
+    console.log('trainings', trainings);
+    const event = {start_at: selected.toString(), trainings};
+    console.log('event', event);
+    // addEvent(event);
+    resetToDefault();
+  };
   return (
     <Modal isOpen={visible} justifyContent="flex-end">
       <VStack
@@ -39,7 +65,7 @@ const CalendarModal = ({visible, setVisible}: CalendarModalProps) => {
           <CustomCalendar action={() => setTimeUnit('time')} />
         </VStack>
         <HStack width="$full" alignItems="center" justifyContent="space-evenly">
-          <CustomButton title="Выбрать" outline />
+          <CustomButton title="Выбрать" outline onPress={createEvent} />
           <CustomButton
             title="Отменить"
             outline

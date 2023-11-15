@@ -8,7 +8,7 @@ import {
 } from '@gluestack-ui/themed';
 import React, {FC, useState} from 'react';
 
-import {HomeScreensStackScreenProps} from '../../navigation/types';
+import {PrivateStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
@@ -30,10 +30,7 @@ import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
-const CreateTraining: FC<HomeScreensStackScreenProps> = ({
-  navigation,
-  route,
-}) => {
+const CreateTraining: FC<PrivateStackScreenProps> = ({navigation, route}) => {
   const {bottom} = useSafeAreaInsets();
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();

@@ -14,6 +14,7 @@ export default {
       firstNameInputPlaceholder: 'First Name',
       lastNameInputPlaceholder: 'Last Name',
       emailInputPlaceholder: 'E-mail',
+      usernameInputPlaceholder: 'Username',
       passInputPlaceholder: 'Password',
       passConfirmInputPlaceholder: 'Confirm Password',
       ageInputPlaceholder: 'Age',

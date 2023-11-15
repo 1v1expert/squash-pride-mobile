@@ -41,6 +41,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const {bottom} = useSafeAreaInsets();
   const {t} = useCustomTranslation();
   const videoPlayerRef = useRef<VideoPlayer>(null);
+  console.log('item', item);
   const {
     filters,
     addToStack,
@@ -100,7 +101,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   return (
     <>
       <ViewContainer
-        title={filters.group && filters.group[0]}
+        title={item.groups[0]}
         headerContent="flex-start"
         leftHeaderButton={
           <CustomButton

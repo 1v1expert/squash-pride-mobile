@@ -56,10 +56,11 @@ export type UserData = {
   email: string;
   first_name: string;
   birth_year: number | null;
-  gender: number | null;
+  gender: string | null;
   country: {code: string; name: string} | null;
   is_paid: boolean | null;
 };
+export type PayloadUserData = {};
 
 // Contracts
 export type BaseContract<T = any> = CaseReducer<UserState, PayloadAction<T>>;

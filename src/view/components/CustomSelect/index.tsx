@@ -10,7 +10,7 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 type CustomSelectProps = {
   placeholder?: string;
   name: string;
-  defaultValue?: string;
+  defaultValue?: string | number;
   error?: FieldError;
   items: Item[];
 };

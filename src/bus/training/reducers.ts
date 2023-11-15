@@ -75,7 +75,7 @@ export const removeFavorite: types.BaseContract<types.FavoriteType> = (
       );
     }
   });
-  save('favorites', favorites);
+  save('favorites', !favorites.length ? null : favorites);
   return {
     ...state,
     favorites,

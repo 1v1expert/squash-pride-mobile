@@ -1,6 +1,6 @@
 import {HStack, Text, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useState} from 'react';
-import {Controller, FieldError, useFormContext} from 'react-hook-form';
+import {Controller, FieldError, useForm, useFormContext} from 'react-hook-form';
 import {fontSize} from '../../../assets/fontsSize';
 import CountryPicker, {
   Country,

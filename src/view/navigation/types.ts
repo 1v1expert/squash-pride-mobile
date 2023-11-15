@@ -56,7 +56,7 @@ export type TabNavigatorProps = NativeStackScreenProps<
 >;
 export type PrivateStackScreenProps = NativeStackScreenProps<
   PrivateStackParamList,
-  any
+  'CreateTrainingWithoutTab'
 >;
 export type MediaViewerScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
