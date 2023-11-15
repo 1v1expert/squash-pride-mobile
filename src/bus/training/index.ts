@@ -2,14 +2,16 @@ import {trainingActions} from './slice';
 
 // Tools
 import {useSelector, useDispatch} from '../../tools/hooks';
-import {ExerciseType, FiltersType} from './types';
+import {ExerciseType, FavoriteType, FiltersType} from './types';
 import {getGroupData} from './thunk/group';
 import {getExercise} from './thunk/exercise';
 import {getRules} from './thunk/rules';
 import {getTechniques} from './thunk/techniques';
+import {useUser} from '../user';
 
 export const useTraining = () => {
   const dispatch = useDispatch();
+  const {tokenRefresh} = useUser();
   const filters = useSelector(({training}) => training.filters);
   const groups = useSelector(({training}) => training.group);
   const exercises = useSelector(({training}) => training.exercises);
@@ -19,11 +21,31 @@ export const useTraining = () => {
   const stackOfExercises = useSelector(
     ({training}) => training.stackOfExercises,
   );
+  const favorites = useSelector(({training}) => training.favorites);
+
+  const addFavoriteItem = (item: FavoriteType | FavoriteType[]) => {
+    dispatch(trainingActions.addFavorite(item));
+  };
+  const removeFavoriteItem = (item: FavoriteType) => {
+    dispatch(trainingActions.removeFavorite(item));
+  };
+
+  const getFavoriteItem = (item: ExerciseType | ExerciseType[] | undefined) => {
+    if (item) {
+      if (Array.isArray(item)) {
+        return !!favorites.filter(
+          e => e.training?.toString() === item.toString(),
+        ).length;
+      } else {
+        return !!favorites.filter(e => e.exercise?.uid === item.uid).length;
+      }
+    }
+  };
 
   const setFilters = (state: FiltersType) => {
     dispatch(trainingActions.setFilters(state));
   };
-  const addToStack = (state: ExerciseType) => {
+  const addToStack = (state: ExerciseType | ExerciseType[]) => {
     dispatch(trainingActions.addToStack(state));
   };
   const removeFromStack = (state: ExerciseType['uid']) => {
@@ -32,14 +54,21 @@ export const useTraining = () => {
   const resetStack = () => {
     dispatch(trainingActions.resetStack());
   };
+  const resetExercises = () => {
+    dispatch(trainingActions.resetExercises());
+  };
   const fetchGroup = async () => {
-    dispatch(getGroupData());
+    tokenRefresh(() => dispatch(getGroupData()));
   };
-  const fetchExercise = async ({players, group, level}: FiltersType) => {
-    dispatch(getExercise({players, group, level}));
+  const fetchExercise = async (
+    data: FiltersType & {readyTraining?: boolean},
+  ) => {
+    console.log(data);
+    tokenRefresh(() => dispatch(getExercise(data)));
   };
-  const fetchRules = async () => dispatch(getRules());
-  const fetchTechniques = async () => dispatch(getTechniques());
+  const fetchRules = async () => tokenRefresh(() => dispatch(getRules()));
+  const fetchTechniques = async () =>
+    tokenRefresh(() => dispatch(getTechniques()));
 
   return {
     groups,
@@ -49,6 +78,7 @@ export const useTraining = () => {
     techniques,
     isLoading,
     stackOfExercises,
+    favorites,
     setFilters,
     addToStack,
     removeFromStack,
@@ -57,5 +87,9 @@ export const useTraining = () => {
     fetchTechniques,
     fetchExercise,
     fetchGroup,
+    resetExercises,
+    addFavoriteItem,
+    removeFavoriteItem,
+    getFavoriteItem,
   };
 };

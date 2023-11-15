@@ -5,7 +5,7 @@ import * as reducers from './reducers';
 import {extraReducers} from './thunk';
 
 const initialState: types.UserState = {
-  isAuthorized: true,
+  isAuthorized: false,
   isLoading: false,
   user: {
     username: '',
@@ -13,7 +13,7 @@ const initialState: types.UserState = {
     first_name: '',
     birth_year: null,
     gender: null,
-    country: '',
+    country: null,
     is_paid: null,
   },
 };

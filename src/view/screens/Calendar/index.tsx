@@ -13,13 +13,15 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import {useNavigation} from '@react-navigation/native';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
+import {fontSize} from '../../../assets/fontsSize';
+import {Book} from '../../navigation/book';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
   const navigation = useNavigation<HomeScreensStackScreenProps['navigation']>();
   const {selected, events, setSelected, setTimeUnit} = useCalendar();
   const [addTraining, setAddTraining] = useState(false);
-  const [timer, setTimer] = useState(false);
+  const [time, setTime] = useState(false);
   const currentMonth = MONTHS[new Date(selected).getMonth()];
   const currentDay = new Date(selected).getDate();
   const currentMinutes =
@@ -41,21 +43,36 @@ const Calendar = () => {
   }, [navigation, setTimeUnit]);
 
   const changeTime = (e: DateTimePickerEvent) => {
-    Platform.OS === 'android' && setTimer(prev => !prev);
+    Platform.OS === 'android' && setTime(prev => !prev);
     setSelected(e.nativeEvent.timestamp);
   };
-  const setVisibleTimerPopup = () => {
-    setTimer(prev => !prev);
+  const setVisibleTimePopup = () => {
+    setTime(prev => !prev);
     setAddTraining(false);
   };
   const setVisibleEventPopup = () => {
     setAddTraining(prev => !prev);
-    setTimer(false);
+    setTime(false);
   };
   const hideAll = () => {
     setAddTraining(false);
-    setTimer(false);
+    setTime(false);
   };
+  const addReadyTraining = () => {
+    setAddTraining(prev => !prev);
+    navigation.navigate(Book.Filter, {
+      location: Book.StartTraining,
+      from: Book.Calendar,
+    });
+  };
+  const addNewTraining = () => {
+    setAddTraining(prev => !prev);
+    navigation.navigate(Book.Filter, {
+      location: 'CreateTrainingWithoutTab',
+      from: Book.Calendar,
+    });
+  };
+  // const addDoneTraining = () => {};
 
   return (
     <Box flex={1} bgColor="#131517">
@@ -67,7 +84,9 @@ const Calendar = () => {
             alignItems="center"
             paddingHorizontal={20}
             space="xs">
-            <Text variant="primary">{t('private.calendarScreen.title')}</Text>
+            <Text variant="primary" fontSize={fontSize.title}>
+              {t('private.calendarScreen.title')}
+            </Text>
             <Box bgColor="#F7A936" width="$full" height={2} />
           </VStack>
           <VStack
@@ -77,7 +96,7 @@ const Calendar = () => {
             width="$full"
             pt={20}
             marginBottom={10}>
-            <CustomCalendar action={hideAll} />
+            <CustomCalendar action={hideAll} navigation={navigation} />
           </VStack>
           <Box paddingHorizontal={30}>
             <VStack
@@ -100,7 +119,7 @@ const Calendar = () => {
                   paddingHorizontal={10}
                   minHeight={30}
                   alignItems="center">
-                  <Text variant="secondary">
+                  <Text variant="secondary" fontSize={fontSize.title}>
                     {`${currentDay} ${t(
                       `private.calendarScreen.monthsNames.${currentMonth}`,
                     )}`}
@@ -111,14 +130,16 @@ const Calendar = () => {
                   justifyContent="center"
                   alignItems="center"
                   minHeight={30}>
-                  <TouchableOpacity onPress={setVisibleTimerPopup}>
+                  <TouchableOpacity onPress={setVisibleTimePopup}>
                     <Center
                       bgColor="#131517"
                       paddingHorizontal={15}
                       paddingVertical={5}
                       borderRadius={10}
                       style={styles.shadow}>
-                      <Text variant="secondary">{currentTime}</Text>
+                      <Text variant="secondary" fontSize={fontSize.title}>
+                        {currentTime}
+                      </Text>
                     </Center>
                   </TouchableOpacity>
                 </HStack>
@@ -136,19 +157,23 @@ const Calendar = () => {
 
               <Collapsible collapsed={!addTraining}>
                 <VStack width="$full">
-                  <TouchableOpacity
-                    onPress={() => setAddTraining(prev => !prev)}>
+                  <TouchableOpacity onPress={addReadyTraining}>
                     <HStack padding={10}>
-                      <Text variant="primary" fontSize={14} width="$full">
+                      <Text
+                        variant="primary"
+                        width="$full"
+                        fontSize={fontSize.text}>
                         Добавить готовую тренировку
                       </Text>
                     </HStack>
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() => setAddTraining(prev => !prev)}>
+                  <TouchableOpacity onPress={addNewTraining}>
                     <HStack padding={10}>
-                      <Text variant="primary" fontSize={14} width="$full">
+                      <Text
+                        variant="primary"
+                        width="$full"
+                        fontSize={fontSize.text}>
                         Добавить новую тренировку
                       </Text>
                     </HStack>
@@ -157,7 +182,10 @@ const Calendar = () => {
                   <TouchableOpacity
                     onPress={() => setAddTraining(prev => !prev)}>
                     <HStack padding={10}>
-                      <Text variant="primary" fontSize={14} width="$full">
+                      <Text
+                        variant="primary"
+                        width="$full"
+                        fontSize={fontSize.text}>
                         Добавить тренировку из пройденных
                       </Text>
                     </HStack>
@@ -168,12 +196,12 @@ const Calendar = () => {
             <VStack paddingHorizontal={10} zIndex={100} elevation={2}>
               {!addTraining && !events.length && (
                 <HStack>
-                  <Text variant="primary">
+                  <Text variant="primary" fontSize={fontSize.title}>
                     {t('private.calendarScreen.tips')}
                   </Text>
                 </HStack>
               )}
-              {timer && (
+              {time && (
                 <HStack position="absolute" bgColor="#131517" borderRadius={10}>
                   <DateTimePicker
                     display="spinner"
@@ -185,6 +213,7 @@ const Calendar = () => {
                     locale="es-ES"
                     themeVariant="dark"
                     minimumDate={minimumDate}
+                    minuteInterval={15}
                     positiveButton={{
                       label: t('private.calendarScreen.ok'),
                       textColor: '#F7A936',

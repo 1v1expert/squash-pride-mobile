@@ -1,10 +1,15 @@
 export enum Book {
+  PreLoader = 'PreLoader',
+  Private = 'Private',
+  Public = 'Public',
+
   //Public
   Main = 'Main',
   Login = 'Login',
   Registration = 'Registration',
 
   // PrivateScreen
+  IsPaid = 'IsPaid',
   Options = 'Options',
   TabNavigator = 'TabNavigator',
   CreateTrainingWithoutTab = 'CreateTrainingWithoutTab',

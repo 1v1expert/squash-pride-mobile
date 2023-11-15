@@ -13,9 +13,9 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 
 export type PrivateStackParamList = {
   TabNavigator: undefined;
-  CreateTrainingWithoutTab: undefined;
-  FilterWithoutTab: {location?: keyof HomeScreensStackParamList} | undefined;
-  ExerciseMediaViewer: ExerciseType | undefined;
+  CreateTrainingWithoutTab: {from?: keyof TabNavigatorParamList};
+  ExerciseMediaViewer: {item: ExerciseType; fromFavorites?: boolean};
+  IsPaid: undefined;
 };
 
 export type TabNavigatorParamList = {
@@ -28,13 +28,18 @@ export type TabNavigatorParamList = {
 
 export type HomeScreensStackParamList = {
   Home: undefined;
-  StartTraining: undefined;
-  CreateTraining: undefined;
+  StartTraining: {from?: keyof TabNavigatorParamList};
+  CreateTraining: {from?: keyof TabNavigatorParamList};
   GameTechnique: undefined;
   Rules: undefined;
   MediaViewer: TItem;
   Filter:
-    | {location?: keyof HomeScreensStackParamList | keyof PrivateStackParamList}
+    | {
+        location?:
+          | keyof HomeScreensStackParamList
+          | keyof PrivateStackParamList;
+        from?: keyof TabNavigatorParamList;
+      }
     | undefined;
   Options: {location?: keyof HomeScreensStackParamList} | undefined;
   ChooseTrainingType: {location?: keyof HomeScreensStackParamList} | undefined;
@@ -43,7 +48,7 @@ export type HomeScreensStackParamList = {
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
-  any
+  'CreateTraining'
 >;
 export type TabNavigatorProps = NativeStackScreenProps<
   TabNavigatorParamList,
@@ -58,7 +63,7 @@ export type MediaViewerScreenProps = NativeStackScreenProps<
   'MediaViewer'
 >;
 export type ExerciseMediaViewerScreenProps = NativeStackScreenProps<
-  HomeScreensStackParamList,
+  PrivateStackParamList,
   'ExerciseMediaViewer'
 >;
 export type FilterScreenProps = NativeStackScreenProps<

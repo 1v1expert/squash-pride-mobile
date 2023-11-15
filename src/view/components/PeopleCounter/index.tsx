@@ -1,6 +1,7 @@
 import {HStack, Image, Pressable} from '@gluestack-ui/themed';
 import React from 'react';
 import {images} from '../../../assets';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 type PeopleCounterProps = {
   amountOfPeople?: number;
   selected?: number;
@@ -16,8 +17,8 @@ const PeopleCounter = ({
   setSelected,
   action,
   space = 'md',
-  width = 15,
-  height = 50,
+  width = perfectSize(15),
+  height = perfectSize(50),
 }: PeopleCounterProps) => {
   const players = Array.from({length: amountOfPeople}, (_, index) => index + 1);
   const choosePeople = (i: number) => {

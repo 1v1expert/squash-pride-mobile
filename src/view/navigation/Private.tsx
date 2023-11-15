@@ -4,29 +4,52 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Book} from './book';
 import {PrivateStackParamList} from './types';
 import {TabNavigator} from './TabNavigator';
-import {useUser} from '../../bus/user';
-import {useTraining} from '../../bus/training';
 import CreateTraining from '../screens/CreateTraining';
 import ExerciseMediaViewer from '../screens/ExerciseMediaViewer';
+import {useUser} from '../../bus/user';
+import {useTraining} from '../../bus/training';
+import IsPaid from '../screens/IsPaid';
+import {load} from '../../utils/storage';
+import {FavoriteType} from '../../bus/training/types';
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
 export const Private: FC = () => {
-  const {fetchUser} = useUser();
-  const {fetchGroup, resetStack, fetchRules, fetchTechniques} = useTraining();
+  const {fetchUser, user} = useUser();
+  const {
+    fetchGroup,
+    fetchRules,
+    fetchTechniques,
+    resetStack,
+    addFavoriteItem,
+    favorites,
+  } = useTraining();
 
   useEffect(() => {
-    fetchUser().then(() => {
-      fetchGroup();
-      fetchRules();
-      fetchTechniques();
-    });
-    resetStack();
+    const init = () => {
+      fetchUser().then(async () => {
+        !favorites.length &&
+          load('favorites').then((res: FavoriteType[]) => addFavoriteItem(res));
+        fetchGroup();
+        fetchRules();
+        fetchTechniques();
+      });
+      resetStack();
+    };
+    init();
   }, []);
 
   return (
-    <Stack.Navigator initialRouteName={Book.TabNavigator}>
+    <Stack.Navigator
+      initialRouteName={!user.is_paid ? Book.IsPaid : Book.TabNavigator}>
       <Stack.Group>
+        {!user.is_paid && (
+          <Stack.Screen
+            name={Book.IsPaid}
+            component={IsPaid}
+            options={{headerShown: false}}
+          />
+        )}
         <Stack.Screen
           name={Book.TabNavigator}
           component={TabNavigator}

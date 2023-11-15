@@ -3,6 +3,9 @@ import React, {FC, useState} from 'react';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import {Dimensions, StyleSheet} from 'react-native';
 import RNPickerSelect, {Item} from 'react-native-picker-select';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 type CustomSelectProps = {
   placeholder?: string;
@@ -22,6 +25,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
 }) => {
   const {control} = useFormContext();
   const [focus, setFocus] = useState(false);
+  const {t} = useCustomTranslation();
 
   return (
     <Controller
@@ -32,6 +36,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         return (
           <VStack>
             <RNPickerSelect
+              value={value}
               onOpen={() => setFocus(true)}
               onClose={() => setFocus(false)}
               useNativeAndroidPickerStyle={false}
@@ -42,15 +47,18 @@ const CustomSelect: FC<CustomSelectProps> = ({
                   ...styles.inputContainer,
                 },
                 placeholder: {
+                  fontFamily: 'Century Gothic',
                   color: focus ? '#000' : '#fff',
                   ...styles.input,
                 },
 
                 inputIOS: {
+                  fontFamily: 'Century Gothic',
                   color: focus ? '#000' : '#fff',
                   ...styles.input,
                 },
                 inputAndroid: {
+                  fontFamily: 'Century Gothic',
                   color: focus ? '#000' : '#fff',
                   ...styles.input,
                 },
@@ -65,8 +73,11 @@ const CustomSelect: FC<CustomSelectProps> = ({
               items={items}
             />
             <VStack margin={0} minHeight={22.5}>
-              <Text color={value ? '#F00' : '#F7A936'}>
-                {error && error.message}
+              <Text
+                variant="primary"
+                color={value ? '#F00' : '#F7A936'}
+                fontSize={fontSize.title}>
+                {error && t(error.message)}
               </Text>
             </VStack>
           </VStack>
@@ -78,7 +89,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    fontSize: 16,
+    fontSize: perfectSize(17),
     fontWeight: '400',
   },
   inputContainer: {

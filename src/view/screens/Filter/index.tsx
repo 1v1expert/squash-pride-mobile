@@ -13,31 +13,30 @@ import {FilterScreenProps} from '../../navigation/types';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import PeopleAccordion from '../../components/PeopleAccordion';
 import {FormProvider, useForm} from 'react-hook-form';
-import {filterSchemaWithGroup, filterSchemaWithoutGroup} from './schema';
+import {filterSchemaWithGroup} from './schema';
 import {yupResolver} from '@hookform/resolvers/yup';
 import LevelAccordion from '../../components/LevelAccordion';
 import GroupAccordion from '../../components/GroupAccordion';
 import {useTraining} from '../../../bus/training';
 import {Book} from '../../navigation/book';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
 
 type FilterForm = {
   players: number;
   level: 'amateur' | 'professional';
-  group?: string[];
+  group: string[];
 };
 const width = Dimensions.get('screen').width;
 const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
-  const {setFilters, fetchExercise} = useTraining();
+  const {setFilters, fetchExercise, resetStack, resetExercises} = useTraining();
   const {t} = useCustomTranslation();
   const {goBack, navigate} = navigation;
   const location = route.params?.location;
+  const from = route.params?.from;
 
   const methods = useForm<FilterForm>({
-    resolver: yupResolver(
-      location === 'CreateTrainingWithoutTab'
-        ? filterSchemaWithGroup
-        : filterSchemaWithoutGroup,
-    ),
+    resolver: yupResolver(filterSchemaWithGroup),
     mode: 'onSubmit',
   });
   const {
@@ -46,9 +45,19 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   } = methods;
   const submit = (values: FilterForm) => {
     setFilters(values);
+    resetExercises();
+    resetStack();
+
     switch (location) {
       case 'StartTraining': {
-        navigate(Book.StartTraining);
+        fetchExercise({
+          players: values.players,
+          level: values.level,
+          group: values.group,
+          readyTraining: true,
+        }).then(() => {
+          navigate(Book.StartTraining, {from});
+        });
         break;
       }
       case 'CreateTrainingWithoutTab': {
@@ -57,7 +66,7 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
           level: values.level,
           group: values.group,
         });
-        navigate(Book.CreateTrainingWithoutTab);
+        navigate(Book.CreateTrainingWithoutTab, {from});
         break;
       }
       default: {
@@ -86,13 +95,7 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
           <FormProvider {...methods}>
             <LevelAccordion name="level" error={errors.level} />
             <PeopleAccordion name="players" error={errors.players} />
-            {location === 'CreateTrainingWithoutTab' && (
-              <GroupAccordion
-                name="group"
-                error={errors.group}
-                groupLength={1}
-              />
-            )}
+            <GroupAccordion name="group" error={errors.group} groupLength={1} />
           </FormProvider>
         </VStack>
       </ScrollView>
@@ -100,13 +103,15 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
       <HStack
         width="$full"
         bgColor="#1B1E20"
-        height={75}
+        height={perfectSize(75)}
         alignItems="center"
         justifyContent="flex-end"
         paddingHorizontal={50}
         space="xl">
         <TouchableOpacity onPress={handleSubmit(submit)}>
-          <Text color="#F7A936">{t('private.filter.saveButton')}</Text>
+          <Text variant="secondary" fontSize={fontSize.text}>
+            {t('private.filter.saveButton')}
+          </Text>
         </TouchableOpacity>
       </HStack>
     </ViewContainer>

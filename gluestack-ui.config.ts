@@ -9,6 +9,11 @@ export const config = createConfig({
     colors: {
       ...defaultConfig.theme.tokens.colors,
     },
+    fontFamily: {
+      heading: 'CenturyGothic',
+      body: 'CenturyGothic',
+      mono: 'CenturyGothic',
+    },
   },
 
   components: {
@@ -21,6 +26,7 @@ export const config = createConfig({
               _text: {
                 color: '#fff',
               },
+              fontFamily: 'Century Gothic',
               borderWidth: 0,
               borderColor: '#F7A936',
               ':focus': {
@@ -178,9 +184,11 @@ export const config = createConfig({
         variants: {
           variant: {
             primary: {
+              fontFamily: 'Century Gothic',
               color: '#FFFFFF',
             },
             secondary: {
+              fontFamily: 'Century Gothic',
               color: '#F7A936',
             },
           },

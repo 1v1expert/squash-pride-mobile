@@ -7,6 +7,8 @@ import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import ChevronUp from '../../../assets/svg/chevron_up';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
@@ -44,10 +46,12 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
               <HStack
                 bgColor={collapsed ? '#000' : '#F7A936'}
                 paddingHorizontal={width * 0.03}
-                minHeight={50}
+                minHeight={perfectSize(50)}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">{t('private.peopleAccordion.title')}</Text>
+                <Text variant="primary" fontSize={fontSize.text}>
+                  {t('private.peopleAccordion.title')}
+                </Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
               </HStack>
             </TouchableOpacity>
@@ -55,12 +59,13 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
               <VStack
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
-                minHeight={50}>
+                minHeight={perfectSize(50)}
+                justifyContent="center">
                 <HStack
                   alignItems="center"
                   justifyContent="space-between"
-                  p={10}>
-                  <Text fontSize={12} color="#fff">
+                  paddingHorizontal={10}>
+                  <Text variant="primary" fontSize={fontSize.accordionBody}>
                     {t('private.peopleAccordion.text')}
                   </Text>
                   <PeopleCounter
@@ -77,13 +82,14 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
               <VStack
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
-                minHeight={50}>
+                minHeight={perfectSize(50)}
+                justifyContent="center">
                 <HStack
                   justifyContent="space-between"
                   alignItems="center"
                   paddingHorizontal={10}>
                   <Text
-                    fontSize={12}
+                    fontSize={fontSize.accordionBody}
                     variant="secondary"
                     textAlign="center"
                     width="$1/2">

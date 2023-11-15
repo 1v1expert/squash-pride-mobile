@@ -4,19 +4,21 @@ import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 import ArrowLeft from '../../../assets/svg/arrow_left';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import {MONTHS} from '../../../assets/constants';
-import {useNavigation} from '@react-navigation/native';
-import {HomeScreensStackScreenProps} from '../../navigation/types';
 import {useCalendar} from '../../../bus/calendar';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 type CustomCalendarMonthProps = {
   action: () => void;
+  navigation: any;
 };
-const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
+const CustomCalendarMonth = ({
+  action,
+  navigation,
+}: CustomCalendarMonthProps) => {
   const {t} = useCustomTranslation();
-  const {navigate} = useNavigation<HomeScreensStackScreenProps['navigation']>();
   const {selected, setSelected, setTimeUnit} = useCalendar();
 
   const currentYear = new Date(selected).getFullYear();
@@ -32,6 +34,7 @@ const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
       }
       action();
       setTimeUnit('days');
+      console.log('fetch event', month);
     },
     [action, currentMonth, currentYear, setSelected, setTimeUnit],
   );
@@ -45,14 +48,21 @@ const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
         <TouchableOpacity onPress={() => console.log('years')}>
           <HStack alignItems="center" space="sm">
             <ArrowLeft />
-            <Text variant="secondary" textAlign="center">
+            <Text
+              variant="secondary"
+              textAlign="center"
+              fontSize={fontSize.title}>
               {currentYear}
             </Text>
           </HStack>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate('Home')} hitSlop={10}>
-          <ChevronDown />
-        </TouchableOpacity>
+        {navigation && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Home')}
+            hitSlop={10}>
+            <ChevronDown />
+          </TouchableOpacity>
+        )}
       </HStack>
       <HStack
         justifyContent="space-between"
@@ -71,7 +81,8 @@ const CustomCalendarMonth = ({action}: CustomCalendarMonthProps) => {
                     variant="primary"
                     paddingHorizontal={5}
                     paddingVertical={5}
-                    color={i === new Date().getMonth() ? '#F7A936' : '#fff'}>
+                    color={i === new Date().getMonth() ? '#F7A936' : '#fff'}
+                    fontSize={fontSize.title}>
                     {t(`private.calendarScreen.monthNamesShort.${month}`)}
                   </Text>
                 </Center>

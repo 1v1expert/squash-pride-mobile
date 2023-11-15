@@ -28,21 +28,20 @@ export const useUser = () => {
     clearTokens();
     dispatch(userActions.setAuthorize(false));
   };
-  const tokenRefresh = async (refreshToken: string) => {
-    try {
-      dispatch(refresh({refreshToken})).unwrap();
-    } catch (error) {
-      logout();
-    }
+  const tokenRefresh = async (callback?: () => void) => {
+    const token = await load(refreshToken);
+
+    token &&
+      dispatch(refresh({refreshToken: token}))
+        .unwrap()
+        .then(() => callback && callback());
   };
   const fetchUser = async () => {
     const access_token = await load(accessToken);
-    const refresh_token = await load(refreshToken);
 
     if (access_token) {
       setAuthHeader(access_token);
     }
-    tokenRefresh(refresh_token);
     dispatch(getUserData());
   };
   return {
@@ -51,7 +50,7 @@ export const useUser = () => {
     isAuthorized: useSelector(({user}) => user.isAuthorized),
     login: (values: LoginForm) => dispatch(login(values)).unwrap(),
     register: (values: RegisterForm) => dispatch(register(values)).unwrap(),
-    fetchUser,
+    fetchUser: () => tokenRefresh(fetchUser),
     setAuthorize,
     logout,
     tokenRefresh,

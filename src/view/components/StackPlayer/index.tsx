@@ -1,4 +1,12 @@
-import {Center, Image, Modal, Text, VStack} from '@gluestack-ui/themed';
+import {
+  Box,
+  Center,
+  Image,
+  Modal,
+  Spinner,
+  Text,
+  VStack,
+} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
@@ -13,6 +21,8 @@ import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
 import Next from '../../../assets/svg/next';
 import Prev from '../../../assets/svg/prev';
+import {fontSize} from '../../../assets/fontsSize';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 type StackPlayer = {
   item: ExerciseType;
   visible: boolean;
@@ -21,6 +31,10 @@ type StackPlayer = {
   currentTime: number;
   setCurrentTime: (e: number) => void;
   setPosition: (e: number) => void;
+  length: number;
+  onEnd?: (e: number) => void;
+  favorite?: boolean;
+  setFavorite?: (e: boolean) => void;
 };
 const StackPlayer = ({
   item,
@@ -30,10 +44,15 @@ const StackPlayer = ({
   currentTime,
   setCurrentTime,
   setPosition,
+  length,
+  onEnd,
+  favorite,
+  setFavorite,
 }: StackPlayer) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
   const [titleIsVisible, setTitleIsVisible] = useState(true);
+  const [loader, setLoader] = useState(false);
 
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
   useEffect(() => {
@@ -49,6 +68,7 @@ const StackPlayer = ({
 
   useEffect(() => {
     setTitleIsVisible(true);
+    setLoader(false);
   }, [position, visible]);
 
   const closeModal = () => {
@@ -62,6 +82,7 @@ const StackPlayer = ({
         Orientation.lockToPortrait();
         setVisible(false);
       }
+      onEnd && onEnd(position);
     });
   };
   const next = () => {
@@ -96,8 +117,13 @@ const StackPlayer = ({
                 height: height,
               },
             ]}
+            resizeMode="stretch"
             pauseOnPress
-            onLoadStart={() => setTitleIsVisible(false)}
+            onBuffer={event => setLoader(event.isBuffering)}
+            onLoadStart={() => {
+              setTitleIsVisible(false);
+              setLoader(true);
+            }}
             onLoad={() =>
               currentTime &&
               videoFullScreenPlayerRef?.current?.seek(currentTime)
@@ -117,9 +143,28 @@ const StackPlayer = ({
             onEnd={closeModal}
           />
         )}
+        <TouchableOpacity
+          hitSlop={10}
+          style={styles.heartIcon}
+          onPress={() => setFavorite && setFavorite(!favorite)}>
+          <Image
+            source={favorite ? images.heart : images.unselectedHeart}
+            alt=""
+            width={perfectSize(25)}
+            height={perfectSize(25)}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        {loader && (
+          <Box position="absolute">
+            <Spinner color="#F7AB39" />
+          </Box>
+        )}
         {titleIsVisible && item && (
           <Center position="absolute" bottom={20} left={50}>
-            <Text variant="primary">{item.groups[0]}</Text>
+            <Text variant="primary" fontSize={fontSize.text}>
+              {item.groups[0]}
+            </Text>
           </Center>
         )}
         <Pressable onPress={closeModal} style={styles.defaultScreenButton}>
@@ -135,7 +180,7 @@ const StackPlayer = ({
           onPress={next}
           disabled={position === 3}
           style={styles.goToNext}>
-          <Next color={position === 3 ? '#fff' : '#F7A936'} />
+          <Next color={position === length - 1 ? '#fff' : '#F7A936'} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={prev}
@@ -162,13 +207,18 @@ const styles = StyleSheet.create({
   },
   goToNext: {
     position: 'absolute',
-    bottom: '50%',
+    // bottom: '50%',
     right: 50,
   },
   goToPrev: {
     position: 'absolute',
-    bottom: '50%',
+    // bottom: '50%',
     left: 50,
+  },
+  heartIcon: {
+    position: 'absolute',
+    top: perfectSize(20),
+    right: 50,
   },
 });
 

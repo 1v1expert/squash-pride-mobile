@@ -1,18 +1,17 @@
-import {
-  // CloseIcon,
-  Image,
-} from '@gluestack-ui/themed';
-import {
-  Box,
-  //  Icon,
-  VStack,
-} from '@gluestack-ui/themed';
+import {Image, Spinner} from '@gluestack-ui/themed';
+import {Box, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
-import {Dimensions, Pressable, StyleSheet} from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import VideoPlayer from 'react-native-video-player';
 import {images} from '../../../assets';
 import Orientation from 'react-native-orientation-locker';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 type FullscreenPlayerProps = {
   visible: boolean;
@@ -20,6 +19,8 @@ type FullscreenPlayerProps = {
   uri: string;
   currentTime: number;
   videoPlayerRef: VideoPlayer | null;
+  favorite?: boolean;
+  onLikePress: () => void;
 };
 
 const FullscreenPlayer = ({
@@ -28,10 +29,13 @@ const FullscreenPlayer = ({
   uri,
   currentTime,
   videoPlayerRef,
+  favorite,
+  onLikePress,
 }: FullscreenPlayerProps) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
   const [videoStarted, setVideoStarted] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
 
@@ -86,8 +90,7 @@ const FullscreenPlayer = ({
           currentTime={20}
           video={{uri}}
           disableFullscreen
-          videoWidth={width}
-          videoHeight={height}
+          resizeMode="stretch"
           style={[
             styles.fullScreenVideoPlayer,
             {
@@ -96,17 +99,14 @@ const FullscreenPlayer = ({
             },
           ]}
           pauseOnPress
-          onBuffer={() => {
-            console.log('buffer');
+          onLoadStart={() => setLoader(true)}
+          onBuffer={event => {
             setVideoStarted(true);
+            setLoader(event.isBuffering);
           }}
           onLoad={() => setVideoStarted(prev => !prev)}
           hideControlsOnStart={false}
           customStyles={{
-            seekBar: {
-              // backgroundColor: 'red',
-              // paddingHorizontal: 50,
-            },
             controls: {
               paddingRight: 100,
               paddingLeft: 50,
@@ -120,9 +120,23 @@ const FullscreenPlayer = ({
           onEnd={closeModal}
         />
       </VStack>
-      {/* <Pressable onPress={closeModal} style={styles.closeButton}>
-        <Icon as={CloseIcon} width={30} height={30} color="#fff" />
-      </Pressable> */}
+      <TouchableOpacity
+        hitSlop={10}
+        style={styles.heartIcon}
+        onPress={onLikePress}>
+        <Image
+          source={favorite ? images.heart : images.unselectedHeart}
+          alt=""
+          width={perfectSize(25)}
+          height={perfectSize(25)}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+      {loader && (
+        <Box position="absolute">
+          <Spinner color="#F7AB39" />
+        </Box>
+      )}
       <Pressable onPress={closeModal} style={styles.defaultScreenButton}>
         <Image
           source={images.fullScreen}
@@ -146,6 +160,11 @@ const styles = StyleSheet.create({
   defaultScreenButton: {
     position: 'absolute',
     bottom: 20,
+    right: 50,
+  },
+  heartIcon: {
+    position: 'absolute',
+    top: perfectSize(20),
     right: 50,
   },
 });

@@ -10,6 +10,9 @@ import React, {FC, useState} from 'react';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import Star from '../../../assets/svg/star';
 import {KeyboardType} from 'react-native';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 type CustomInputProps = {
   placeholder?: string;
@@ -36,6 +39,7 @@ const CustomInput: FC<CustomInputProps> = ({
 }) => {
   const {control} = useFormContext();
   const [focus, setFocus] = useState(false);
+  const {t} = useCustomTranslation();
 
   return (
     <Controller
@@ -58,6 +62,8 @@ const CustomInput: FC<CustomInputProps> = ({
                 maxLength={maxLength}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
+                fontFamily="Century Gothic"
+                fontSize={perfectSize(17)}
               />
               {required && !focus && (
                 <InputSlot pr="$3">
@@ -67,8 +73,11 @@ const CustomInput: FC<CustomInputProps> = ({
             </Input>
 
             <VStack margin={0} minHeight={22.5}>
-              <Text color={value ? '#F00' : '#F7A936'}>
-                {error && error.message}
+              <Text
+                variant="primary"
+                color={value ? '#F00' : '#F7A936'}
+                fontSize={fontSize.title}>
+                {error && t(error.message)}
               </Text>
             </VStack>
           </VStack>

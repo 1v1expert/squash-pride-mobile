@@ -6,6 +6,8 @@ import {Controller, FieldError, useFormContext} from 'react-hook-form';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ChevronDown from '../../../assets/svg/chevron_down';
 import ChevronUp from '../../../assets/svg/chevron_up';
+import {fontSize} from '../../../assets/fontsSize';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 const width = Dimensions.get('screen').width;
 type LevelAccordionProps = {
@@ -46,10 +48,10 @@ const LevelAccordion = ({name, defaultValue, error}: LevelAccordionProps) => {
               <HStack
                 bgColor={collapsed ? '#000' : '#F7A936'}
                 paddingHorizontal={width * 0.03}
-                minHeight={50}
+                minHeight={perfectSize(50)}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">
+                <Text variant="primary" fontSize={fontSize.text}>
                   {t('private.optionsScreen.step2.title')}
                 </Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
@@ -59,7 +61,7 @@ const LevelAccordion = ({name, defaultValue, error}: LevelAccordionProps) => {
               <VStack
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
-                minHeight={50}>
+                minHeight={perfectSize(50)}>
                 {levels.map((level, i) => (
                   <TouchableOpacity onPress={() => chooseLevel(level)} key={i}>
                     <HStack
@@ -68,8 +70,8 @@ const LevelAccordion = ({name, defaultValue, error}: LevelAccordionProps) => {
                       p={10}
                       borderBottomWidth={levels.length !== i ? 1 : 0}>
                       <Text
-                        fontSize={12}
-                        color="#fff"
+                        variant="primary"
+                        fontSize={fontSize.accordionBody}
                         textAlign="center"
                         width="$full">
                         {t(`private.optionsScreen.step2.${level}`)}
@@ -86,7 +88,7 @@ const LevelAccordion = ({name, defaultValue, error}: LevelAccordionProps) => {
                   alignItems="center"
                   paddingHorizontal={5}>
                   <Text
-                    fontSize={12}
+                    fontSize={fontSize.accordionBody}
                     variant="secondary"
                     textAlign="center"
                     p={10}

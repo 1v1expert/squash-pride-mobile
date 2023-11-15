@@ -29,7 +29,7 @@ export type LocationPermission =
   | 'granted'
   | 'never_ask_again';
 
-export type TimeUnitType = 'years' | 'months' | 'days';
+export type TimeUnitType = 'years' | 'months' | 'days' | 'time';
 export type CalendarState = {
   timeUnit: TimeUnitType;
   selected: number;

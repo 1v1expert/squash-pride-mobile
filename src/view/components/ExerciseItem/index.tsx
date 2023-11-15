@@ -1,13 +1,12 @@
-import {
-  // Image,
-  Text,
-} from '@gluestack-ui/themed';
+import {Image, Text} from '@gluestack-ui/themed';
 import {Center, HStack, VStack} from '@gluestack-ui/themed';
 import React from 'react';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import Check from '../../../assets/svg/check';
-// import {images} from '../../../assets';
+import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
+import {fontSize} from '../../../assets/fontsSize';
+import {useTraining} from '../../../bus/training';
 
 const width = Dimensions.get('screen').width;
 type ExerciseItemProps = {
@@ -16,6 +15,9 @@ type ExerciseItemProps = {
   onPress: () => void;
 };
 const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
+  const {getFavoriteItem} = useTraining();
+  const favorite = getFavoriteItem(item);
+
   return (
     <TouchableOpacity onPress={onPress}>
       <HStack alignItems="center" marginBottom={20} space="xl">
@@ -35,7 +37,7 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
         <VStack space="md" flex={1}>
           <Text
             variant="primary"
-            fontSize={18}
+            fontSize={fontSize.body}
             fontWeight="$bold"
             flexWrap="wrap"
             alignItems="center">
@@ -44,7 +46,7 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
           <HStack justifyContent="space-between">
             <Text
               variant="primary"
-              fontSize={9}
+              fontSize={fontSize.body}
               flexWrap="wrap"
               lineHeight={12}
               width="70%"
@@ -53,7 +55,9 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
             </Text>
             <HStack space="md">
               <Center minWidth={20} minHeight={20}>
-                {/* <Image source={images.heart} width={15} height={15} alt="" /> */}
+                {favorite && (
+                  <Image source={images.heart} width={15} height={15} alt="" />
+                )}
               </Center>
               <Center minWidth={20} minHeight={20}>
                 {selected && <Check />}

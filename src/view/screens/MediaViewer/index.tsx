@@ -1,8 +1,10 @@
 import {
   ArrowLeftIcon,
+  Box,
   HStack,
   Image,
   ScrollView,
+  Spinner,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
@@ -16,15 +18,18 @@ import VideoPlayer from 'react-native-video-player';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import Orientation from 'react-native-orientation-locker';
 import FullscreenPlayer from '../../components/FullscreenPlayer';
+import {fontSize} from '../../../assets/fontsSize';
 
 const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const {goBack} = navigation;
+  const videoPlayerRef = useRef<VideoPlayer>(null);
+
   const {title, ru_description: description, video} = route.params;
   const [videoStarted, setVideoStarted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
   const [portraitWidth] = useState(Dimensions.get('screen').width);
-  const videoPlayerRef = useRef<VideoPlayer>(null);
+  const [loader, setLoader] = useState(false);
 
   const openModal = () => {
     SystemNavigationBar.fullScreen(true);
@@ -75,9 +80,14 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                     width: portraitWidth,
                   },
                 ]}
+                resizeMode="stretch"
                 pauseOnPress
                 disableFullscreen
-                onLoadStart={() => setVideoStarted(true)}
+                onBuffer={event => setLoader(event.isBuffering)}
+                onLoadStart={() => {
+                  setVideoStarted(true);
+                  setLoader(true);
+                }}
                 onEnd={() => setCurrentTime(0.001)}
                 customStyles={{
                   controls: {
@@ -91,6 +101,11 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                   seekBarKnob: {backgroundColor: '#FBC56E'},
                 }}
               />
+              {loader && (
+                <Box position="absolute">
+                  <Spinner color="#F7AB39" />
+                </Box>
+              )}
               {videoStarted && (
                 <Pressable onPress={openModal} style={styles.fullScreenButton}>
                   <Image
@@ -104,7 +119,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
               )}
             </HStack>
             <ScrollView padding={30}>
-              <Text variant="primary" textAlign="auto">
+              <Text variant="primary" textAlign="auto" fontSize={fontSize.text}>
                 {description}
               </Text>
             </ScrollView>
@@ -128,7 +143,7 @@ const styles = StyleSheet.create({
   },
   fullScreenButton: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 5,
     right: 10,
   },
 });

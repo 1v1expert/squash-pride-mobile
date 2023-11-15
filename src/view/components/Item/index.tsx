@@ -3,6 +3,8 @@ import {Center, HStack, VStack} from '@gluestack-ui/themed';
 import React from 'react';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import {TItem} from '../../navigation/types';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 type ItemProps = {
@@ -31,8 +33,7 @@ const Item = ({item, onPress}: ItemProps) => {
         <VStack space="md" maxWidth={width * 0.6}>
           <Text
             variant="primary"
-            fontSize={18}
-            fontWeight="$bold"
+            fontSize={perfectSize(14)}
             flexWrap="wrap"
             alignItems="center">
             {title}
@@ -40,7 +41,7 @@ const Item = ({item, onPress}: ItemProps) => {
           <HStack justifyContent="space-between">
             <Text
               variant="primary"
-              fontSize={9}
+              fontSize={fontSize.body}
               flexWrap="wrap"
               lineHeight={12}
               width="70%"

@@ -55,9 +55,9 @@ export type UserData = {
   username: string;
   email: string;
   first_name: string;
-  birth_year: string | null;
+  birth_year: number | null;
   gender: number | null;
-  country: string;
+  country: {code: string; name: string} | null;
   is_paid: boolean | null;
 };
 

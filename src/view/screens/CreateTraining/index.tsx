@@ -2,6 +2,7 @@ import {
   ArrowLeftIcon,
   Center,
   HStack,
+  Spinner,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
@@ -25,18 +26,27 @@ import {Book} from '../../navigation/book';
 import ExerciseItem from '../../components/ExerciseItem';
 import {ExerciseType} from '../../../bus/training/types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
-const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
+const CreateTraining: FC<HomeScreensStackScreenProps> = ({
+  navigation,
+  route,
+}) => {
   const {bottom} = useSafeAreaInsets();
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
-  const {filters, exercises, isLoading, stackOfExercises} = useTraining();
+  const {filters, exercises, stackOfExercises, favorites, isLoading} =
+    useTraining();
   const [state, setState] = useState(false);
+  const from = route.params.from;
+  const favoriteItems = favorites.map(e => e.exercise);
+
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
   };
+
   return (
     <ViewContainer
       title={t('private.createTraining.title')}
@@ -54,18 +64,24 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             style={styles.touchableOpacity}
             onPress={() => setState(false)}>
             <Center p={5} style={!state && styles.selected}>
-              <Text variant="primary">все</Text>
+              <Text variant="primary" fontSize={fontSize.title}>
+                все
+              </Text>
             </Center>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.touchableOpacity}
             onPress={() => setState(true)}>
             <Center p={5} style={state && styles.selected}>
-              <Text variant="primary">избранное</Text>
+              <Text variant="primary" fontSize={fontSize.title}>
+                избранное
+              </Text>
             </Center>
           </TouchableOpacity>
         </HStack>
-        {!isLoading && !state && exercises && (
+        {isLoading ? (
+          <Spinner size="large" pt={20} color="#F7AB39" />
+        ) : !state ? (
           <FlatList
             data={exercises}
             renderItem={({item}) => {
@@ -77,6 +93,24 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
                   onPress={() => goToItem(item)}
                   selected={selected}
                 />
+              );
+            }}
+            style={styles.flatList}
+          />
+        ) : (
+          <FlatList
+            data={favoriteItems}
+            renderItem={({item}) => {
+              const selected =
+                stackOfExercises.filter(e => e.uid === item?.uid).length > 0;
+              return item ? (
+                <ExerciseItem
+                  item={item}
+                  onPress={() => goToItem(item)}
+                  selected={selected}
+                />
+              ) : (
+                <></>
               );
             }}
             style={styles.flatList}
@@ -100,22 +134,22 @@ const CreateTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             {filters.players && (
               <PeopleCounter amountOfPeople={filters.players} />
             )}
-            <Text variant="primary">
+            <Text variant="primary" fontSize={fontSize.title}>
               {filters.level &&
                 t(`private.optionsScreen.step2.${filters.level}`)}
             </Text>
           </HStack>
           <HStack alignItems="center" space="xl">
-            <Text variant="primary">
+            <Text variant="primary" fontSize={fontSize.title}>
               Упражнений: {stackOfExercises.length}/4
             </Text>
           </HStack>
         </HStack>
         <HStack width="$full">
           <CustomButton
-            title="Начать тренировку"
-            onPress={() => [navigate(Book.StartTraining)]}
-            disabled={stackOfExercises.length < 4}
+            title={from ? 'Запланировать' : 'Начать тренировку'}
+            onPress={() => [navigate(Book.StartTraining, {from})]}
+            disabled={!stackOfExercises.length}
           />
         </HStack>
       </VStack>

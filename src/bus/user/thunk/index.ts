@@ -3,6 +3,7 @@ import {UserState} from '../types';
 import {login} from './login';
 import {getUserData} from './getUserData';
 import {register} from './register';
+import {refresh} from './refresh';
 
 export const extraReducers = (builder: ActionReducerMapBuilder<UserState>) => {
   builder.addMatcher(isAnyOf(getUserData.fulfilled), (state, action) => {
@@ -10,6 +11,9 @@ export const extraReducers = (builder: ActionReducerMapBuilder<UserState>) => {
     state.isAuthorized = true;
   });
   builder.addMatcher(isAnyOf(login.fulfilled), state => {
+    state.isAuthorized = true;
+  });
+  builder.addMatcher(isAnyOf(refresh.fulfilled), state => {
     state.isAuthorized = true;
   });
   builder.addMatcher(

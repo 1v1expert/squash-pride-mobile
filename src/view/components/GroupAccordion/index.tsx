@@ -14,8 +14,11 @@ import ChevronUp from '../../../assets/svg/chevron_up';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {useTraining} from '../../../bus/training';
 import {GroupData} from '../../../bus/training/types';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
+const height = Dimensions.get('screen').height;
 
 type GroupAccordionProps = {
   name: string;
@@ -41,7 +44,7 @@ const GroupAccordion = ({
   useEffect(() => {
     error && setCollapsed(false);
   }, [error]);
-  console.log('error', error);
+
   return (
     <Controller
       control={control}
@@ -75,10 +78,12 @@ const GroupAccordion = ({
               <HStack
                 bgColor={collapsed ? '#000' : '#F7A936'}
                 paddingHorizontal={width * 0.03}
-                minHeight={50}
+                minHeight={perfectSize(50)}
                 alignItems="center"
                 justifyContent="space-between">
-                <Text color="#fff">{t('private.groupAccordion.title')}</Text>
+                <Text variant="primary" fontSize={fontSize.text}>
+                  {t('private.groupAccordion.title')}
+                </Text>
                 {collapsed ? <ChevronDown /> : <ChevronUp color="#000" />}
               </HStack>
             </TouchableOpacity>
@@ -87,7 +92,7 @@ const GroupAccordion = ({
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
                 pt={20}
-                maxHeight={220}
+                maxHeight={height * 0.3}
                 flexWrap="wrap">
                 {groups.map((group, i) => (
                   <TouchableOpacity
@@ -100,7 +105,8 @@ const GroupAccordion = ({
                     key={i}>
                     <HStack pl={20}>
                       <Text
-                        fontSize={12}
+                        variant="primary"
+                        fontSize={fontSize.accordionBody}
                         color={value.includes(group.name) ? '#F7A936' : '#fff'}>
                         {group.name}
                       </Text>
@@ -113,7 +119,6 @@ const GroupAccordion = ({
               <HStack
                 bgColor="#393A40"
                 paddingHorizontal={width * 0.03}
-                minHeight={50}
                 justifyContent="center"
                 flexWrap="wrap">
                 {value.map((group: string, i: number) => {
@@ -128,7 +133,8 @@ const GroupAccordion = ({
                       justifyContent="center"
                       marginVertical={5}>
                       <Text
-                        fontSize={12}
+                        variant="primary"
+                        fontSize={fontSize.accordionBody}
                         color={value.includes(group) ? '#F7A936' : '#fff'}>
                         {group}
                       </Text>

@@ -10,6 +10,7 @@ import CustomWeekCalendarDay from './customWeekCalendarDay';
 import {useNavigation} from '@react-navigation/native';
 import {TabNavigatorProps} from '../../navigation/types';
 import {Book} from '../../navigation/book';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
@@ -38,7 +39,10 @@ const CustomWeekCalendar = () => {
           pl={37}
           pr={25}>
           <HStack alignItems="center" space="xs">
-            <Text variant="secondary" textAlign="center">
+            <Text
+              variant="secondary"
+              textAlign="center"
+              fontSize={fontSize.title}>
               {`${t(`private.calendarScreen.monthsNames.${currentMonth}`)}`}
             </Text>
           </HStack>
@@ -50,7 +54,7 @@ const CustomWeekCalendar = () => {
         </HStack>
         <HStack justifyContent="space-between" paddingHorizontal={37}>
           {DAYS_OF_WEEK.map((day, i) => (
-            <Text variant="secondary" key={i}>
+            <Text variant="secondary" key={i} fontSize={fontSize.title}>
               {t(`private.calendarScreen.daysOfWeek.${day}`)}
             </Text>
           ))}

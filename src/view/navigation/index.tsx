@@ -1,16 +1,30 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {Public} from './Public';
 import {useUser} from '../../bus/user';
 import {Private} from './Private';
+import PreLoader from '../screens/PreLoader';
 
 export const Navigation: FC = () => {
-  const {isAuthorized} = useUser();
+  const {isAuthorized, tokenRefresh} = useUser();
+  const [loading, setLoading] = useState(true);
+
+  const initializeApp = async () => {
+    await tokenRefresh().then(() => {
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    });
+  };
+
+  useEffect(() => {
+    initializeApp();
+  }, []);
 
   return (
     <NavigationContainer>
-      {isAuthorized ? <Private /> : <Public />}
+      {loading ? <PreLoader /> : isAuthorized ? <Private /> : <Public />}
     </NavigationContainer>
   );
 };
