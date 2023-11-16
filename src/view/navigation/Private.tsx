@@ -11,6 +11,7 @@ import {useTraining} from '../../bus/training';
 import IsPaid from '../screens/IsPaid';
 import {load} from '../../utils/storage';
 import {useCalendar} from '../../bus/calendar';
+import IsPaidModal from '../components/IsPaidModal';
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
@@ -43,32 +44,27 @@ export const Private: FC = () => {
   }, []);
 
   return (
-    <Stack.Navigator
-      initialRouteName={!user.is_paid ? Book.IsPaid : Book.TabNavigator}>
-      <Stack.Group>
-        {!user.is_paid && (
+    <>
+      <Stack.Navigator initialRouteName={Book.TabNavigator}>
+        <Stack.Group>
           <Stack.Screen
-            name={Book.IsPaid}
-            component={IsPaid}
+            name={Book.TabNavigator}
+            component={TabNavigator}
             options={{headerShown: false}}
           />
-        )}
-        <Stack.Screen
-          name={Book.TabNavigator}
-          component={TabNavigator}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={Book.CreateTrainingWithoutTab}
-          component={CreateTraining}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={Book.ExerciseMediaViewer}
-          component={ExerciseMediaViewer}
-          options={{headerShown: false}}
-        />
-      </Stack.Group>
-    </Stack.Navigator>
+          <Stack.Screen
+            name={Book.CreateTrainingWithoutTab}
+            component={CreateTraining}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name={Book.ExerciseMediaViewer}
+            component={ExerciseMediaViewer}
+            options={{headerShown: false}}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
+      <IsPaidModal />
+    </>
   );
 };

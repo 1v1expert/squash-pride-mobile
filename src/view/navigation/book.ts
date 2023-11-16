@@ -9,7 +9,7 @@ export enum Book {
   Registration = 'Registration',
 
   // PrivateScreen
-  IsPaid = 'IsPaid',
+  // IsPaid = 'IsPaid',
   Options = 'Options',
   TabNavigator = 'TabNavigator',
   CreateTrainingWithoutTab = 'CreateTrainingWithoutTab',
