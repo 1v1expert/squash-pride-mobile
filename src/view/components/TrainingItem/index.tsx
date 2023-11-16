@@ -12,6 +12,7 @@ import {useTraining} from '../../../bus/training';
 import {useNavigation} from '@react-navigation/native';
 import {Book} from '../../navigation/book';
 import {PrivateStackScreenProps} from '../../navigation/types';
+import TrainingItemEditModal from '../TrainingItemEditModal';
 
 const width = Dimensions.get('screen').width;
 
@@ -31,6 +32,7 @@ const TrainingItem = ({
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const [option, setOption] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const {
     getFavoriteItem,
     addFavoriteItem,
@@ -39,6 +41,8 @@ const TrainingItem = ({
     resetStack,
   } = useTraining();
   const currentItem = item.training || item.exercise;
+
+  console.log('item', item);
 
   const favorite = getFavoriteItem(currentItem);
 
@@ -215,7 +219,8 @@ const TrainingItem = ({
                 Изменить название
               </Text>
             </TouchableOpacity> */}
-            <TouchableOpacity onPress={() => setOption(false)}>
+            <TouchableOpacity
+              onPress={() => [setEditModal(true), setOption(false)]}>
               <Text
                 variant="secondary"
                 fontSize={fontSize.body}
@@ -254,6 +259,7 @@ const TrainingItem = ({
           setVisible={setCalendarIsVisible}
         />
       )}
+      <TrainingItemEditModal visible={editModal} setVisible={setEditModal} />
     </>
   );
 };

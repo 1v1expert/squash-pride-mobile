@@ -69,6 +69,23 @@ export const config = createConfig({
                 },
               },
             },
+            textEdit: {
+              bgColor: '#25282D',
+              _text: {
+                color: 'red',
+              },
+              fontFamily: 'Century Gothic',
+              borderWidth: 0,
+              borderColor: 'red',
+              ':focus': {
+                _text: {
+                  color: 'red',
+                },
+                // bgColor: 'purple',
+                borderWidth: 1,
+                borderColor: '#F7A936',
+              },
+            },
           },
         },
       },
@@ -156,6 +173,9 @@ export const config = createConfig({
               ':focus': {
                 color: '#000',
               },
+            },
+            textEdit: {
+              color: '#fff',
             },
           },
         },

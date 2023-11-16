@@ -21,9 +21,10 @@ type CustomInputProps = {
   defaultValue?: string;
   error?: FieldError;
   maxLength?: number;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'textEdit';
   required?: boolean;
   keyboardType?: KeyboardType;
+  multiline?: boolean;
 };
 
 const CustomInput: FC<CustomInputProps> = ({
@@ -36,6 +37,7 @@ const CustomInput: FC<CustomInputProps> = ({
   variant,
   required,
   keyboardType,
+  multiline,
 }) => {
   const {control, setValue} = useFormContext();
   const [focus, setFocus] = useState(false);
@@ -53,7 +55,12 @@ const CustomInput: FC<CustomInputProps> = ({
       render={({field: {onChange, value}}) => {
         return (
           <VStack>
-            <Input variant={variant} size="md">
+            <Input
+              variant={variant}
+              size="md"
+              minHeight={40}
+              height="auto"
+              maxHeight={150}>
               <InputField
                 autoCapitalize="none"
                 value={value}
@@ -68,6 +75,8 @@ const CustomInput: FC<CustomInputProps> = ({
                 onBlur={() => setFocus(false)}
                 fontFamily="Century Gothic"
                 fontSize={perfectSize(17)}
+                flexWrap="wrap"
+                multiline={multiline}
               />
               {required && !focus && (
                 <InputSlot pr="$3">
