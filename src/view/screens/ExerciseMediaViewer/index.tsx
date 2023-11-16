@@ -41,7 +41,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const {bottom} = useSafeAreaInsets();
   const {t} = useCustomTranslation();
   const videoPlayerRef = useRef<VideoPlayer>(null);
-  console.log('item', item);
+
   const {
     filters,
     addToStack,

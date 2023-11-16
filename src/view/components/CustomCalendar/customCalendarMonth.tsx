@@ -19,7 +19,21 @@ const CustomCalendarMonth = ({
   navigation,
 }: CustomCalendarMonthProps) => {
   const {t} = useCustomTranslation();
-  const {selected, setSelected, setTimeUnit} = useCalendar();
+  const {selected, setSelected, setTimeUnit, marked} = useCalendar();
+
+  const eventKeys = Object.keys(marked);
+  const eventValues = Object.values(marked);
+  const monthEvent = [
+    ...new Set(
+      eventValues.reduce((acc: number[], e, i) => {
+        if (e.events) {
+          const month = eventKeys[i].slice(5, 7);
+          acc.push(Number(month));
+        }
+        return acc;
+      }, []),
+    ),
+  ];
 
   const currentYear = new Date(selected).getFullYear();
   const currentMonth = MONTHS[new Date(selected).getMonth()];
@@ -69,6 +83,9 @@ const CustomCalendarMonth = ({
         flexWrap="wrap"
         paddingVertical={height * 0.035}>
         {MONTHS.map((month, i) => {
+          const event = monthEvent.includes(i + 1);
+          console.log(monthEvent);
+          console.log(i);
           return (
             <Box
               width="$1/4"
@@ -76,7 +93,11 @@ const CustomCalendarMonth = ({
               paddingBottom={height * 0.045}
               key={i}>
               <TouchableOpacity onPress={() => onMonthPress(i + 1, month)}>
-                <Center style={month === currentMonth && styles.selectedMonth}>
+                <Center
+                  style={[
+                    event && styles.event,
+                    month === currentMonth && styles.selectedMonth,
+                  ]}>
                   <Text
                     variant="primary"
                     paddingHorizontal={5}
@@ -98,6 +119,8 @@ const CustomCalendarMonth = ({
 export const styles = StyleSheet.create({
   selectedMonth: {
     backgroundColor: 'rgba(251, 197, 110, 0.30)',
+  },
+  event: {
     borderBottomWidth: 1,
     borderBottomColor: '#F7A936',
   },

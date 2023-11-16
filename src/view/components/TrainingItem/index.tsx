@@ -42,8 +42,6 @@ const TrainingItem = ({
   } = useTraining();
   const currentItem = item.training || item.exercise;
 
-  console.log('item', item);
-
   const favorite = getFavoriteItem(currentItem);
 
   const currentMonth = new Date(Number(item.date)).getMonth() + 1;

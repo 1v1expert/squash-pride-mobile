@@ -32,9 +32,11 @@ export const useTraining = () => {
 
   const getFavoriteItem = (item: ExerciseType | ExerciseType[] | undefined) => {
     if (item) {
+      console.log('favorites', favorites);
+      console.log('item', item);
       if (Array.isArray(item)) {
         return !!favorites.filter(
-          e => e.training?.toString() === item.toString(),
+          e => JSON.stringify(e.training) === JSON.stringify(item),
         ).length;
       } else {
         return !!favorites.filter(e => e.exercise?.uid === item.uid).length;
