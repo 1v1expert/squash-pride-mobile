@@ -6,7 +6,7 @@ import CustomCalendar from '../../components/CustomCalendar';
 import {useCalendar} from '../../../bus/calendar';
 import {MONTHS} from '../../../assets/constants';
 import Plus from '../../../assets/svg/plus';
-import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
+import {FlatList, Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -15,11 +15,14 @@ import {useNavigation} from '@react-navigation/native';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
 import {fontSize} from '../../../assets/fontsSize';
 import {Book} from '../../navigation/book';
+import TrainingItem from '../../components/TrainingItem';
+import {FavoriteType} from '../../../bus/training/types';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
   const navigation = useNavigation<HomeScreensStackScreenProps['navigation']>();
-  const {selected, events, setSelected, setTimeUnit} = useCalendar();
+  const {selected, setSelected, setTimeUnit, marked, formattedSelectedDay} =
+    useCalendar();
   const [addTraining, setAddTraining] = useState(false);
   const [time, setTime] = useState(false);
   const currentMonth = MONTHS[new Date(selected).getMonth()];
@@ -192,14 +195,34 @@ const Calendar = () => {
                 </VStack>
               </Collapsible>
             </VStack>
-            <VStack paddingHorizontal={10} zIndex={100} elevation={2}>
-              {!addTraining && !events.length && (
-                <HStack>
-                  <Text variant="primary" fontSize={fontSize.title}>
-                    {t('private.calendarScreen.tips')}
-                  </Text>
-                </HStack>
-              )}
+            <VStack zIndex={100} elevation={2}>
+              {!addTraining &&
+                (marked[formattedSelectedDay] &&
+                marked[formattedSelectedDay].events ? (
+                  <FlatList
+                    data={marked[formattedSelectedDay].events}
+                    renderItem={({item}) => {
+                      const byTrainingItem: FavoriteType = {
+                        date: Number(item.startAt),
+                        type: 'training',
+                        training: item.trainings,
+                      };
+                      return (
+                        <TrainingItem
+                          item={byTrainingItem}
+                          showCalendar={false}
+                          fromCalendar={true}
+                        />
+                      );
+                    }}
+                  />
+                ) : (
+                  <HStack>
+                    <Text variant="primary" fontSize={fontSize.title}>
+                      {t('private.calendarScreen.tips')}
+                    </Text>
+                  </HStack>
+                ))}
               {time && (
                 <HStack position="absolute" bgColor="#131517" borderRadius={10}>
                   <DateTimePicker

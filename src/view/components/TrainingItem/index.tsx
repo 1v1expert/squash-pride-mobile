@@ -17,10 +17,17 @@ const width = Dimensions.get('screen').width;
 
 type TrainingItemProps = {
   item: FavoriteType;
-  state: boolean;
+  state?: boolean;
+  showCalendar?: boolean;
+  fromCalendar?: boolean;
 };
 
-const TrainingItem = ({item, state}: TrainingItemProps) => {
+const TrainingItem = ({
+  item,
+  state,
+  fromCalendar,
+  showCalendar = true,
+}: TrainingItemProps) => {
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const [option, setOption] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
@@ -35,9 +42,14 @@ const TrainingItem = ({item, state}: TrainingItemProps) => {
 
   const favorite = getFavoriteItem(currentItem);
 
-  const currentMonth = new Date().getMonth() + 1;
-  const currentDay = new Date().getDate();
-  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date(Number(item.date)).getMonth() + 1;
+  const currentDay = new Date(Number(item.date)).getDate();
+  const currentYear = new Date(Number(item.date)).getFullYear();
+  const hour = new Date(Number(item.date)).getHours();
+  const minutes =
+    new Date(Number(item.date)).getMinutes() <= 9
+      ? `0${new Date(Number(item.date)).getMinutes()}`
+      : new Date(Number(item.date)).getMinutes();
 
   useEffect(() => {
     setOption(false);
@@ -111,7 +123,7 @@ const TrainingItem = ({item, state}: TrainingItemProps) => {
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
-                {item.type === 'training' && (
+                {item.type === 'training' && showCalendar && (
                   <TouchableOpacity
                     hitSlop={10}
                     style={styles.calendarIcon}
@@ -146,22 +158,34 @@ const TrainingItem = ({item, state}: TrainingItemProps) => {
                     ? item.exercise?.groups[0]
                     : item.training?.[0].title}
                 </Text>
-                <Text
-                  variant="primary"
-                  fontSize={fontSize.body}
-                  flexWrap="wrap"
-                  lineHeight={12}
-                  numberOfLines={3}>
-                  {`${currentDay}.${currentMonth}.${currentYear}`}
-                </Text>
+                <HStack space="md">
+                  <Text
+                    variant="primary"
+                    fontSize={fontSize.body}
+                    flexWrap="wrap"
+                    lineHeight={12}
+                    numberOfLines={3}>
+                    {`${currentDay}.${currentMonth}.${currentYear}`}
+                  </Text>
+                  {fromCalendar && (
+                    <Text
+                      variant="primary"
+                      fontSize={fontSize.body}
+                      flexWrap="wrap"
+                      lineHeight={12}
+                      numberOfLines={3}>{`${hour}:${minutes}`}</Text>
+                  )}
+                </HStack>
               </VStack>
             </HStack>
-            <TouchableOpacity
-              style={styles.threeDots}
-              onPress={() => setOption(true)}
-              hitSlop={20}>
-              <ThreeDots color={'#D9D9D9'} />
-            </TouchableOpacity>
+            {!fromCalendar && (
+              <TouchableOpacity
+                style={styles.threeDots}
+                onPress={() => setOption(true)}
+                hitSlop={20}>
+                <ThreeDots color={'#D9D9D9'} />
+              </TouchableOpacity>
+            )}
           </HStack>
         </TouchableOpacity>
       ) : (

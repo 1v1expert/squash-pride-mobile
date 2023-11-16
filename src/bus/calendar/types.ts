@@ -51,7 +51,7 @@ export type EventsType = {
     title: string;
     ru_description: string;
   }[];
-  user: UserData;
+  user?: UserData;
 };
 export type EventPayload = {
   start_at: string;
