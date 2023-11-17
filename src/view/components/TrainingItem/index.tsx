@@ -12,7 +12,7 @@ import {useTraining} from '../../../bus/training';
 import {useNavigation} from '@react-navigation/native';
 import {Book} from '../../navigation/book';
 import {PrivateStackScreenProps} from '../../navigation/types';
-import TrainingItemEditModal from '../TrainingItemEditModal';
+// import TrainingItemEditModal from '../TrainingItemEditModal';
 
 const width = Dimensions.get('screen').width;
 
@@ -21,6 +21,8 @@ type TrainingItemProps = {
   state?: boolean;
   showCalendar?: boolean;
   fromCalendar?: boolean;
+  setCurrentItem: (item: FavoriteType) => void;
+  setEditModal: (e: boolean) => void;
 };
 
 const TrainingItem = ({
@@ -28,11 +30,13 @@ const TrainingItem = ({
   state,
   fromCalendar,
   showCalendar = true,
+  setCurrentItem,
+  setEditModal,
 }: TrainingItemProps) => {
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const [option, setOption] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
-  const [editModal, setEditModal] = useState(false);
+  // const [editModal, setEditModal] = useState(false);
   const {
     getFavoriteItem,
     addFavoriteItem,
@@ -217,19 +221,26 @@ const TrainingItem = ({
                 Изменить название
               </Text>
             </TouchableOpacity> */}
-            <TouchableOpacity
-              onPress={() => [setEditModal(true), setOption(false)]}>
-              <Text
-                variant="secondary"
-                fontSize={fontSize.body}
-                flexWrap="wrap"
-                lineHeight={12}
-                numberOfLines={3}>
-                {`Редактировать ${
-                  item.type === 'training' ? 'тренировку' : 'упражнение'
-                }`}
-              </Text>
-            </TouchableOpacity>
+            {item.type === 'exercise' && (
+              <TouchableOpacity
+                onPress={() => [
+                  setCurrentItem(item),
+                  setOption(false),
+                  setEditModal(true),
+                ]}>
+                <Text
+                  variant="secondary"
+                  fontSize={fontSize.body}
+                  flexWrap="wrap"
+                  lineHeight={12}
+                  numberOfLines={3}>
+                  {/* {`Редактировать ${
+                    item.type === 'training' ? 'тренировку' : 'упражнение'
+                  }`} */}
+                  Редактировать упражнение
+                </Text>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity onPress={() => [onLikePress(), setOption(false)]}>
               <Text
                 variant="secondary"
@@ -257,7 +268,13 @@ const TrainingItem = ({
           setVisible={setCalendarIsVisible}
         />
       )}
-      <TrainingItemEditModal visible={editModal} setVisible={setEditModal} />
+      {/* {editModal && ( */}
+      {/* <TrainingItemEditModal
+        visible={editModal}
+        setVisible={setEditModal}
+        item={item}
+      /> */}
+      {/* )} */}
     </>
   );
 };

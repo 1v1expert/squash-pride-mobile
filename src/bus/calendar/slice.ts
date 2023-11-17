@@ -5,7 +5,9 @@ import * as reducers from './reducers';
 
 const initialState: types.CalendarState = {
   timeUnit: 'days',
-  selected: new Date().getTime(),
+  selected: new Date(
+    `${new Date().toISOString().split('T')[0]}T04:00:00.000Z`,
+  ).getTime(),
   events: [
     {
       uid: '5e048d1e-f1b3-4d00-99ac-ffb9df08adef',

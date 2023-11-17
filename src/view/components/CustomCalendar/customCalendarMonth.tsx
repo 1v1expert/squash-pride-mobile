@@ -84,8 +84,6 @@ const CustomCalendarMonth = ({
         paddingVertical={height * 0.035}>
         {MONTHS.map((month, i) => {
           const event = monthEvent.includes(i + 1);
-          console.log(monthEvent);
-          console.log(i);
           return (
             <Box
               width="$1/4"

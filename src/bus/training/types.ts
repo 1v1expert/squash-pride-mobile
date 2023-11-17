@@ -35,11 +35,16 @@ export type FiltersType = {
   players?: number | null;
   group?: string[];
 };
-export type FavoriteType = {
+export type FavoriteType = TrainingType & {
   date?: number;
   type: 'training' | 'exercise';
   training?: ExerciseType[];
   exercise?: ExerciseType;
+};
+export type TrainingType = {
+  date?: number;
+  type: 'training' | 'exercise';
+  training?: ExerciseType[];
 };
 export type TrainingState = {
   isLoading: boolean;

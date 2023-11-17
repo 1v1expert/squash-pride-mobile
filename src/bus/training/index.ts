@@ -29,7 +29,9 @@ export const useTraining = () => {
   const removeFavoriteItem = (item: FavoriteType) => {
     dispatch(trainingActions.removeFavorite(item));
   };
-
+  const editFavoriteItem = (item: FavoriteType) => {
+    dispatch(trainingActions.editFavorite(item));
+  };
   const getFavoriteItem = (item: ExerciseType | ExerciseType[] | undefined) => {
     if (item) {
       if (Array.isArray(item)) {
@@ -91,5 +93,6 @@ export const useTraining = () => {
     addFavoriteItem,
     removeFavoriteItem,
     getFavoriteItem,
+    editFavoriteItem,
   };
 };

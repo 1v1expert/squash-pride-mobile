@@ -35,6 +35,11 @@ const Calendar = () => {
   const minimumDate = new Date(
     `${new Date(selected).toISOString().split('T')[0]}T04:00:00Z`,
   );
+  const currentEvents = marked[formattedSelectedDay].events?.filter(event => {
+    if (Number(event.startAt) >= selected) {
+      return event;
+    }
+  });
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
@@ -197,10 +202,9 @@ const Calendar = () => {
             </VStack>
             <VStack zIndex={100} elevation={2}>
               {!addTraining &&
-                (marked[formattedSelectedDay] &&
-                marked[formattedSelectedDay].events ? (
+                (currentEvents && currentEvents.length ? (
                   <FlatList
-                    data={marked[formattedSelectedDay].events}
+                    data={currentEvents}
                     renderItem={({item}) => {
                       const byTrainingItem: FavoriteType = {
                         date: Number(item.startAt),

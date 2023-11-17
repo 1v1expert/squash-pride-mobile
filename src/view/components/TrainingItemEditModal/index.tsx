@@ -1,47 +1,91 @@
 import {
   Box,
+  CloseIcon,
   HStack,
+  Icon,
   Modal,
   ModalContent,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React from 'react';
+import React, {useEffect} from 'react';
 import CustomInput from '../CustomInput';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {itemEditSchema} from './schema';
 import {fontSize} from '../../../assets/fontsSize';
 import CustomButton from '../CustomButton';
+import {FavoriteType} from '../../../bus/training/types';
+import {useTraining} from '../../../bus/training';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {TouchableOpacity} from 'react-native';
 
 type ItemEditForm = {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 };
 type TrainingItemEditModalProps = {
+  item: FavoriteType;
   visible: boolean;
   setVisible: (e: boolean) => void;
+  setCurrentItem: (e: null) => void;
 };
 
 const TrainingItemEditModal = ({
+  item,
   visible,
   setVisible,
+  setCurrentItem,
 }: TrainingItemEditModalProps) => {
+  const {editFavoriteItem} = useTraining();
+  const {i18n} = useCustomTranslation();
+
   const methods = useForm<ItemEditForm>({
     resolver: yupResolver(itemEditSchema),
     mode: 'onSubmit',
-    defaultValues: async () => {
-      return {
-        title: '',
-        description: '',
-      };
-    },
   });
   const {
     formState: {errors},
     handleSubmit,
+    setValue,
   } = methods;
 
+  useEffect(() => {
+    const title =
+      item.type === 'exercise' && item.exercise ? item.exercise.title : '';
+    const description =
+      item.type === 'exercise' && item.exercise
+        ? i18n.language === 'ru'
+          ? item.exercise.ru_description
+          : item.exercise.description
+        : '';
+
+    setValue('title', title);
+    setValue('description', description);
+  }, [item, setValue, i18n]);
+
+  const onPress = (value: ItemEditForm) => {
+    if (item && item.exercise) {
+      const edited: FavoriteType = {
+        ...item,
+        exercise: {
+          ...item.exercise,
+          title: value.title || item.exercise.title,
+          ru_description:
+            i18n.language === 'ru' && value.description
+              ? value.description
+              : item.exercise.ru_description,
+          description:
+            i18n.language === 'en' && value.description
+              ? value.description
+              : item.exercise.description,
+        },
+      };
+      editFavoriteItem(edited);
+    }
+    setCurrentItem(null);
+    setVisible(false);
+  };
   return (
     <Modal isOpen={visible} alignItems="center">
       <ModalContent width="90%" borderRadius={10}>
@@ -54,7 +98,15 @@ const TrainingItemEditModal = ({
                 fontSize={fontSize.title}>
                 РЕДАКТИРОВАТЬ
               </Text>
+
+              <TouchableOpacity
+                onPress={() => [setCurrentItem(null), setVisible(false)]}
+                style={{position: 'absolute', right: 20}}
+                hitSlop={20}>
+                <Icon as={CloseIcon} size="xl" color="#F7AB39" />
+              </TouchableOpacity>
             </HStack>
+
             <VStack paddingHorizontal={40}>
               <FormProvider {...methods}>
                 <VStack space="xs">
@@ -66,6 +118,7 @@ const TrainingItemEditModal = ({
                     placeholder={''}
                     error={errors.title}
                     variant="textEdit"
+                    multiline
                   />
                 </VStack>
                 <VStack space="xs">
@@ -83,7 +136,7 @@ const TrainingItemEditModal = ({
                 <HStack width="100%" justifyContent="center">
                   <CustomButton
                     title="Сохранить"
-                    onPress={() => setVisible(false)}
+                    onPress={handleSubmit(onPress)}
                   />
                 </HStack>
               </FormProvider>

@@ -81,3 +81,51 @@ export const removeFavorite: types.BaseContract<types.FavoriteType> = (
     favorites,
   };
 };
+
+export const editFavorite: types.BaseContract<types.FavoriteType> = (
+  state,
+  action,
+) => {
+  const favorites = state.favorites.map(favorite => {
+    if (favorite.date === action.payload.date) {
+      return action.payload;
+    } else {
+      return favorite;
+    }
+  });
+  save('favorites', favorites);
+  return {
+    ...state,
+    favorites,
+  };
+};
+
+export const addCompletedTraining: types.BaseContract<types.TrainingType> = (
+  state,
+  action,
+) => {
+  const trainings = Array.isArray(action.payload)
+    ? [...state.trainings, ...action.payload]
+    : [...state.trainings, action.payload];
+  save('trainings', trainings);
+  return {
+    ...state,
+    trainings,
+  };
+};
+
+export const removeCompletedTraining: types.BaseContract<types.TrainingType> = (
+  state,
+  action,
+) => {
+  const trainings = state.trainings.filter(e => {
+    return (
+      e?.training?.toString() !== action.payload?.training?.toString() && e
+    );
+  });
+  save('favorites', !trainings.length ? null : trainings);
+  return {
+    ...state,
+    trainings,
+  };
+};

@@ -7,11 +7,16 @@ import {fontSize} from '../../../assets/fontsSize';
 import TrainingItem from '../../components/TrainingItem';
 import {useTraining} from '../../../bus/training';
 import {FlatList} from 'react-native';
+import TrainingItemEditModal from '../../components/TrainingItemEditModal';
+import {FavoriteType} from '../../../bus/training/types';
 
 const Favorites = () => {
   const {favorites} = useTraining();
   const {t} = useCustomTranslation();
   const [state, setState] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState<FavoriteType | null>(null);
+
   const training = favorites.filter(e => e.type === 'training' && e);
   const exercise = favorites.filter(e => e.type === 'exercise' && e);
 
@@ -42,7 +47,14 @@ const Favorites = () => {
           <FlatList
             data={training}
             renderItem={({item}) => {
-              return <TrainingItem item={item} state={state} />;
+              return (
+                <TrainingItem
+                  item={item}
+                  state={state}
+                  setCurrentItem={setCurrentItem}
+                  setEditModal={setEditModal}
+                />
+              );
             }}
             style={styles.flatList}
           />
@@ -50,12 +62,27 @@ const Favorites = () => {
           <FlatList
             data={exercise}
             renderItem={({item}) => {
-              return <TrainingItem item={item} state={state} />;
+              return (
+                <TrainingItem
+                  item={item}
+                  state={state}
+                  setCurrentItem={setCurrentItem}
+                  setEditModal={setEditModal}
+                />
+              );
             }}
             style={styles.flatList}
           />
         )}
       </VStack>
+      {currentItem && (
+        <TrainingItemEditModal
+          visible={editModal}
+          setVisible={setEditModal}
+          item={currentItem}
+          setCurrentItem={setCurrentItem}
+        />
+      )}
     </ViewContainer>
   );
 };
