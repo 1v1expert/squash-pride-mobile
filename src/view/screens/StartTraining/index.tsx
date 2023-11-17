@@ -71,7 +71,7 @@ type TitlesType = {title: string; done: boolean};
 
 const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack, navigate} = navigation;
-  const {t} = useCustomTranslation();
+  const {t, i18n} = useCustomTranslation();
   const {
     filters,
     stackOfExercises,
@@ -232,7 +232,9 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
                   width={width}>
                   <ScrollView>
                     <Text variant="primary" p={10} fontSize={fontSize.text}>
-                      {item.description}
+                      {i18n.language === 'ru' && item.ru_description
+                        ? item.ru_description
+                        : item.description}
                     </Text>
                   </ScrollView>
                 </VStack>

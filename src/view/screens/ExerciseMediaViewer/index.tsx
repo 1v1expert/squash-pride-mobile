@@ -39,7 +39,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const {goBack} = navigation;
   const {item, fromFavorites} = route.params;
   const {bottom} = useSafeAreaInsets();
-  const {t} = useCustomTranslation();
+  const {t, i18n} = useCustomTranslation();
   const videoPlayerRef = useRef<VideoPlayer>(null);
 
   const {
@@ -125,7 +125,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
             <VideoPlayer
               ref={videoPlayerRef}
               video={{
-                uri: item?.video,
+                uri: 'https://internal.squash-pride.ru/api/media/Drop-drop-cross-cross.MOV',
               }}
               currentTime={currentTime}
               style={[
@@ -187,7 +187,9 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
           <ScrollView>
             <View paddingHorizontal={30} paddingVertical={20}>
               <Text variant="primary" textAlign="auto" fontSize={fontSize.text}>
-                {item?.description}
+                {i18n.language === 'ru' && item.ru_description
+                  ? item.ru_description
+                  : item.description}
               </Text>
             </View>
           </ScrollView>

@@ -141,7 +141,7 @@ const Player = ({
         {titleIsVisible && item && (
           <Center position="absolute" bottom={10} left={10}>
             <Text variant="primary" fontSize={fontSize.text}>
-              {item.groups[0]}
+              {item.title}
             </Text>
           </Center>
         )}

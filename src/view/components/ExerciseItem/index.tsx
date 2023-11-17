@@ -7,6 +7,7 @@ import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
 import {fontSize} from '../../../assets/fontsSize';
 import {useTraining} from '../../../bus/training';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 type ExerciseItemProps = {
@@ -16,6 +17,8 @@ type ExerciseItemProps = {
 };
 const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
   const {getFavoriteItem} = useTraining();
+  const {i18n} = useCustomTranslation();
+
   const favorite = getFavoriteItem(item);
 
   return (
@@ -51,7 +54,9 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
               lineHeight={12}
               width="70%"
               numberOfLines={3}>
-              {item.description}
+              {i18n.language === 'ru' && item.ru_description
+                ? item.ru_description
+                : item.description}
             </Text>
             <HStack space="md">
               <Center minWidth={20} minHeight={20}>

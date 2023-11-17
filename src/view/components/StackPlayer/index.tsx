@@ -163,7 +163,7 @@ const StackPlayer = ({
         {titleIsVisible && item && (
           <Center position="absolute" bottom={20} left={50}>
             <Text variant="primary" fontSize={fontSize.text}>
-              {item.groups[0]}
+              {item.title}
             </Text>
           </Center>
         )}
