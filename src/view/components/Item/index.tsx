@@ -5,6 +5,7 @@ import {Dimensions, TouchableOpacity} from 'react-native';
 import {TItem} from '../../navigation/types';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {fontSize} from '../../../assets/fontsSize';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 type ItemProps = {
@@ -12,7 +13,9 @@ type ItemProps = {
   onPress: (e: TItem) => void;
 };
 const Item = ({item, onPress}: ItemProps) => {
-  const {title, ru_description: description} = item;
+  const {i18n} = useCustomTranslation();
+  const {title, ru_description, en_description} = item;
+  const description = i18n.language === 'ru' ? ru_description : en_description;
 
   return (
     <TouchableOpacity onPress={() => onPress(item)}>

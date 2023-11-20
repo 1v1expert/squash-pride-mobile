@@ -65,9 +65,13 @@ const CalendarModal = ({visible, setVisible, item}: CalendarModalProps) => {
           <CustomCalendar action={() => setTimeUnit('time')} />
         </VStack>
         <HStack width="$full" alignItems="center" justifyContent="space-evenly">
-          <CustomButton title="Выбрать" outline onPress={createEvent} />
           <CustomButton
-            title="Отменить"
+            title={t('private.calendarModal.select')}
+            outline
+            onPress={createEvent}
+          />
+          <CustomButton
+            title={t('private.calendarModal.cancel')}
             outline
             onPress={() => {
               setVisible(false);

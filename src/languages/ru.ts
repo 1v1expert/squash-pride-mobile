@@ -76,7 +76,11 @@ export default {
     gameTechnique: {title: 'ТЕХНИКА ИГРЫ'},
     rules: {title: 'ПРАВИЛА'},
 
-    favoritesScreen: {title: 'ИЗБРАННОЕ'},
+    favoritesScreen: {
+      title: 'ИЗБРАННОЕ',
+      trainings: 'тренировки',
+      exercises: 'упражнения',
+    },
     trainingScreen: {title: 'МОИ ТРЕНИРОВКИ'},
     calendarScreen: {
       title: 'План тренировок',
@@ -146,6 +150,16 @@ export default {
       shot6: 'ЛОБ',
       shot7: 'ВСЕ',
       shot8: 'ТАКТИКА',
+    },
+    calendarModal: {
+      select: 'Выбрать',
+      cancel: 'Отменить',
+    },
+    trainingItem: {
+      training: 'Тренировка',
+      exercise: 'Упражнение',
+      delete: 'Удалить',
+      editExercise: 'Редактировать упражнение',
     },
   },
   gender: {

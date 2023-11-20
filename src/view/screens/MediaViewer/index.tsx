@@ -19,17 +19,19 @@ import SystemNavigationBar from 'react-native-system-navigation-bar';
 import Orientation from 'react-native-orientation-locker';
 import FullscreenPlayer from '../../components/FullscreenPlayer';
 import {fontSize} from '../../../assets/fontsSize';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const {goBack} = navigation;
   const videoPlayerRef = useRef<VideoPlayer>(null);
-
-  const {title, ru_description: description, video} = route.params;
+  const {i18n} = useCustomTranslation();
+  const {title, ru_description, en_description, video} = route.params;
   const [videoStarted, setVideoStarted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
   const [portraitWidth] = useState(Dimensions.get('screen').width);
   const [loader, setLoader] = useState(false);
+  const description = i18n.language === 'ru' ? ru_description : en_description;
 
   const openModal = () => {
     SystemNavigationBar.fullScreen(true);
@@ -118,8 +120,12 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                 </Pressable>
               )}
             </HStack>
-            <ScrollView padding={30}>
-              <Text variant="primary" textAlign="auto" fontSize={fontSize.text}>
+            <ScrollView>
+              <Text
+                variant="primary"
+                textAlign="auto"
+                fontSize={fontSize.text}
+                p={20}>
                 {description}
               </Text>
             </ScrollView>

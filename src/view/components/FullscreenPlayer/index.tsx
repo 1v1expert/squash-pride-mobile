@@ -20,7 +20,7 @@ type FullscreenPlayerProps = {
   currentTime: number;
   videoPlayerRef: VideoPlayer | null;
   favorite?: boolean;
-  onLikePress: () => void;
+  onLikePress?: () => void;
 };
 
 const FullscreenPlayer = ({
@@ -120,18 +120,20 @@ const FullscreenPlayer = ({
           onEnd={closeModal}
         />
       </VStack>
-      <TouchableOpacity
-        hitSlop={10}
-        style={styles.heartIcon}
-        onPress={onLikePress}>
-        <Image
-          source={favorite ? images.heart : images.unselectedHeart}
-          alt=""
-          width={perfectSize(25)}
-          height={perfectSize(25)}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
+      {onLikePress && (
+        <TouchableOpacity
+          hitSlop={10}
+          style={styles.heartIcon}
+          onPress={onLikePress}>
+          <Image
+            source={favorite ? images.heart : images.unselectedHeart}
+            alt=""
+            width={perfectSize(25)}
+            height={perfectSize(25)}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      )}
       {loader && (
         <Box position="absolute">
           <Spinner color="#F7AB39" />

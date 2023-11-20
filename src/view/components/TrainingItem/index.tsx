@@ -13,6 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Book} from '../../navigation/book';
 import {PrivateStackScreenProps} from '../../navigation/types';
 import TrainingItemEditModal from '../TrainingItemEditModal';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 
 const width = Dimensions.get('screen').width;
 
@@ -30,6 +31,7 @@ const TrainingItem = ({
   showCalendar = true,
 }: TrainingItemProps) => {
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
+  const {t} = useCustomTranslation();
   const [option, setOption] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -147,7 +149,9 @@ const TrainingItem = ({
                   fontWeight="$bold"
                   flexWrap="wrap"
                   alignItems="center">
-                  {item.type === 'training' ? 'Тренировка' : 'Упражнение'}
+                  {item.type === 'training'
+                    ? t('private.trainingItem.training')
+                    : t('private.trainingItem.exercise')}
                 </Text>
 
                 <Text
@@ -229,7 +233,7 @@ const TrainingItem = ({
                   {/* {`Редактировать ${
                     item.type === 'training' ? 'тренировку' : 'упражнение'
                   }`} */}
-                  Редактировать упражнение
+                  {t('private.trainingItem.editExercise')}
                 </Text>
               </TouchableOpacity>
             )}
@@ -240,7 +244,7 @@ const TrainingItem = ({
                 flexWrap="wrap"
                 lineHeight={12}
                 numberOfLines={3}>
-                Удалить
+                {t('private.trainingItem.delete')}
               </Text>
             </TouchableOpacity>
           </VStack>

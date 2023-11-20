@@ -25,7 +25,7 @@ const Favorites = () => {
             onPress={() => setState(false)}>
             <Center p={5} style={!state && styles.selected}>
               <Text variant="primary" fontSize={fontSize.title}>
-                тренировки
+                {t('private.favoritesScreen.trainings')}
               </Text>
             </Center>
           </TouchableOpacity>
@@ -34,7 +34,7 @@ const Favorites = () => {
             onPress={() => setState(true)}>
             <Center p={5} style={state && styles.selected}>
               <Text variant="primary" fontSize={fontSize.title}>
-                упражнения
+                {t('private.favoritesScreen.exercises')}
               </Text>
             </Center>
           </TouchableOpacity>

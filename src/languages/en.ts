@@ -75,7 +75,11 @@ export default {
     },
     gameTechnique: {title: 'GAME TECHNIQUE'},
     rules: {title: 'RULES'},
-    favoritesScreen: {title: 'FAVORITES'},
+    favoritesScreen: {
+      title: 'FAVORITES',
+      trainings: 'trainings',
+      exercises: 'exercises',
+    },
     trainingScreen: {title: 'MY TRAININGS'},
     calendarScreen: {
       title: 'Training Plan',
@@ -148,6 +152,16 @@ export default {
       shot6: 'LOB',
       shot7: 'ALL',
       shot8: 'TACTICS',
+    },
+    calendarModal: {
+      select: 'Select',
+      cancel: 'Cancel',
+    },
+    trainingItem: {
+      training: 'Training',
+      exercise: 'Exercise',
+      delete: 'Delete',
+      editExercise: 'Edit exercise',
     },
   },
   gender: {
