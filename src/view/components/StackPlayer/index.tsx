@@ -178,7 +178,7 @@ const StackPlayer = ({
         </Pressable>
         <TouchableOpacity
           onPress={next}
-          disabled={position === 3}
+          disabled={position === length - 1}
           style={styles.goToNext}>
           <Next color={position === length - 1 ? '#fff' : '#F7A936'} />
         </TouchableOpacity>

@@ -12,7 +12,7 @@ import {useTraining} from '../../../bus/training';
 import {useNavigation} from '@react-navigation/native';
 import {Book} from '../../navigation/book';
 import {PrivateStackScreenProps} from '../../navigation/types';
-// import TrainingItemEditModal from '../TrainingItemEditModal';
+import TrainingItemEditModal from '../TrainingItemEditModal';
 
 const width = Dimensions.get('screen').width;
 
@@ -21,8 +21,6 @@ type TrainingItemProps = {
   state?: boolean;
   showCalendar?: boolean;
   fromCalendar?: boolean;
-  setCurrentItem: (item: FavoriteType) => void;
-  setEditModal: (e: boolean) => void;
 };
 
 const TrainingItem = ({
@@ -30,13 +28,11 @@ const TrainingItem = ({
   state,
   fromCalendar,
   showCalendar = true,
-  setCurrentItem,
-  setEditModal,
 }: TrainingItemProps) => {
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const [option, setOption] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
-  // const [editModal, setEditModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const {
     getFavoriteItem,
     addFavoriteItem,
@@ -223,11 +219,7 @@ const TrainingItem = ({
             </TouchableOpacity> */}
             {item.type === 'exercise' && (
               <TouchableOpacity
-                onPress={() => [
-                  setCurrentItem(item),
-                  setOption(false),
-                  setEditModal(true),
-                ]}>
+                onPress={() => [setOption(false), setEditModal(true)]}>
                 <Text
                   variant="secondary"
                   fontSize={fontSize.body}
@@ -268,13 +260,13 @@ const TrainingItem = ({
           setVisible={setCalendarIsVisible}
         />
       )}
-      {/* {editModal && ( */}
-      {/* <TrainingItemEditModal
-        visible={editModal}
-        setVisible={setEditModal}
-        item={item}
-      /> */}
-      {/* )} */}
+      {editModal && (
+        <TrainingItemEditModal
+          visible={editModal}
+          setVisible={setEditModal}
+          item={item}
+        />
+      )}
     </>
   );
 };

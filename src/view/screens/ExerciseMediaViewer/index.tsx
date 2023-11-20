@@ -1,6 +1,7 @@
 import {
   ArrowLeftIcon,
   Box,
+  Center,
   HStack,
   ScrollView,
   Spinner,
@@ -171,6 +172,13 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
               <Box position="absolute">
                 <Spinner color="#F7AB39" />
               </Box>
+            )}
+            {!videoStarted && item && (
+              <Center position="absolute" bottom={10} left={10}>
+                <Text variant="primary" fontSize={fontSize.text}>
+                  {item.title}
+                </Text>
+              </Center>
             )}
             {videoStarted && (
               <Pressable onPress={openModal} style={styles.fullScreenButton}>

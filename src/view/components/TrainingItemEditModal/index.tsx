@@ -28,14 +28,12 @@ type TrainingItemEditModalProps = {
   item: FavoriteType;
   visible: boolean;
   setVisible: (e: boolean) => void;
-  setCurrentItem: (e: null) => void;
 };
 
 const TrainingItemEditModal = ({
   item,
   visible,
   setVisible,
-  setCurrentItem,
 }: TrainingItemEditModalProps) => {
   const {editFavoriteItem} = useTraining();
   const {i18n} = useCustomTranslation();
@@ -83,7 +81,6 @@ const TrainingItemEditModal = ({
       };
       editFavoriteItem(edited);
     }
-    setCurrentItem(null);
     setVisible(false);
   };
   return (
@@ -100,7 +97,7 @@ const TrainingItemEditModal = ({
               </Text>
 
               <TouchableOpacity
-                onPress={() => [setCurrentItem(null), setVisible(false)]}
+                onPress={() => [setVisible(false)]}
                 style={{position: 'absolute', right: 20}}
                 hitSlop={20}>
                 <Icon as={CloseIcon} size="xl" color="#F7AB39" />

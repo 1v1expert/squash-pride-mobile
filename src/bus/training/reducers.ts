@@ -71,7 +71,8 @@ export const removeFavorite: types.BaseContract<types.FavoriteType> = (
       return e.exercise?.uid !== action.payload.exercise?.uid && e;
     } else {
       return (
-        e?.training?.toString() !== action.payload?.training?.toString() && e
+        JSON.stringify(e?.training) !==
+          JSON.stringify(action.payload?.training) && e
       );
     }
   });

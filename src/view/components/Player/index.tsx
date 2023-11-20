@@ -43,13 +43,11 @@ const Player = ({
 }: PlayerProps) => {
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const [videoStarted, setVideoStarted] = useState(false);
-  const [titleIsVisible, setTitleIsVisible] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     setVideoStarted(false);
-    setTitleIsVisible(true);
     setLoader(false);
   }, [position]);
 
@@ -99,11 +97,7 @@ const Player = ({
             pauseOnPress
             resizeMode="stretch"
             disableFullscreen
-            onLoadStart={() => [
-              setTitleIsVisible(false),
-              setVideoStarted(true),
-              setLoader(true),
-            ]}
+            onLoadStart={() => [setVideoStarted(true), setLoader(true)]}
             onBuffer={event => setLoader(event.isBuffering)}
             onReadyForDisplay={() => setLoader(false)}
             onLoad={() => videoPlayerRef.current?.seek(currentTime)}
@@ -138,14 +132,14 @@ const Player = ({
             <Spinner color="#F7AB39" />
           </Box>
         )}
-        {titleIsVisible && item && (
+        {!videoStarted && item && (
           <Center position="absolute" bottom={10} left={10}>
             <Text variant="primary" fontSize={fontSize.text}>
               {item.title}
             </Text>
           </Center>
         )}
-        {!titleIsVisible && (
+        {videoStarted && (
           <Pressable onPress={onPress} style={styles.defaultScreenButton}>
             <Image
               source={images.fullScreen}
