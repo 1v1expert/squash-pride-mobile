@@ -20,11 +20,7 @@ type CalendarModalProps = {
 
 const CalendarModal = ({visible, setVisible, item}: CalendarModalProps) => {
   const {t} = useCustomTranslation();
-  const {
-    setTimeUnit,
-    //  addEvent,
-    selected,
-  } = useCalendar();
+  const {setTimeUnit, addEvent, selected} = useCalendar();
 
   const {bottom} = useSafeAreaInsets();
   const resetToDefault = () => {
@@ -34,14 +30,12 @@ const CalendarModal = ({visible, setVisible, item}: CalendarModalProps) => {
   const createEvent = () => {
     const trainings = item.map(e => {
       return {
-        group: e.groups[0],
+        group: (e.groups && e.groups[0]) || e.group || '',
         exercise: e.uid,
       };
     });
-    console.log('trainings', trainings);
     const event = {start_at: selected.toString(), trainings};
-    console.log('event', event);
-    // addEvent(event);
+    addEvent(event);
     resetToDefault();
   };
   return (

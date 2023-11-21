@@ -10,6 +10,9 @@ export const extraReducers = (
     state.events = action.payload;
   });
 
+  builder.addMatcher(isAnyOf(createEvent.fulfilled), (state, action) => {
+    state.events = [...state.events, action.payload];
+  });
   builder.addMatcher(isAnyOf(getEvents.pending, createEvent.pending), state => {
     state.isLoading = true;
   });

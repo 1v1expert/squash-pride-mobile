@@ -83,29 +83,36 @@ const Calendar = () => {
 
   return (
     <Box flex={1} bgColor="#131517">
-      <SafeAreaLayout top>
-        <VStack flex={1} alignItems="center" bgColor="#25282D">
-          <VStack
-            bgColor="#131517"
-            width="$full"
-            alignItems="center"
-            paddingHorizontal={20}
-            space="xs">
-            <Text variant="primary" fontSize={fontSize.title}>
-              {t('private.calendarScreen.title')}
-            </Text>
-            <Box bgColor="#F7A936" width="$full" height={2} />
+      <SafeAreaLayout top style={{flex: 1}}>
+        <VStack flex={1} alignItems="center">
+          <VStack width="$full" height="$1/2">
+            <VStack
+              bgColor="#131517"
+              width="$full"
+              alignItems="center"
+              paddingHorizontal={20}
+              space="xs">
+              <Text variant="primary" fontSize={fontSize.title}>
+                {t('private.calendarScreen.title')}
+              </Text>
+              <Box bgColor="#F7A936" width="$full" height={2} />
+            </VStack>
+            <VStack
+              alignItems="center"
+              justifyContent="center"
+              bgColor="#131517"
+              width="$full"
+              pt={20}
+              marginBottom={10}>
+              <CustomCalendar action={hideAll} navigation={navigation} />
+            </VStack>
           </VStack>
+
           <VStack
-            alignItems="center"
-            justifyContent="center"
-            bgColor="#131517"
+            paddingHorizontal={30}
+            bgColor="#25282D"
             width="$full"
-            pt={20}
-            marginBottom={10}>
-            <CustomCalendar action={hideAll} navigation={navigation} />
-          </VStack>
-          <Box paddingHorizontal={30}>
+            height="$1/2">
             <VStack
               width="$full"
               alignItems="center"
@@ -200,7 +207,7 @@ const Calendar = () => {
                 </VStack>
               </Collapsible>
             </VStack>
-            <VStack zIndex={100} elevation={2}>
+            <VStack width="$full" height={'75%'}>
               {!addTraining &&
                 (currentEvents && currentEvents.length ? (
                   <FlatList
@@ -249,7 +256,7 @@ const Calendar = () => {
                 </HStack>
               )}
             </VStack>
-          </Box>
+          </VStack>
         </VStack>
       </SafeAreaLayout>
     </Box>

@@ -12,6 +12,8 @@ type CustomCalendarDayProps = DayProps & {
 };
 const CustomCalendarDay = (item: CustomCalendarDayProps) => {
   const {date, state, marking, onPress} = item;
+  const today = new Date().getTime();
+  const dateTimestamp = date?.timestamp || 0;
 
   const textColor = useCallback(() => {
     switch (state) {
@@ -35,7 +37,7 @@ const CustomCalendarDay = (item: CustomCalendarDayProps) => {
         bgColor={
           marking?.selected ? 'rgba(251, 197, 110, 0.30)' : 'transparent'
         }
-        borderBottomColor="#F7AB39"
+        borderBottomColor={today < dateTimestamp ? '#F7AB39' : '#7F8189'}
         borderBottomWidth={marking?.marked ? 1 : 0}
         width="$full"
         height="$full"

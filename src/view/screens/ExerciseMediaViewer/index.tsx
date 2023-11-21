@@ -102,7 +102,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   return (
     <>
       <ViewContainer
-        title={item.groups[0]}
+        title={item.groups && item.groups[0]}
         headerContent="flex-start"
         leftHeaderButton={
           <CustomButton
@@ -143,6 +143,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                 setVideoStarted(true);
                 setLoader(true);
               }}
+              onReadyForDisplay={() => setLoader(false)}
               onEnd={() => setCurrentTime(0.001)}
               customStyles={{
                 controls: {

@@ -48,7 +48,7 @@ export const useCalendar = () => {
             events: [{startAt: event.start_at, trainings: event.trainings}],
           };
         } else {
-          Array.isArray(acc[eventDay].trainings) &&
+          Array.isArray(acc[eventDay].events) &&
             acc[eventDay].events.push({
               startAt: event.start_at,
               trainings: event.trainings,
@@ -73,7 +73,7 @@ export const useCalendar = () => {
     tokenRefresh(() => dispatch(getEvents()).unwrap());
   };
   const addEvent = (state: EventPayload) => {
-    tokenRefresh(() => dispatch(createEvent(state)));
+    tokenRefresh(() => dispatch(createEvent(state)).unwrap());
   };
 
   const setSelected = (state: number) => {

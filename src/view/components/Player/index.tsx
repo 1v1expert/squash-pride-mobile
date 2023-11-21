@@ -46,6 +46,11 @@ const Player = ({
   const [fullscreen, setFullscreen] = useState(false);
   const [loader, setLoader] = useState(false);
 
+  const uri = item.video.includes('https')
+    ? item.video
+    : `https://internal.squash-pride.ru/api/media/${item.video}`;
+  console.log('uri', uri);
+
   useEffect(() => {
     setVideoStarted(false);
     setLoader(false);
@@ -90,9 +95,7 @@ const Player = ({
           <VideoPlayer
             key={position}
             ref={videoPlayerRef}
-            video={{
-              uri: item.video,
-            }}
+            video={{uri}}
             style={[styles.player, {width: width}]}
             pauseOnPress
             resizeMode="stretch"

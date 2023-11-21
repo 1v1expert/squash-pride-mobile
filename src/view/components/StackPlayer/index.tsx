@@ -54,6 +54,10 @@ const StackPlayer = ({
   const [titleIsVisible, setTitleIsVisible] = useState(true);
   const [loader, setLoader] = useState(false);
 
+  const uri = item.video.includes('https')
+    ? item.video
+    : `https://internal.squash-pride.ru/api/media/${item.video}`;
+
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
   useEffect(() => {
     Dimensions.addEventListener('change', e => {
@@ -82,7 +86,6 @@ const StackPlayer = ({
         Orientation.lockToPortrait();
         setVisible(false);
       }
-      onEnd && onEnd(position);
     });
   };
   const next = () => {
@@ -108,7 +111,7 @@ const StackPlayer = ({
           <VideoPlayer
             key={position}
             ref={videoFullScreenPlayerRef}
-            video={{uri: item.video}}
+            video={{uri}}
             disableFullscreen
             style={[
               styles.fullScreenVideoPlayer,
@@ -140,7 +143,7 @@ const StackPlayer = ({
               seekBarProgress: {backgroundColor: '#FBC56E'},
               seekBarKnob: {backgroundColor: '#FBC56E'},
             }}
-            onEnd={closeModal}
+            onEnd={() => [closeModal(), onEnd && onEnd(position)]}
           />
         )}
         <TouchableOpacity

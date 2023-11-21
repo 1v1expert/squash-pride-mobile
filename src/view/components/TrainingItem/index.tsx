@@ -45,7 +45,11 @@ const TrainingItem = ({
   const currentItem = item.training || item.exercise;
 
   const favorite = getFavoriteItem(currentItem);
-
+  const title = item.training
+    ? item.training[0].group
+      ? item.training.map(e => e.group).join('-')
+      : item.training[0].title
+    : '';
   const currentMonth = new Date(Number(item.date)).getMonth() + 1;
   const currentDay = new Date(Number(item.date)).getDate();
   const currentYear = new Date(Number(item.date)).getFullYear();
@@ -161,8 +165,8 @@ const TrainingItem = ({
                   lineHeight={12}
                   numberOfLines={1}>
                   {item.type === 'exercise'
-                    ? item.exercise?.groups[0]
-                    : item.training?.[0].title}
+                    ? item.exercise?.groups && item.exercise?.groups[0]
+                    : title}
                 </Text>
                 <HStack space="md">
                   <Text

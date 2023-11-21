@@ -73,7 +73,6 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {goBack, navigate} = navigation;
   const {t, i18n} = useCustomTranslation();
   const {
-    filters,
     stackOfExercises,
     resetStack,
     exercises,
@@ -97,6 +96,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
 
   const mainStack = !stackOfExercises.length ? exercises : stackOfExercises;
   const favorite = getFavoriteItem(mainStack);
+  console.log('mainStack', mainStack);
 
   const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffset = e.nativeEvent.contentOffset;
@@ -127,7 +127,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   useEffect(() => {
     const titleList = mainStack.map(e => {
       return {
-        title: e.groups[0],
+        title: e.group ? e.group : e.groups ? e.groups[0] : '',
         done: false,
       };
     });
@@ -184,13 +184,15 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         )
       }
       rightHeaderButton={
-        <CustomButton
-          iconLeft={CalendarDaysIcon}
-          bgColor="#25282D"
-          // onPress={() => [resetStack(), navigate(Book.Home)]}
-          onPress={() => setCalendarIsVisible(true)}
-          width={50}
-        />
+        mainStack.length === 4 && (
+          <CustomButton
+            iconLeft={CalendarDaysIcon}
+            bgColor="#25282D"
+            // onPress={() => [resetStack(), navigate(Book.Home)]}
+            onPress={() => setCalendarIsVisible(true)}
+            width={50}
+          />
+        )
       }>
       {!isLoading && mainStack.length ? (
         <VStack flex={1} width="$full">
@@ -241,7 +243,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               );
             }}
             pagingEnabled
-            keyExtractor={item => item.uid}
+            // keyExtractor={item => item.uid}
             showsHorizontalScrollIndicator={false}
             snapToAlignment="start"
             decelerationRate={'normal'}
@@ -253,12 +255,11 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             alignItems="center"
             paddingHorizontal={30}
             space="xl">
-            {filters.players && (
-              <PeopleCounter amountOfPeople={filters.players} />
-            )}
+            <PeopleCounter amountOfPeople={mainStack[currentIndex].players} />
             <Text variant="primary">
-              {filters.level &&
-                t(`private.optionsScreen.step2.${filters.level}`)}
+              {t(
+                `private.optionsScreen.step2.${mainStack[currentIndex].level}`,
+              )}
             </Text>
           </HStack>
           <CalendarModal

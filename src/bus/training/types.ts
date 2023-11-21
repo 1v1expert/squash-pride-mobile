@@ -65,7 +65,8 @@ export type GroupData = {
 export type ExerciseType = {
   uid: string;
   video: string;
-  groups: string[];
+  group?: string;
+  groups?: string[];
   level: 'amateur' | 'professional';
   players: number;
   description: string;

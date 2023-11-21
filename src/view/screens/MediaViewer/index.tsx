@@ -86,6 +86,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                 pauseOnPress
                 disableFullscreen
                 onBuffer={event => setLoader(event.isBuffering)}
+                onReadyForDisplay={() => setLoader(false)}
                 onLoadStart={() => {
                   setVideoStarted(true);
                   setLoader(true);

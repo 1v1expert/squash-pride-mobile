@@ -115,7 +115,7 @@ const TrainingItemEditModal = ({
                     placeholder={''}
                     error={errors.title}
                     variant="textEdit"
-                    multiline
+                    // multiline
                   />
                 </VStack>
                 <VStack space="xs">
