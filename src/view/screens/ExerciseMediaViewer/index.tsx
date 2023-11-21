@@ -126,7 +126,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
             <VideoPlayer
               ref={videoPlayerRef}
               video={{
-                uri: 'https://internal.squash-pride.ru/api/media/Drop-drop-cross-cross.MOV',
+                uri: item?.video || '',
               }}
               currentTime={currentTime}
               style={[
