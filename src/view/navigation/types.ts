@@ -48,7 +48,7 @@ export type HomeScreensStackParamList = {
 
 export type HomeScreensStackScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
-  'CreateTraining'
+  any
 >;
 export type TabNavigatorProps = NativeStackScreenProps<
   TabNavigatorParamList,

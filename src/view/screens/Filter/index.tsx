@@ -13,7 +13,7 @@ import {FilterScreenProps} from '../../navigation/types';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import PeopleAccordion from '../../components/PeopleAccordion';
 import {FormProvider, useForm} from 'react-hook-form';
-import {filterSchemaWithGroup} from './schema';
+import {filterSchema, filterSchemaWithGroup} from './schema';
 import {yupResolver} from '@hookform/resolvers/yup';
 import LevelAccordion from '../../components/LevelAccordion';
 import GroupAccordion from '../../components/GroupAccordion';
@@ -22,11 +22,17 @@ import {Book} from '../../navigation/book';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {fontSize} from '../../../assets/fontsSize';
 
-type FilterForm = {
-  players: number;
-  level: 'amateur' | 'professional';
-  group: string[];
-};
+type FilterForm =
+  | {
+      players: number;
+      level: 'amateur' | 'professional';
+      group: string[];
+    }
+  | {
+      players?: number;
+      level?: 'amateur' | 'professional';
+      group?: string[];
+    };
 const width = Dimensions.get('screen').width;
 const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   const {setFilters, fetchExercise, resetStack, resetExercises} = useTraining();
@@ -36,7 +42,7 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   const from = route.params?.from;
 
   const methods = useForm<FilterForm>({
-    resolver: yupResolver(filterSchemaWithGroup),
+    resolver: yupResolver(location ? filterSchemaWithGroup : filterSchema),
     mode: 'onSubmit',
   });
   const {

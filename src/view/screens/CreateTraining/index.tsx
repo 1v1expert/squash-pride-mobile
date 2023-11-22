@@ -8,7 +8,10 @@ import {
 } from '@gluestack-ui/themed';
 import React, {FC, useState} from 'react';
 
-import {PrivateStackScreenProps} from '../../navigation/types';
+import {
+  HomeScreensStackScreenProps,
+  PrivateStackScreenProps,
+} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
@@ -30,7 +33,9 @@ import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 
-const CreateTraining: FC<PrivateStackScreenProps> = ({navigation, route}) => {
+const CreateTraining: FC<
+  PrivateStackScreenProps & HomeScreensStackScreenProps
+> = ({navigation, route}) => {
   const {bottom} = useSafeAreaInsets();
   const {goBack, navigate} = navigation;
   const {t} = useCustomTranslation();
@@ -145,7 +150,7 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({navigation, route}) => {
         <HStack width="$full">
           <CustomButton
             title={from ? 'Запланировать' : 'Начать тренировку'}
-            onPress={() => [navigate(Book.StartTraining, {from})]}
+            onPress={() => navigate(Book.StartTraining, {from})}
             disabled={!stackOfExercises.length}
           />
         </HStack>
