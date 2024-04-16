@@ -1,4 +1,6 @@
 import {
+  EyeIcon,
+  EyeOffIcon,
   Input,
   InputField,
   InputIcon,
@@ -42,6 +44,7 @@ const CustomInput: FC<CustomInputProps> = ({
   const {control, setValue} = useFormContext();
   const [focus, setFocus] = useState(false);
   const {t} = useCustomTranslation();
+  const [showField, setShowField] = useState(type === 'text');
 
   useEffect(() => {
     setValue(name, defaultValue);
@@ -68,7 +71,7 @@ const CustomInput: FC<CustomInputProps> = ({
                 placeholder={placeholder}
                 placeholderTextColor={focus ? '#000' : '#fff'}
                 variant={variant}
-                type={type}
+                type={showField ? 'text' : 'password'}
                 keyboardType={keyboardType}
                 maxLength={maxLength}
                 onFocus={() => setFocus(true)}
@@ -78,6 +81,20 @@ const CustomInput: FC<CustomInputProps> = ({
                 flexWrap="wrap"
                 multiline={multiline}
               />
+              {type === 'password' && (
+                <InputSlot pr="$3" onPress={() => setShowField(prev => !prev)}>
+                  <InputIcon
+                    as={showField ? EyeIcon : EyeOffIcon}
+                    color={
+                      focus
+                        ? variant === 'primary'
+                          ? '#F7A936'
+                          : '#000'
+                        : '#fff'
+                    }
+                  />
+                </InputSlot>
+              )}
               {required && !focus && (
                 <InputSlot pr="$3">
                   <InputIcon as={Star} color="$darkBlue500" />
@@ -86,12 +103,25 @@ const CustomInput: FC<CustomInputProps> = ({
             </Input>
 
             <VStack margin={0} minHeight={22.5}>
-              <Text
-                variant="primary"
-                color={value ? '#F00' : '#F7A936'}
-                fontSize={fontSize.title}>
-                {error && t(error.message)}
-              </Text>
+              {error &&
+                (Array.isArray(error.message) ? (
+                  error.message.map((e, i) => (
+                    <Text
+                      key={i}
+                      variant="primary"
+                      color={value ? '#F00' : '#F7A936'}
+                      fontSize={fontSize.title}>
+                      {t(e)}
+                    </Text>
+                  ))
+                ) : (
+                  <Text
+                    variant="primary"
+                    color={value ? '#F00' : '#F7A936'}
+                    fontSize={fontSize.title}>
+                    {t(error.message)}
+                  </Text>
+                ))}
             </VStack>
           </VStack>
         );

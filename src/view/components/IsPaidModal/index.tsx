@@ -1,11 +1,4 @@
-import {
-  Box,
-  Center,
-  CloseIcon,
-  Modal,
-  Text,
-  VStack,
-} from '@gluestack-ui/themed';
+import {Box, Center, Modal, Text, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {AppState, Dimensions, Image, Linking, StyleSheet} from 'react-native';
 import {images} from '../../../assets';
@@ -26,7 +19,9 @@ const IsPaidModal = () => {
   const handleClick = () => Linking.openURL(URL);
 
   useEffect(() => {
-    user.is_paid !== null && !user.is_paid && setVisible(true);
+    user.is_paid !== null && !user.is_paid
+      ? setVisible(true)
+      : setVisible(false);
   }, [user.is_paid]);
 
   useEffect(() => {
@@ -65,13 +60,6 @@ const IsPaidModal = () => {
               alignItems="center"
               width="$full"
               space="4xl">
-              <CustomButton
-                iconLeft={CloseIcon}
-                bgColor="#25282D"
-                onPress={() => setVisible(prev => !prev)}
-                width={50}
-                style={styles.close}
-              />
               <VStack alignItems="center" space="4xl">
                 <Image
                   source={images.crown}

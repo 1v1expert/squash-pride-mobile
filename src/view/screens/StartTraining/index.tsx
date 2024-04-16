@@ -18,6 +18,8 @@ import {
   FlatList,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
@@ -28,6 +30,9 @@ import {Book} from '../../navigation/book';
 import {fontSize} from '../../../assets/fontsSize';
 import CalendarModal from '../../components/CalendarModal';
 import {useCalendar} from '../../../bus/calendar';
+import {Image} from '@gluestack-ui/themed';
+import {images} from '../../../assets';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 // const DATA: ExerciseType[] = [
 //   {
@@ -80,6 +85,8 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     getFavoriteItem,
     addFavoriteItem,
     removeFavoriteItem,
+    addDoneTraining,
+    resetFilters,
   } = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
   const {setTimeUnit} = useCalendar();
@@ -95,8 +102,8 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const currentYear = new Date().getFullYear();
 
   const mainStack = !stackOfExercises.length ? exercises : stackOfExercises;
-  const favorite = getFavoriteItem(mainStack);
-  console.log('mainStack', mainStack);
+  const favorite = getFavoriteItem(mainStack[currentIndex]);
+  const favoriteTraining = getFavoriteItem(mainStack);
 
   const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffset = e.nativeEvent.contentOffset;
@@ -115,6 +122,18 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     !favorite
       ? addFavoriteItem({
           date: new Date().getTime(),
+          type: 'exercise',
+          exercise: mainStack[currentIndex],
+        })
+      : removeFavoriteItem({
+          type: 'exercise',
+          exercise: mainStack[currentIndex],
+        });
+  };
+  const likeTraining = () => {
+    !favoriteTraining
+      ? addFavoriteItem({
+          date: new Date().getTime(),
           type: 'training',
           training: mainStack,
         })
@@ -127,7 +146,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   useEffect(() => {
     const titleList = mainStack.map(e => {
       return {
-        title: e.group ? e.group : e.groups ? e.groups[0] : '',
+        title: e.group ? e.group : '',
         done: false,
       };
     });
@@ -154,10 +173,11 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
       setTimeUnit('days');
+      resetFilters();
     });
 
     return unsubscribe;
-  }, [navigation, setTimeUnit]);
+  }, [navigation, resetFilters, setTimeUnit]);
 
   return (
     <ViewContainer
@@ -178,7 +198,15 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           <CustomButton
             iconLeft={CheckIcon}
             bgColor="#25282D"
-            onPress={() => [resetStack(), navigate(Book.Home)]}
+            onPress={() => [
+              addDoneTraining({
+                date: new Date().getTime(),
+                type: 'training',
+                training: mainStack,
+              }),
+              resetStack(),
+              navigate(Book.Home),
+            ]}
             width={50}
           />
         )
@@ -207,6 +235,20 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               length={mainStack.length}
               space="4xl"
             />
+            <TouchableOpacity
+              hitSlop={10}
+              style={styles.heartIcon}
+              onPress={likeTraining}>
+              <Image
+                source={
+                  favoriteTraining ? images.heart : images.unselectedHeart
+                }
+                alt=""
+                width={perfectSize(20)}
+                height={perfectSize(20)}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </HStack>
           <Player
             item={mainStack[currentIndex]}
@@ -243,7 +285,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               );
             }}
             pagingEnabled
-            // keyExtractor={item => item.uid}
+            keyExtractor={item => item.uid}
             showsHorizontalScrollIndicator={false}
             snapToAlignment="start"
             decelerationRate={'normal'}
@@ -274,5 +316,12 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     </ViewContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  heartIcon: {
+    position: 'absolute',
+    right: 10,
+  },
+});
 
 export default StartTraining;

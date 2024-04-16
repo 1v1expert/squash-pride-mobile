@@ -8,6 +8,6 @@ export const registrationSchema = yup.object({
     .required('public.registrationScreen.requiredError'),
   password: yup.string().required('public.registrationScreen.requiredError'),
   age: yup.number().required('public.registrationScreen.requiredError'),
-  gender: yup.number().required('public.registrationScreen.requiredError'),
+  gender: yup.string().required('public.registrationScreen.requiredError'),
   country: yup.string().required('public.registrationScreen.requiredError'),
 });

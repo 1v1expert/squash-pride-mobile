@@ -44,7 +44,7 @@ export type RegisterForm = {
   email: string;
   first_name: string;
   birth_year: number;
-  gender: number;
+  gender: string;
   country: string;
 };
 export type Tokens = {

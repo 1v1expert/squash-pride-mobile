@@ -2,7 +2,7 @@ import {trainingActions} from './slice';
 
 // Tools
 import {useSelector, useDispatch} from '../../tools/hooks';
-import {ExerciseType, FavoriteType, FiltersType} from './types';
+import {ExerciseType, FavoriteType, FiltersType, TrainingType} from './types';
 import {getGroupData} from './thunk/group';
 import {getExercise} from './thunk/exercise';
 import {getRules} from './thunk/rules';
@@ -13,6 +13,8 @@ export const useTraining = () => {
   const dispatch = useDispatch();
   const {tokenRefresh} = useUser();
   const filters = useSelector(({training}) => training.filters);
+  const completedTrainings = useSelector(({training}) => training.trainings);
+
   const groups = useSelector(({training}) => training.group);
   const exercises = useSelector(({training}) => training.exercises);
   const rules = useSelector(({training}) => training.rules);
@@ -44,6 +46,10 @@ export const useTraining = () => {
     }
   };
 
+  const addDoneTraining = (state: TrainingType) => {
+    dispatch(trainingActions.addCompletedTraining(state));
+  };
+
   const setFilters = (state: FiltersType) => {
     dispatch(trainingActions.setFilters(state));
   };
@@ -59,13 +65,15 @@ export const useTraining = () => {
   const resetExercises = () => {
     dispatch(trainingActions.resetExercises());
   };
+  const resetFilters = () => {
+    dispatch(trainingActions.resetFilters());
+  };
   const fetchGroup = async () => {
     tokenRefresh(() => dispatch(getGroupData()));
   };
   const fetchExercise = async (
-    data: FiltersType & {readyTraining?: boolean},
+    data?: FiltersType & {readyTraining?: boolean},
   ) => {
-    console.log(data);
     tokenRefresh(() => dispatch(getExercise(data)));
   };
   const fetchRules = async () => tokenRefresh(() => dispatch(getRules()));
@@ -81,6 +89,7 @@ export const useTraining = () => {
     isLoading,
     stackOfExercises,
     favorites,
+    completedTrainings,
     setFilters,
     addToStack,
     removeFromStack,
@@ -94,5 +103,7 @@ export const useTraining = () => {
     removeFavoriteItem,
     getFavoriteItem,
     editFavoriteItem,
+    addDoneTraining,
+    resetFilters,
   };
 };

@@ -1,4 +1,8 @@
-import {Box, VStack, HStack} from '@gluestack-ui/themed';
+import {
+  Box,
+  VStack,
+  //  HStack
+} from '@gluestack-ui/themed';
 import React, {FC} from 'react';
 import {Dimensions, Image, ImageBackground, StyleSheet} from 'react-native';
 import {images} from '../../../../assets';
@@ -7,21 +11,21 @@ import {PublicStackScreenProps} from '../../../navigation/types';
 import {Book} from '../../../navigation/book';
 import CustomButton from '../../../components/CustomButton';
 import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
-import Google from '../../../../assets/svg/google';
-import Facebook from '../../../../assets/svg/facebook';
-import Vk from '../../../../assets/svg/vk';
+// import Google from '../../../../assets/svg/google';
+// import Facebook from '../../../../assets/svg/facebook';
+// import Vk from '../../../../assets/svg/vk';
 
 const width = Dimensions.get('screen').width;
 
-const GoogleIcon = (e: {color: string}) => {
-  return <Google width={25} height={25} {...e} />;
-};
-const FacebookIcon = (e: {color: string}) => {
-  return <Facebook width={20} height={20} {...e} />;
-};
-const VkIcon = (e: {color: string}) => {
-  return <Vk width={20} height={20} {...e} />;
-};
+// const GoogleIcon = (e: {color: string}) => {
+//   return <Google width={25} height={25} {...e} />;
+// };
+// const FacebookIcon = (e: {color: string}) => {
+//   return <Facebook width={20} height={20} {...e} />;
+// };
+// const VkIcon = (e: {color: string}) => {
+//   return <Vk width={20} height={20} {...e} />;
+// };
 
 const Main: FC<PublicStackScreenProps> = ({navigation}) => {
   const {navigate} = navigation;
@@ -54,11 +58,11 @@ const Main: FC<PublicStackScreenProps> = ({navigation}) => {
                   onPress={() => navigate(Book.Login)}
                 />
               </VStack>
-              <HStack alignItems="center" justifyContent="space-around">
+              {/* <HStack alignItems="center" justifyContent="space-around">
                 <CustomButton width={50} height={50} mainIcon={GoogleIcon} />
                 <CustomButton width={50} height={50} mainIcon={FacebookIcon} />
                 <CustomButton width={50} height={50} mainIcon={VkIcon} />
-              </HStack>
+              </HStack> */}
             </VStack>
           </VStack>
         </SafeAreaLayout>

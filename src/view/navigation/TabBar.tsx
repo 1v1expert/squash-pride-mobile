@@ -7,9 +7,11 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {Image} from '@gluestack-ui/themed';
 import {tabBarIcons} from './tabBarIcons';
 import {perfectSize} from '../../tools/helpers/perfectSize';
+import {useDevice} from '../../bus/device';
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const {bottom} = useSafeAreaInsets();
+  const {fullscreen} = useDevice();
 
   return (
     <HStack
@@ -17,7 +19,8 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
       alignItems="center"
       justifyContent="space-evenly"
       pt={15}
-      pb={Platform.OS === 'ios' ? bottom : perfectSize(15)}>
+      pb={Platform.OS === 'ios' ? bottom : perfectSize(15)}
+      display={fullscreen ? 'none' : 'flex'}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;

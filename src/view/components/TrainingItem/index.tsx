@@ -14,6 +14,7 @@ import {Book} from '../../navigation/book';
 import {PrivateStackScreenProps} from '../../navigation/types';
 import TrainingItemEditModal from '../TrainingItemEditModal';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {createThumbnail} from 'react-native-create-thumbnail';
 
 const width = Dimensions.get('screen').width;
 
@@ -22,6 +23,7 @@ type TrainingItemProps = {
   state?: boolean;
   showCalendar?: boolean;
   fromCalendar?: boolean;
+  isFavorite?: boolean;
 };
 
 const TrainingItem = ({
@@ -29,6 +31,7 @@ const TrainingItem = ({
   state,
   fromCalendar,
   showCalendar = true,
+  isFavorite,
 }: TrainingItemProps) => {
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const {t} = useCustomTranslation();
@@ -43,6 +46,22 @@ const TrainingItem = ({
     resetStack,
   } = useTraining();
   const currentItem = item.training || item.exercise;
+  const [thumbnail, setThumbnail] = useState<string>('');
+
+  useEffect(() => {
+    const getThumbnail = async () => {
+      item.exercise &&
+        (await createThumbnail({
+          url: item.exercise.video,
+          timeStamp: 0,
+          format: 'jpeg',
+          cacheName: item.exercise.uid,
+        }).then(response => {
+          setThumbnail(response.path);
+        }));
+    };
+    getThumbnail();
+  }, [item.exercise]);
 
   const favorite = getFavoriteItem(currentItem);
   const title = item.training
@@ -119,6 +138,37 @@ const TrainingItem = ({
                 shadowOpacity={0.36}
                 shadowRadius={6.68}
                 elevation={11}>
+                {thumbnail && item.exercise ? (
+                  <Image
+                    width={width * 0.3}
+                    height={width * 0.3}
+                    bgColor={'#393A40'}
+                    borderRadius={20}
+                    alignItems="center"
+                    justifyContent="center"
+                    shadowColor="#000"
+                    shadowOffset={{width: 0, height: 5}}
+                    shadowOpacity={0.36}
+                    shadowRadius={6.68}
+                    source={{uri: thumbnail || ''}}
+                    alt=""
+                  />
+                ) : (
+                  <Image
+                    width={width * 0.3}
+                    height={width * 0.3}
+                    bgColor={'#393A40'}
+                    borderRadius={20}
+                    alignItems="center"
+                    justifyContent="center"
+                    shadowColor="#000"
+                    shadowOffset={{width: 0, height: 5}}
+                    shadowOpacity={0.36}
+                    shadowRadius={6.68}
+                    source={images.logo}
+                    alt=""
+                  />
+                )}
                 <TouchableOpacity
                   hitSlop={10}
                   style={styles.heartIcon}
@@ -169,14 +219,16 @@ const TrainingItem = ({
                     : title}
                 </Text>
                 <HStack space="md">
-                  <Text
-                    variant="primary"
-                    fontSize={fontSize.body}
-                    flexWrap="wrap"
-                    lineHeight={12}
-                    numberOfLines={3}>
-                    {`${currentDay}.${currentMonth}.${currentYear}`}
-                  </Text>
+                  {item.date && (
+                    <Text
+                      variant="primary"
+                      fontSize={fontSize.body}
+                      flexWrap="wrap"
+                      lineHeight={12}
+                      numberOfLines={3}>
+                      {`${currentDay}.${currentMonth}.${currentYear}`}
+                    </Text>
+                  )}
                   {fromCalendar && (
                     <Text
                       variant="primary"
@@ -188,7 +240,7 @@ const TrainingItem = ({
                 </HStack>
               </VStack>
             </HStack>
-            {!fromCalendar && (
+            {!fromCalendar && isFavorite && (
               <TouchableOpacity
                 style={styles.threeDots}
                 onPress={() => setOption(true)}

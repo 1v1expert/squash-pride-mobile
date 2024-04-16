@@ -32,6 +32,7 @@ import {useTraining} from '../../../bus/training';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {createThumbnail} from 'react-native-create-thumbnail';
 
 const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   navigation,
@@ -60,12 +61,33 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const [fullscreen, setFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
   const [portraitWidth] = useState(Dimensions.get('screen').width);
+  const [thumbnail, setThumbnail] = useState<string>();
+
+  const uri = item.video.includes('https')
+    ? item.video
+    : `https://internal.squash-pride.ru/api/media/${item.video}`;
 
   const selected = stackOfExercises.filter(e => e.uid === item?.uid).length > 0;
 
+  useEffect(() => {
+    const getThumbnail = async () => {
+      await createThumbnail({
+        url: item.video,
+        timeStamp: 0,
+        format: 'jpeg',
+        cacheName: item.uid,
+      }).then(response => {
+        setThumbnail(response.path);
+      });
+    };
+    getThumbnail();
+  }, [item.uid, item.video]);
+
   const onPress = () => {
     if (item) {
-      selected ? removeFromStack(item.uid) : [addToStack(item), goBack()];
+      selected
+        ? removeFromStack(item.uid)
+        : [addToStack({...item, group: filters?.group?.[0] || ''}), goBack()];
     }
   };
   const onLikePress = () => {
@@ -125,9 +147,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
             height="30%">
             <VideoPlayer
               ref={videoPlayerRef}
-              video={{
-                uri: item?.video || '',
-              }}
+              video={{uri}}
               currentTime={currentTime}
               style={[
                 styles.videoPlayer,
@@ -135,11 +155,12 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                   width: portraitWidth,
                 },
               ]}
+              thumbnail={thumbnail ? {uri: thumbnail} : undefined}
               onBuffer={event => setLoader(event.isBuffering)}
               resizeMode="stretch"
               pauseOnPress
               disableFullscreen
-              onLoadStart={() => {
+              onStart={() => {
                 setVideoStarted(true);
                 setLoader(true);
               }}
@@ -223,6 +244,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                   title={selected ? 'Убрать' : 'Добавить'}
                   onPress={onPress}
                   width={portraitWidth * 0.4}
+                  disabled={stackOfExercises.length === 4 && !selected}
                 />
               </HStack>
             )}
@@ -232,7 +254,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
       <FullscreenPlayer
         visible={fullscreen}
         setVisible={setFullscreen}
-        uri={item?.video || ''}
+        uri={uri}
         currentTime={currentTime}
         videoPlayerRef={videoPlayerRef.current || null}
         favorite={favorite}

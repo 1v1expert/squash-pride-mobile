@@ -131,7 +131,7 @@ export default {
       logoutButton: 'Выйти из профиля',
       changeLanguage: 'Cменить язык',
     },
-    filter: {title: 'ФИЛЬТР', saveButton: 'Применть'},
+    filter: {title: 'ФИЛЬТР', saveButton: 'Применть', reset: 'Сбросить'},
     peopleAccordion: {
       title: 'КОЛИЧЕСТВО ИГРОКОВ',
       text: 'СКОЛЬКО ВАС',

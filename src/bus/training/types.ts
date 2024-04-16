@@ -35,6 +35,18 @@ export type FiltersType = {
   players?: number | null;
   group?: string[];
 };
+export type FilterFormType =
+  | {
+      players: number;
+      level: 'amateur' | 'professional';
+      group: string[];
+    }
+  | {
+      players?: number;
+      level?: 'amateur' | 'professional';
+      group?: string[];
+    };
+
 export type FavoriteType = TrainingType & {
   date?: number;
   type: 'training' | 'exercise';

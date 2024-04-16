@@ -37,7 +37,9 @@ const CustomCalendarDay = (item: CustomCalendarDayProps) => {
         bgColor={
           marking?.selected ? 'rgba(251, 197, 110, 0.30)' : 'transparent'
         }
-        borderBottomColor={today < dateTimestamp ? '#F7AB39' : '#7F8189'}
+        borderBottomColor={
+          state === 'today' || today < dateTimestamp ? '#F7AB39' : '#7F8189'
+        }
         borderBottomWidth={marking?.marked ? 1 : 0}
         width="$full"
         height="$full"

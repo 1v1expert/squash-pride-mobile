@@ -133,6 +133,7 @@ export default {
     filter: {
       title: 'FILTER',
       saveButton: 'APPLY',
+      reset: 'RESET',
     },
     peopleAccordion: {
       title: 'NUMBER OF PLAYERS',

@@ -13,6 +13,8 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
   const {date, state, marking, onPress} = item;
   const today = new Date().getTime();
   const dateTimestamp = date?.timestamp || 0;
+  const dateString = date?.dateString || '';
+  const dateToday = new Date().toISOString().split('T')[0];
 
   const textColor = useCallback(() => {
     switch (state) {
@@ -35,7 +37,11 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
         height="$full"
         alignItems="center"
         borderBottomWidth={marking?.marked ? 2 : 0}
-        borderBottomColor={today < dateTimestamp ? '#F7AB39' : '#7F8189'}>
+        borderBottomColor={
+          dateString === dateToday || today < dateTimestamp
+            ? '#F7AB39'
+            : '#7F8189'
+        }>
         <Text variant="primary" color={textColor()} fontSize={fontSize.title}>
           {date?.day}
         </Text>

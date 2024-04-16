@@ -11,6 +11,17 @@ export const setFilters: types.BaseContract<types.FiltersType> = (
     filters,
   };
 };
+
+export const resetFilters = (state: types.TrainingState) => {
+  return {
+    ...state,
+    filters: {
+      level: null,
+      players: null,
+      group: [],
+    },
+  };
+};
 export const addToStack: types.BaseContract<
   types.ExerciseType | types.ExerciseType[]
 > = (state, action) => {

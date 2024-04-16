@@ -22,12 +22,12 @@ interface RegistrationForm {
   email: string;
   password: string;
   age: number;
-  gender: number;
+  gender: string;
   country: string;
 }
 
 const RegistrationForm = () => {
-  const {navigate} = useNavigation<PublicStackScreenProps['navigation']>();
+  const {replace} = useNavigation<PublicStackScreenProps['navigation']>();
   const {register, isLoading} = useUser();
   const {t} = useCustomTranslation();
   const methods = useForm<RegistrationForm>({
@@ -57,7 +57,7 @@ const RegistrationForm = () => {
         country: values.country,
       });
 
-      navigate(Book.Login);
+      replace(Book.Login);
     } catch (e: any) {
       e.email && setError('email', {message: e.email});
       e.password && setError('password', {message: e.password});
@@ -90,7 +90,6 @@ const RegistrationForm = () => {
             type="password"
             error={errors.password}
             variant="secondary"
-            required
           />
           <CustomSelect
             name="age"
@@ -103,9 +102,9 @@ const RegistrationForm = () => {
             error={errors.gender}
             placeholder={t('public.registrationScreen.genderInputPlaceholder')}
             items={[
-              {label: t('gender.male'), value: 0},
-              {label: t('gender.female'), value: 1},
-              {label: t('gender.notSpecified'), value: 2},
+              {label: t('gender.male'), value: 'male'},
+              {label: t('gender.female'), value: 'female'},
+              {label: t('gender.notSpecified'), value: 'not specified'},
             ]}
           />
           <CustomCountryPicker

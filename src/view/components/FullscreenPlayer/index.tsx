@@ -99,7 +99,7 @@ const FullscreenPlayer = ({
             },
           ]}
           pauseOnPress
-          onLoadStart={() => setLoader(true)}
+          onStart={() => setLoader(true)}
           onBuffer={event => {
             setVideoStarted(true);
             setLoader(event.isBuffering);

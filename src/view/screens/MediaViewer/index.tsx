@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from '@gluestack-ui/themed';
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {Dimensions, Pressable, StyleSheet} from 'react-native';
@@ -20,18 +20,36 @@ import Orientation from 'react-native-orientation-locker';
 import FullscreenPlayer from '../../components/FullscreenPlayer';
 import {fontSize} from '../../../assets/fontsSize';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import {createThumbnail} from 'react-native-create-thumbnail';
+import {useDevice} from '../../../bus/device';
 
 const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const {goBack} = navigation;
+  const {fullscreen, setScreenMode} = useDevice();
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const {i18n} = useCustomTranslation();
-  const {title, ru_description, en_description, video} = route.params;
+  const {title, ru_description, en_description, video, uid} = route.params;
   const [videoStarted, setVideoStarted] = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
   const [portraitWidth] = useState(Dimensions.get('screen').width);
   const [loader, setLoader] = useState(false);
+  const [thumbnail, setThumbnail] = useState<string>();
+
   const description = i18n.language === 'ru' ? ru_description : en_description;
+
+  useEffect(() => {
+    const getThumbnail = async () => {
+      await createThumbnail({
+        url: video,
+        timeStamp: 0,
+        format: 'jpeg',
+        cacheName: uid,
+      }).then(response => {
+        setThumbnail(response.path);
+      });
+    };
+    getThumbnail();
+  }, [uid, video]);
 
   const openModal = () => {
     SystemNavigationBar.fullScreen(true);
@@ -42,7 +60,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
       videoPlayerRef.current.pause();
       setCurrentTime(duration * progress);
       Orientation.lockToLandscape();
-      setFullscreen(true);
+      setScreenMode(true);
     }
   };
 
@@ -82,12 +100,13 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                     width: portraitWidth,
                   },
                 ]}
+                thumbnail={thumbnail ? {uri: thumbnail} : undefined}
                 resizeMode="stretch"
                 pauseOnPress
                 disableFullscreen
                 onBuffer={event => setLoader(event.isBuffering)}
                 onReadyForDisplay={() => setLoader(false)}
-                onLoadStart={() => {
+                onStart={() => {
                   setVideoStarted(true);
                   setLoader(true);
                 }}
@@ -135,7 +154,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
       </ViewContainer>
       <FullscreenPlayer
         visible={fullscreen}
-        setVisible={setFullscreen}
+        setVisible={setScreenMode}
         uri={video || ''}
         currentTime={currentTime}
         videoPlayerRef={videoPlayerRef.current || null}
@@ -150,7 +169,7 @@ const styles = StyleSheet.create({
   },
   fullScreenButton: {
     position: 'absolute',
-    bottom: 5,
+    bottom: 10,
     right: 10,
   },
 });

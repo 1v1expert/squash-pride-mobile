@@ -1,5 +1,5 @@
 import {Box, Text, VStack} from '@gluestack-ui/themed';
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import SafeAreaLayout from '../../components/SafeAreaLayout';
 import TouchableContainer from '../../components/TouchableContainer';
 import {HomeScreensStackScreenProps} from '../../navigation/types';
@@ -10,13 +10,23 @@ import {useUser} from '../../../bus/user';
 import CustomWeekCalendar from '../../components/CustomWeekCalendar';
 import {Dimensions} from 'react-native';
 import {fontSize} from '../../../assets/fontsSize';
+import {useTraining} from '../../../bus/training';
 
 const height = Dimensions.get('screen').height;
 
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
-  const {navigate} = navigation;
+  const {navigate, addListener} = navigation;
   const {user} = useUser();
+  const {resetStack} = useTraining();
   const {t} = useCustomTranslation();
+
+  useEffect(() => {
+    const unsubscribe = addListener('focus', () => {
+      resetStack();
+    });
+
+    return unsubscribe;
+  }, [addListener, resetStack]);
 
   return (
     <Box flex={1} bgColor="#131517">

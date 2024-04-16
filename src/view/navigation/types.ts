@@ -13,7 +13,10 @@ export type PublicStackScreenProps = NativeStackScreenProps<
 
 export type PrivateStackParamList = {
   TabNavigator: undefined;
-  CreateTrainingWithoutTab: {from?: keyof TabNavigatorParamList};
+  CreateTrainingWithoutTab: {
+    from?: keyof TabNavigatorParamList;
+    readyTraining?: boolean;
+  };
   ExerciseMediaViewer: {item: ExerciseType; fromFavorites?: boolean};
   // IsPaid: undefined;
 };
@@ -39,6 +42,7 @@ export type HomeScreensStackParamList = {
           | keyof HomeScreensStackParamList
           | keyof PrivateStackParamList;
         from?: keyof TabNavigatorParamList;
+        goBack?: boolean;
       }
     | undefined;
   Options: {location?: keyof HomeScreensStackParamList} | undefined;

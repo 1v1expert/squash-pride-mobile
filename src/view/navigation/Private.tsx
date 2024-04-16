@@ -8,7 +8,6 @@ import CreateTraining from '../screens/CreateTraining';
 import ExerciseMediaViewer from '../screens/ExerciseMediaViewer';
 import {useUser} from '../../bus/user';
 import {useTraining} from '../../bus/training';
-import IsPaid from '../screens/IsPaid';
 import {load} from '../../utils/storage';
 import {useCalendar} from '../../bus/calendar';
 import IsPaidModal from '../components/IsPaidModal';
@@ -16,7 +15,7 @@ import IsPaidModal from '../components/IsPaidModal';
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
 export const Private: FC = () => {
-  const {fetchUser, user} = useUser();
+  const {fetchUser} = useUser();
   const {
     fetchGroup,
     fetchRules,
@@ -24,6 +23,9 @@ export const Private: FC = () => {
     resetStack,
     addFavoriteItem,
     favorites,
+    completedTrainings,
+    addDoneTraining,
+    fetchExercise,
   } = useTraining();
   const {fetchEvents} = useCalendar();
 
@@ -34,9 +36,12 @@ export const Private: FC = () => {
         fetchRules();
         fetchTechniques();
         fetchEvents();
+        fetchExercise();
 
         const favoriteItems = await load('favorites');
         !favorites.length && favoriteItems && addFavoriteItem(favoriteItems);
+        const completed = await load('trainings');
+        !completedTrainings.length && completed && addDoneTraining(completed);
       });
       resetStack();
     };
