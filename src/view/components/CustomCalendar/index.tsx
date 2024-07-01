@@ -129,7 +129,6 @@ const CustomCalendar = ({action, navigation}: CustomCalendarProps) => {
           key={selectedDate}
           style={{
             width: width - 40,
-            minHeight: height * 0.35,
           }}
           hideArrows={true}
           firstDay={1}

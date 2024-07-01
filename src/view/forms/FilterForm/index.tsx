@@ -16,12 +16,18 @@ import {useTraining} from '../../../bus/training';
 type FilterFormProps = {
   required?: boolean;
   withValue?: boolean;
+  withGroup?: boolean;
   onPress: (e: FilterFormType) => void;
 };
 
 const width = Dimensions.get('screen').width;
 
-const FilterForm = ({onPress, required, withValue}: FilterFormProps) => {
+const FilterForm = ({
+  onPress,
+  required,
+  withValue,
+  withGroup,
+}: FilterFormProps) => {
   const {t} = useCustomTranslation();
   const {filters} = useTraining();
 
@@ -53,7 +59,13 @@ const FilterForm = ({onPress, required, withValue}: FilterFormProps) => {
           <FormProvider {...methods}>
             <LevelAccordion name="level" error={errors.level} />
             <PeopleAccordion name="players" error={errors.players} />
-            <GroupAccordion name="group" error={errors.group} groupLength={1} />
+            {withGroup && (
+              <GroupAccordion
+                name="group"
+                error={errors.group}
+                groupLength={4}
+              />
+            )}
           </FormProvider>
         </VStack>
       </ScrollView>

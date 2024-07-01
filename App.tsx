@@ -4,7 +4,7 @@ import {GluestackUIProvider} from '@gluestack-ui/themed';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {store} from './src/init/redux';
 import {Navigation} from './src/view/navigation';
-import {config} from './gluestack-ui.config';
+import {config} from './config/gluestack-ui.config';
 import SplashScreen from 'react-native-splash-screen';
 import {Platform} from 'react-native';
 import Orientation from 'react-native-orientation-locker';

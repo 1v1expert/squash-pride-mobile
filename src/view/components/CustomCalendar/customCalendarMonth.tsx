@@ -7,9 +7,10 @@ import {MONTHS} from '../../../assets/constants';
 import {useCalendar} from '../../../bus/calendar';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {fontSize} from '../../../assets/fontsSize';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height;
+
 type CustomCalendarMonthProps = {
   action: () => void;
   navigation: any;
@@ -54,7 +55,7 @@ const CustomCalendarMonth = ({
   );
 
   return (
-    <VStack minHeight={height * 0.35} width={width - 40}>
+    <VStack width={width - 40}>
       <HStack
         alignItems="center"
         justifyContent="space-between"
@@ -81,14 +82,14 @@ const CustomCalendarMonth = ({
       <HStack
         justifyContent="space-between"
         flexWrap="wrap"
-        paddingVertical={height * 0.035}>
+        alignItems="center">
         {MONTHS.map((month, i) => {
           const event = monthEvent.includes(i + 1);
           return (
             <Box
               width="$1/4"
               alignItems="center"
-              paddingBottom={height * 0.045}
+              paddingVertical={perfectSize(15)}
               key={i}>
               <TouchableOpacity onPress={() => onMonthPress(i + 1, month)}>
                 <Center

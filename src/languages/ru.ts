@@ -62,6 +62,8 @@ export default {
     },
     createTraining: {
       title: 'ВЫБРАТЬ РАЗДЕЛ',
+      all: 'все',
+      favorite: 'избранное',
       shots: {
         drive: 'ДРАЙВ',
         cross: 'КРОСС',
@@ -72,6 +74,8 @@ export default {
         allExercises: 'ВСЕ \nУПРАЖНЕНИЯ',
         tactics: 'ТАКТИКА',
       },
+      startButton: 'Начать тренировку',
+      scheduleButton: 'Запланировать',
     },
     gameTechnique: {title: 'ТЕХНИКА ИГРЫ'},
     rules: {title: 'ПРАВИЛА'},
@@ -160,6 +164,14 @@ export default {
       exercise: 'Упражнение',
       delete: 'Удалить',
       editExercise: 'Редактировать упражнение',
+      editTitle: 'Изменить название',
+    },
+    trainingModals: {
+      save: 'Сохранить',
+      description: 'Описание тренировки',
+      trainingName: 'Название тренировки',
+      edit: 'РЕДАКТИРОВАТЬ',
+      title: 'Название',
     },
   },
   gender: {

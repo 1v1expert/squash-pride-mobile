@@ -17,7 +17,7 @@ export const Navigation: FC = () => {
   const {setDeviceDimensions} = useDevice();
 
   const initializeApp = async () => {
-    await tokenRefresh().then(() => {
+    await tokenRefresh().finally(() => {
       setTimeout(() => {
         setLoading(false);
       }, 2000);

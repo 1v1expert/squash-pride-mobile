@@ -1,13 +1,18 @@
-import {Box, HStack, Pressable, Text} from '@gluestack-ui/themed';
-import React, {FC, ReactNode, useState} from 'react';
+import {Box, HStack, Image, Pressable, Text} from '@gluestack-ui/themed';
+import React, {FC, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {ImageSourcePropType, StyleSheet} from 'react-native';
 type TouchableContainerProps = {
   text: string;
-  icon?: ReactNode;
+  icon?: ImageSourcePropType | string;
   onPress: () => void;
 };
-const TouchableContainer: FC<TouchableContainerProps> = ({text, onPress}) => {
+const TouchableContainer: FC<TouchableContainerProps> = ({
+  text,
+  onPress,
+  icon,
+}) => {
   const [focus, setFocus] = useState(false);
   return (
     <Pressable
@@ -18,25 +23,44 @@ const TouchableContainer: FC<TouchableContainerProps> = ({text, onPress}) => {
         colors={focus ? ['#F7AB39', '#FCEEDA'] : ['#393A40', '#393A40']}
         start={{x: 0.1, y: 0.7}}
         end={{x: 0, y: -0.7}}
-        style={{padding: 20, borderRadius: perfectSize(15)}}>
+        style={{padding: perfectSize(20), borderRadius: perfectSize(15)}}>
         <HStack alignItems="center" space="xl">
           {focus ? (
             <Box
               width={perfectSize(60)}
               height={perfectSize(60)}
               borderRadius={perfectSize(15)}
-            />
+              alignItems="center"
+              justifyContent="center">
+              <Image
+                source={icon}
+                alt=""
+                width={perfectSize(40)}
+                height={perfectSize(40)}
+                resizeMode="contain"
+              />
+            </Box>
           ) : (
             <LinearGradient
               colors={['#F7AB39', '#FCEEDA']}
               start={{x: 0.5, y: 0.7}}
               end={{x: 0, y: -0.7}}
-              style={{
-                borderRadius: perfectSize(15),
-                width: perfectSize(60),
-                height: perfectSize(60),
-              }}
-            />
+              style={[
+                styles.linearGradient,
+                {
+                  borderRadius: perfectSize(15),
+                  width: perfectSize(60),
+                  height: perfectSize(60),
+                },
+              ]}>
+              <Image
+                source={icon}
+                alt=""
+                width={perfectSize(40)}
+                height={perfectSize(40)}
+                resizeMode="contain"
+              />
+            </LinearGradient>
           )}
 
           <Text
@@ -53,5 +77,9 @@ const TouchableContainer: FC<TouchableContainerProps> = ({text, onPress}) => {
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  linearGradient: {alignItems: 'center', justifyContent: 'center'},
+});
 
 export default TouchableContainer;

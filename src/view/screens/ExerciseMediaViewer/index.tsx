@@ -87,7 +87,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
     if (item) {
       selected
         ? removeFromStack(item.uid)
-        : [addToStack({...item, group: filters?.group?.[0] || ''}), goBack()];
+        : [addToStack({...item, group: item?.groups?.[0] || ''}), goBack()];
     }
   };
   const onLikePress = () => {
@@ -96,6 +96,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
           date: new Date().getTime(),
           type: 'exercise',
           exercise: item,
+          name: '',
         })
       : removeFavoriteItem({
           type: 'exercise',
@@ -143,8 +144,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
             bgColor="#393A40"
             width={portraitWidth}
             alignItems="center"
-            justifyContent="center"
-            height="30%">
+            justifyContent="center">
             <VideoPlayer
               ref={videoPlayerRef}
               video={{uri}}
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   },
   fullScreenButton: {
     position: 'absolute',
-    bottom: 5,
+    bottom: 10,
     right: 10,
   },
   heartIcon: {

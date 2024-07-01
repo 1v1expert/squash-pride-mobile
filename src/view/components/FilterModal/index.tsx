@@ -1,10 +1,11 @@
-import {Modal, VStack} from '@gluestack-ui/themed';
+import {ArrowLeftIcon, Modal, VStack} from '@gluestack-ui/themed';
 import React from 'react';
 import FilterForm from '../../forms/FilterForm';
 import ViewContainer from '../ViewContainer';
 import {Dimensions} from 'react-native';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {FilterFormType} from '../../../bus/training/types';
+import CustomButton from '../CustomButton';
 
 type FilterModalProps = {
   visible: boolean;
@@ -24,15 +25,27 @@ const FilterModal = ({
 
   return (
     <Modal isOpen={visible} bgColor="red">
-      <ViewContainer title={t('private.filter.title')}>
-        <VStack flex={1} width={width}>
-          <FilterForm
-            onPress={e => [onPress(e), setVisible(false)]}
-            required={required}
-            withValue
-          />
-        </VStack>
-      </ViewContainer>
+      <VStack flex={1} width={width}>
+        <ViewContainer
+          title={t('private.filter.title')}
+          leftHeaderButton={
+            <CustomButton
+              iconLeft={ArrowLeftIcon}
+              bgColor="#25282D"
+              onPress={() => setVisible(false)}
+              width={50}
+            />
+          }>
+          <VStack flex={1} width={width}>
+            <FilterForm
+              onPress={e => [onPress(e), setVisible(false)]}
+              required={required}
+              withValue
+              withGroup
+            />
+          </VStack>
+        </ViewContainer>
+      </VStack>
     </Modal>
   );
 };

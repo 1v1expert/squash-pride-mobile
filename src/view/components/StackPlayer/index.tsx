@@ -35,6 +35,7 @@ type StackPlayer = {
   onEnd?: (e: number) => void;
   favorite?: boolean;
   setFavorite?: (e: boolean) => void;
+  thumbnail?: string;
 };
 const StackPlayer = ({
   item,
@@ -48,11 +49,13 @@ const StackPlayer = ({
   onEnd,
   favorite,
   setFavorite,
+  thumbnail,
 }: StackPlayer) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
   const [titleIsVisible, setTitleIsVisible] = useState(true);
   const [loader, setLoader] = useState(false);
+  const [videoStarted, setVideoStarted] = useState(false);
 
   const uri = item.video.includes('https')
     ? item.video
@@ -73,7 +76,13 @@ const StackPlayer = ({
   useEffect(() => {
     setTitleIsVisible(true);
     setLoader(false);
+    setVideoStarted(false);
   }, [position, visible]);
+  useEffect(() => {
+    if (videoStarted) {
+      videoFullScreenPlayerRef.current?.seek(currentTime);
+    }
+  }, [currentTime, videoStarted]);
 
   const closeModal = () => {
     SystemNavigationBar.fullScreen(false).then(() => {
@@ -120,17 +129,17 @@ const StackPlayer = ({
                 height: height,
               },
             ]}
+            thumbnail={thumbnail ? {uri: thumbnail} : undefined}
             resizeMode="stretch"
             pauseOnPress
-            onBuffer={event => setLoader(event.isBuffering)}
-            onLoadStart={() => {
+            onBuffer={event => {
+              setLoader(event.isBuffering);
+            }}
+            onStart={() => {
               setTitleIsVisible(false);
               setLoader(true);
             }}
-            onLoad={() =>
-              currentTime &&
-              videoFullScreenPlayerRef?.current?.seek(currentTime)
-            }
+            onReadyForDisplay={() => [setLoader(false), setVideoStarted(true)]}
             hideControlsOnStart={false}
             customStyles={{
               controls: {

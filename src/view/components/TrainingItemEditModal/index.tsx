@@ -36,7 +36,7 @@ const TrainingItemEditModal = ({
   setVisible,
 }: TrainingItemEditModalProps) => {
   const {editFavoriteItem} = useTraining();
-  const {i18n} = useCustomTranslation();
+  const {i18n, t} = useCustomTranslation();
 
   const methods = useForm<ItemEditForm>({
     resolver: yupResolver(itemEditSchema),
@@ -93,7 +93,7 @@ const TrainingItemEditModal = ({
                 variant="primary"
                 textAlign="center"
                 fontSize={fontSize.title}>
-                РЕДАКТИРОВАТЬ
+                {t('private.trainingModals.edit')}
               </Text>
 
               <TouchableOpacity
@@ -108,7 +108,7 @@ const TrainingItemEditModal = ({
               <FormProvider {...methods}>
                 <VStack space="xs">
                   <Text variant="secondary" fontSize={fontSize.body}>
-                    Название тренировки
+                    {t('private.trainingModals.trainingName')}
                   </Text>
                   <CustomInput
                     name="title"
@@ -120,7 +120,7 @@ const TrainingItemEditModal = ({
                 </VStack>
                 <VStack space="xs">
                   <Text variant="secondary" fontSize={fontSize.body}>
-                    Описание тренировки
+                    {t('private.trainingModals.description')}
                   </Text>
                   <CustomInput
                     name="description"
@@ -132,7 +132,7 @@ const TrainingItemEditModal = ({
                 </VStack>
                 <HStack width="100%" justifyContent="center">
                   <CustomButton
-                    title="Сохранить"
+                    title={t('private.trainingModals.save')}
                     onPress={handleSubmit(onPress)}
                   />
                 </HStack>

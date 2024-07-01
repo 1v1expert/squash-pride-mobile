@@ -5,6 +5,7 @@ import React from 'react';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import {images} from '../../../assets';
 import {Controller, useFormContext} from 'react-hook-form';
+import {fontSize} from '../../../assets/fontsSize';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -34,7 +35,6 @@ const TypeOfTraining = ({
       defaultValue={defaultValue ?? []}
       render={({field: {onChange, value}}) => {
         const selected = value.includes(type);
-        console.log('value', value);
         const chooseGroup = (group: string) => {
           if (value.length < groupLength) {
             onChange([...value, group]);
@@ -58,13 +58,14 @@ const TypeOfTraining = ({
             onLongPress={() => remove(type)}>
             <Center>
               <Image
-                size="2xl"
                 source={
-                  images[type === 'Killshot' ? 'shot' : type.toLowerCase()]
+                  images[type.toLowerCase()]
+                    ? images[type.toLowerCase()]
+                    : images.shot
                 }
                 width={imageWidth}
                 height={imageHeight}
-                resizeMode="contain"
+                resizeMode="stretch"
                 alt=""
               />
               {selected && (
@@ -92,7 +93,8 @@ const TypeOfTraining = ({
                     position="absolute"
                     left={10}
                     bottom={10}
-                    fontWeight="$bold">
+                    fontWeight="$bold"
+                    fontSize={fontSize.title}>
                     {type}
                   </Text>
 

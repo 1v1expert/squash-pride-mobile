@@ -61,8 +61,8 @@ const CustomInput: FC<CustomInputProps> = ({
             <Input
               variant={variant}
               size="md"
-              height={multiline ? 'auto' : 40}
-              minHeight={40}
+              height={multiline ? 'auto' : perfectSize(40)}
+              minHeight={perfectSize(40)}
               maxHeight={150}>
               <InputField
                 autoCapitalize="none"

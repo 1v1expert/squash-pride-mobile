@@ -47,11 +47,25 @@ export const useTraining = () => {
   };
 
   const addDoneTraining = (state: TrainingType) => {
-    dispatch(trainingActions.addCompletedTraining(state));
+    const included = completedTrainings.some(
+      e => JSON.stringify(e.training) === JSON.stringify(state.training),
+    );
+    if (!included) {
+      dispatch(trainingActions.addCompletedTraining(state));
+    }
+  };
+  const removeDoneTraining = (item: TrainingType) => {
+    dispatch(trainingActions.removeCompletedTraining(item));
+  };
+  const editDoneTraining = (item: TrainingType) => {
+    dispatch(trainingActions.editCompletedTraining(item));
   };
 
   const setFilters = (state: FiltersType) => {
     dispatch(trainingActions.setFilters(state));
+  };
+  const setExercises = (state: ExerciseType[]) => {
+    dispatch(trainingActions.setExercises(state));
   };
   const addToStack = (state: ExerciseType | ExerciseType[]) => {
     dispatch(trainingActions.addToStack(state));
@@ -73,8 +87,8 @@ export const useTraining = () => {
   };
   const fetchExercise = async (
     data?: FiltersType & {readyTraining?: boolean},
-  ) => {
-    tokenRefresh(() => dispatch(getExercise(data)));
+  ): Promise<ExerciseType[]> => {
+    return tokenRefresh(() => dispatch(getExercise(data)).unwrap());
   };
   const fetchRules = async () => tokenRefresh(() => dispatch(getRules()));
   const fetchTechniques = async () =>
@@ -91,6 +105,7 @@ export const useTraining = () => {
     favorites,
     completedTrainings,
     setFilters,
+    setExercises,
     addToStack,
     removeFromStack,
     resetStack,
@@ -105,5 +120,7 @@ export const useTraining = () => {
     editFavoriteItem,
     addDoneTraining,
     resetFilters,
+    editDoneTraining,
+    removeDoneTraining,
   };
 };

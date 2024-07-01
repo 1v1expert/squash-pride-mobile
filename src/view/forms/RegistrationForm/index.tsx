@@ -1,6 +1,6 @@
 import React from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
-import {ArrowRightIcon, HStack, VStack} from '@gluestack-ui/themed';
+import {StyleSheet} from 'react-native';
+import {ArrowRightIcon, Box, HStack, VStack} from '@gluestack-ui/themed';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
@@ -9,13 +9,11 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {registrationSchema} from './schema';
 import {useUser} from '../../../bus/user';
 import {Book} from '../../navigation/book';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomInput from '../../components/CustomInput';
 import CustomSelect from '../../components/CustomSelect';
 import CustomButton from '../../components/CustomButton';
 import CustomCountryPicker from '../../components/CountryPicker';
-
-const height = Dimensions.get('screen').height;
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 interface RegistrationForm {
   firstName: string;
@@ -59,15 +57,16 @@ const RegistrationForm = () => {
 
       replace(Book.Login);
     } catch (e: any) {
+      console.log('Register error', e)
       e.email && setError('email', {message: e.email});
       e.password && setError('password', {message: e.password});
     }
   };
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+    <Box style={styles.container}>
       <FormProvider {...methods}>
-        <VStack justifyContent="flex-end">
+        <VStack>
           <CustomInput
             name="firstName"
             placeholder={t(
@@ -113,28 +112,26 @@ const RegistrationForm = () => {
             error={errors.country}
           />
         </VStack>
-        <VStack
-          flexGrow={1}
-          justifyContent="flex-end"
-          height={height * 0.2}
-          pb={20}>
+        <VStack pb={perfectSize(20)}>
           <HStack justifyContent="center">
             <CustomButton
               title={t('public.registrationScreen.button')}
               onPress={handleSubmit(onPress)}
               iconRight={ArrowRightIcon}
+              iconColor="secondary"
               disabled={isLoading}
               isLoading={isLoading}
             />
           </HStack>
         </VStack>
       </FormProvider>
-    </KeyboardAwareScrollView>
+    </Box>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-between',
   },
 });
 

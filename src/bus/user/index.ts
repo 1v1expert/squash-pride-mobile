@@ -32,10 +32,12 @@ export const useUser = () => {
   const tokenRefresh = async (callback?: () => void) => {
     const token = await load(refreshToken);
 
-    token &&
+    return (
+      token &&
       dispatch(refresh({refreshToken: token}))
         .unwrap()
-        .then(() => callback && callback());
+        .then(() => callback && callback())
+    );
   };
   const fetchUser = async () => {
     const access_token = await load(accessToken);

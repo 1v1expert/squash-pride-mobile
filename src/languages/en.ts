@@ -62,6 +62,8 @@ export default {
     },
     createTraining: {
       title: 'SELECT SECTION',
+      all: 'all',
+      favorite: 'favorite',
       shots: {
         drive: 'DRIVE',
         cross: 'CROSS',
@@ -72,6 +74,8 @@ export default {
         allExercises: 'ALL\nEXERCISES',
         tactics: 'TACTICS',
       },
+      startButton: 'Start training',
+      scheduleButton: 'Schedule',
     },
     gameTechnique: {title: 'GAME TECHNIQUE'},
     rules: {title: 'RULES'},
@@ -163,6 +167,14 @@ export default {
       exercise: 'Exercise',
       delete: 'Delete',
       editExercise: 'Edit exercise',
+      editTitle: 'Change name',
+    },
+    trainingModals: {
+      save: 'Save',
+      description: 'Training description',
+      trainingName: 'Training name',
+      edit: 'Edit',
+      title: 'Title',
     },
   },
   gender: {

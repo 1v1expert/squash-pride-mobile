@@ -1,7 +1,7 @@
 import {CalendarDaysIcon, Icon, Image, Text} from '@gluestack-ui/themed';
 import {Center, HStack, VStack} from '@gluestack-ui/themed';
-import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {memo, useEffect, useState} from 'react';
+import {Dimensions, Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {fontSize} from '../../../assets/fontsSize';
 import ThreeDots from '../../../assets/svg/three_dots';
@@ -15,6 +15,7 @@ import {PrivateStackScreenProps} from '../../navigation/types';
 import TrainingItemEditModal from '../TrainingItemEditModal';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {createThumbnail} from 'react-native-create-thumbnail';
+import TrainingItemTitleEditModal from '../TrainingItemTitleEditModal';
 
 const width = Dimensions.get('screen').width;
 
@@ -24,6 +25,7 @@ type TrainingItemProps = {
   showCalendar?: boolean;
   fromCalendar?: boolean;
   isFavorite?: boolean;
+  fromTraining?: boolean;
 };
 
 const TrainingItem = ({
@@ -32,18 +34,21 @@ const TrainingItem = ({
   fromCalendar,
   showCalendar = true,
   isFavorite,
+  fromTraining,
 }: TrainingItemProps) => {
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const {t} = useCustomTranslation();
   const [option, setOption] = useState(false);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [editTitle, setEditTitle] = useState(false);
   const {
     getFavoriteItem,
     addFavoriteItem,
     removeFavoriteItem,
     addToStack,
     resetStack,
+    removeDoneTraining,
   } = useTraining();
   const currentItem = item.training || item.exercise;
   const [thumbnail, setThumbnail] = useState<string>('');
@@ -78,6 +83,9 @@ const TrainingItem = ({
       ? `0${new Date(Number(item.date)).getMinutes()}`
       : new Date(Number(item.date)).getMinutes();
 
+  const imageSize =
+    Platform.OS === 'android' ? perfectSize(width * 0.3) : width * 0.3;
+
   useEffect(() => {
     setOption(false);
   }, [state]);
@@ -89,6 +97,7 @@ const TrainingItem = ({
           type: item.type,
           training: item.training,
           exercise: item.exercise,
+          name: item.name || '',
         })
       : removeFavoriteItem({
           type: item.type,
@@ -122,15 +131,15 @@ const TrainingItem = ({
         <TouchableOpacity onPress={onPress} style={styles.container}>
           <HStack
             alignItems="center"
-            marginBottom={20}
+            marginBottom={perfectSize(20)}
             space="xl"
             justifyContent="space-between">
             <HStack alignItems="center" space="xl" flex={1}>
               <Center
-                width={width * 0.3}
-                height={width * 0.3}
+                width={imageSize}
+                height={imageSize}
                 bgColor={'#393A40'}
-                borderRadius={20}
+                borderRadius={perfectSize(20)}
                 alignItems="center"
                 justifyContent="center"
                 shadowColor="#000"
@@ -140,10 +149,10 @@ const TrainingItem = ({
                 elevation={11}>
                 {thumbnail && item.exercise ? (
                   <Image
-                    width={width * 0.3}
-                    height={width * 0.3}
+                    width={imageSize}
+                    height={imageSize}
                     bgColor={'#393A40'}
-                    borderRadius={20}
+                    borderRadius={perfectSize(20)}
                     alignItems="center"
                     justifyContent="center"
                     shadowColor="#000"
@@ -155,10 +164,10 @@ const TrainingItem = ({
                   />
                 ) : (
                   <Image
-                    width={width * 0.3}
-                    height={width * 0.3}
+                    width={imageSize}
+                    height={imageSize}
                     bgColor={'#393A40'}
-                    borderRadius={20}
+                    borderRadius={perfectSize(20)}
                     alignItems="center"
                     justifyContent="center"
                     shadowColor="#000"
@@ -203,9 +212,10 @@ const TrainingItem = ({
                   fontWeight="$bold"
                   flexWrap="wrap"
                   alignItems="center">
-                  {item.type === 'training'
-                    ? t('private.trainingItem.training')
-                    : t('private.trainingItem.exercise')}
+                  {item.name ||
+                    (item.type === 'training'
+                      ? t('private.trainingItem.training')
+                      : t('private.trainingItem.exercise'))}
                 </Text>
 
                 <Text
@@ -277,6 +287,17 @@ const TrainingItem = ({
                 Изменить название
               </Text>
             </TouchableOpacity> */}
+            <TouchableOpacity
+              onPress={() => [setOption(false), setEditTitle(true)]}>
+              <Text
+                variant="secondary"
+                fontSize={fontSize.body}
+                flexWrap="wrap"
+                lineHeight={12}
+                numberOfLines={3}>
+                {t('private.trainingItem.editTitle')}
+              </Text>
+            </TouchableOpacity>
             {item.type === 'exercise' && (
               <TouchableOpacity
                 onPress={() => [setOption(false), setEditModal(true)]}>
@@ -286,14 +307,12 @@ const TrainingItem = ({
                   flexWrap="wrap"
                   lineHeight={12}
                   numberOfLines={3}>
-                  {/* {`Редактировать ${
-                    item.type === 'training' ? 'тренировку' : 'упражнение'
-                  }`} */}
                   {t('private.trainingItem.editExercise')}
                 </Text>
               </TouchableOpacity>
             )}
-            <TouchableOpacity onPress={() => [onLikePress(), setOption(false)]}>
+            <TouchableOpacity
+              onPress={() => [removeDoneTraining(item), setOption(false)]}>
               <Text
                 variant="secondary"
                 fontSize={fontSize.body}
@@ -318,6 +337,14 @@ const TrainingItem = ({
           item={item.training}
           visible={calendarIsVisible}
           setVisible={setCalendarIsVisible}
+        />
+      )}
+      {editTitle && (
+        <TrainingItemTitleEditModal
+          visible={editTitle}
+          setVisible={setEditTitle}
+          item={item}
+          fromTraining={fromTraining}
         />
       )}
       {editModal && (
@@ -346,4 +373,4 @@ const styles = StyleSheet.create({
   threeDots: {paddingRight: 10},
 });
 
-export default TrainingItem;
+export default memo(TrainingItem);

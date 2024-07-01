@@ -2,7 +2,6 @@ import {
   ArrowLeftIcon,
   Center,
   HStack,
-  SettingsIcon,
   Text,
   VStack,
 } from '@gluestack-ui/themed';
@@ -33,11 +32,12 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {fontSize} from '../../../assets/fontsSize';
 import {useNavigation} from '@react-navigation/native';
 import FilterModal from '../../components/FilterModal';
+import FilterIcon from '../../../assets/svg/filter';
 
 const width = Dimensions.get('screen').width;
 
 const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
-  const {navigate, reset} = useNavigation<
+  const {navigate, goBack} = useNavigation<
     PrivateStackScreenProps['navigation'] &
       HomeScreensStackScreenProps['navigation']
   >();
@@ -51,22 +51,31 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
     setFilters,
     fetchExercise,
     getFavoriteItem,
+    setExercises,
   } = useTraining();
   const [state, setState] = useState(false);
   const [modal, setModal] = useState(false);
   const from = route.params.from;
-  const readyTraining = route.params.readyTraining;
 
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
   };
 
   const fetch = async (values?: FilterFormType) => {
-    await fetchExercise({
-      players: values?.players || filters.players,
-      level: values?.level || filters.level,
-      group: values?.group || filters.group,
-      readyTraining,
+    const uniq = [...new Set(values?.group || filters.group)];
+    const training = uniq.map(async e => {
+      const res = await fetchExercise({
+        players: values?.players || filters.players,
+        level: values?.level || filters.level,
+        group: [e],
+      });
+      return res;
+    });
+    Promise.all(training).then(res => {
+      const uniqTrainings = [
+        ...new Set(res.flat().map(e => JSON.stringify(e))),
+      ].map(e => JSON.parse(e));
+      setExercises(uniqTrainings);
     });
   };
 
@@ -83,15 +92,13 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
           <CustomButton
             iconLeft={ArrowLeftIcon}
             bgColor="#25282D"
-            onPress={() =>
-              reset({index: 0, routes: [{name: Book.TabNavigator}]})
-            }
+            onPress={goBack}
             width={50}
           />
         }
         rightHeaderButton={
           <CustomButton
-            iconLeft={SettingsIcon}
+            iconLeft={FilterIcon}
             bgColor="#25282D"
             onPress={() => setModal(true)}
             width={50}
@@ -104,7 +111,7 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
               onPress={() => setState(false)}>
               <Center p={5} style={!state && styles.selected}>
                 <Text variant="primary" fontSize={fontSize.title}>
-                  все
+                  {t('private.createTraining.all')}
                 </Text>
               </Center>
             </TouchableOpacity>
@@ -113,7 +120,7 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
               onPress={() => setState(true)}>
               <Center p={5} style={state && styles.selected}>
                 <Text variant="primary" fontSize={fontSize.title}>
-                  избранное
+                  {t('private.createTraining.favorite')}
                 </Text>
               </Center>
             </TouchableOpacity>
@@ -176,7 +183,11 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
           </HStack>
           <HStack width="$full">
             <CustomButton
-              title={from ? 'Запланировать' : 'Начать тренировку'}
+              title={
+                from
+                  ? t('private.createTraining.scheduleButton')
+                  : t('private.createTraining.startButton')
+              }
               onPress={() => navigate(Book.StartTraining, {from})}
               disabled={!stackOfExercises.length || stackOfExercises.length < 4}
             />

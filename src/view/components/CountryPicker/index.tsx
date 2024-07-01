@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: '#000',
     borderRadius: 5,
-    height: 40,
+    height: perfectSize(40),
     alignItems: 'center',
   },
 });

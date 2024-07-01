@@ -3,11 +3,34 @@ import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {HStack, Text} from '@gluestack-ui/themed';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-// import {tabBarIcons} from './tabBarIcons';
 import {Image} from '@gluestack-ui/themed';
-import {tabBarIcons} from './tabBarIcons';
+// import {tabBarIcons} from './tabBarIcons';
 import {perfectSize} from '../../tools/helpers/perfectSize';
 import {useDevice} from '../../bus/device';
+import {images} from "../../assets";
+
+const tabBarIcons: any = {
+  homescreens: {
+    focused: images.homeFocus,
+    default: images.home,
+  },
+  favorites: {
+    focused: images.favoritesFocus,
+    default: images.favorites,
+  },
+  training: {
+    focused: images.trainingFocus,
+    default: images.training,
+  },
+  calendar: {
+    focused: images.calendarFocus,
+    default: images.calendar,
+  },
+  profile: {
+    focused: images.profileFocus,
+    default: images.profile,
+  },
+};
 
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const {bottom} = useSafeAreaInsets();

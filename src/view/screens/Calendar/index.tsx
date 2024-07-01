@@ -17,6 +17,7 @@ import {fontSize} from '../../../assets/fontsSize';
 import {Book} from '../../navigation/book';
 import TrainingItem from '../../components/TrainingItem';
 import {FavoriteType} from '../../../bus/training/types';
+import {perfectSize} from '../../../tools/helpers/perfectSize';
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
@@ -85,7 +86,7 @@ const Calendar = () => {
     <Box flex={1} bgColor="#131517">
       <SafeAreaLayout top style={{flex: 1}}>
         <VStack flex={1} alignItems="center">
-          <VStack width="$full" height="$1/2">
+          <VStack width="$full">
             <VStack
               bgColor="#131517"
               width="$full"
@@ -102,8 +103,8 @@ const Calendar = () => {
               justifyContent="center"
               bgColor="#131517"
               width="$full"
-              pt={20}
-              marginBottom={10}>
+              pt={perfectSize(10)}
+              pb={perfectSize(10)}>
               <CustomCalendar action={hideAll} navigation={navigation} />
             </VStack>
           </VStack>
@@ -112,7 +113,7 @@ const Calendar = () => {
             paddingHorizontal={30}
             bgColor="#25282D"
             width="$full"
-            height="$1/2">
+            flex={1}>
             <VStack
               width="$full"
               alignItems="center"
@@ -127,7 +128,7 @@ const Calendar = () => {
                 width="$full"
                 justifyContent="space-between"
                 alignItems="center"
-                paddingVertical={20}>
+                paddingVertical={perfectSize(15)}>
                 <HStack
                   width={'35%'}
                   paddingHorizontal={10}
@@ -143,7 +144,7 @@ const Calendar = () => {
                   width={'30%'}
                   justifyContent="center"
                   alignItems="center"
-                  minHeight={30}>
+                  minHeight={20}>
                   <TouchableOpacity onPress={setVisibleTimePopup}>
                     <Center
                       bgColor="#131517"
@@ -162,7 +163,7 @@ const Calendar = () => {
                   justifyContent="flex-end"
                   paddingHorizontal={10}
                   alignItems="center"
-                  minHeight={30}>
+                  minHeight={20}>
                   <TouchableOpacity onPress={setVisibleEventPopup} hitSlop={20}>
                     <Plus />
                   </TouchableOpacity>
@@ -172,7 +173,7 @@ const Calendar = () => {
               <Collapsible collapsed={!addTraining}>
                 <VStack width="$full">
                   <TouchableOpacity onPress={addReadyTraining}>
-                    <HStack padding={10}>
+                    <HStack padding={perfectSize(10)}>
                       <Text
                         variant="primary"
                         width="$full"
@@ -183,7 +184,7 @@ const Calendar = () => {
                   </TouchableOpacity>
 
                   <TouchableOpacity onPress={addNewTraining}>
-                    <HStack padding={10}>
+                    <HStack padding={perfectSize(10)}>
                       <Text
                         variant="primary"
                         width="$full"
@@ -195,7 +196,7 @@ const Calendar = () => {
 
                   <TouchableOpacity
                     onPress={() => setAddTraining(prev => !prev)}>
-                    <HStack padding={10}>
+                    <HStack padding={perfectSize(10)}>
                       <Text
                         variant="primary"
                         width="$full"

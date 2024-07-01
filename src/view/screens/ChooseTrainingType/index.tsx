@@ -3,15 +3,16 @@ import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {
   ArrowLeftIcon,
-  ArrowRightIcon,
+  CheckIcon,
   HStack,
   ScrollView,
+  Spinner,
   VStack,
 } from '@gluestack-ui/themed';
 import TypeOfTraining from '../../components/TypeOfTraining';
 import {Dimensions} from 'react-native';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {HomeScreensStackScreenProps} from '../../navigation/types';
+import {ChooseTrainingTypeScreenProps} from '../../navigation/types';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {chooseTrainingTypeSchema} from './schema';
@@ -23,38 +24,80 @@ const width = Dimensions.get('screen').width;
 type ChooseTrainingTypeForm = {
   group: string[];
 };
-
-const ChooseTrainingType: FC<HomeScreensStackScreenProps> = ({
+const Loader = () => <Spinner color="#F7AA37" />;
+const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
   navigation,
   route,
 }) => {
   const {navigate, goBack} = navigation;
   const {t} = useCustomTranslation();
-  const {groups, fetchExercise, filters} = useTraining();
+  const {
+    groups,
+    fetchExercise,
+    filters,
+    addToStack,
+    resetStack,
+    setExercises,
+    setFilters,
+    isLoading,
+  } = useTraining();
   const location = route.params?.location;
-  const groupLength = location === 'CreateTraining' ? 1 : 4;
+  const from = route.params?.from;
+  const groupLength = 4;
 
   const methods = useForm<ChooseTrainingTypeForm>({
     resolver: yupResolver(chooseTrainingTypeSchema),
     mode: 'onSubmit',
+    defaultValues: {
+      group: [],
+    },
   });
   const {handleSubmit, watch} = methods;
   const group = watch('group');
 
-  const onPress = (values: ChooseTrainingTypeForm) => {
-    console.log('values', values);
+  const onPress = async (values: ChooseTrainingTypeForm) => {
+    setFilters(values);
+    resetStack();
+
     switch (location) {
       case Book.StartTraining: {
-        navigate(location);
+        const training = values.group.map(async e => {
+          const res = await fetchExercise({
+            players: filters.players,
+            level: filters.level,
+            group: [e],
+            readyTraining: true,
+          });
+          addToStack({...res[0], group: e || ''});
+        });
+        Promise.allSettled(training).then(() => {
+          navigate(Book.StartTraining, {
+            from,
+          });
+        });
         break;
       }
-      case Book.CreateTraining: {
-        fetchExercise({
-          players: filters.players,
-          level: filters.level,
-          group: values.group,
+      case Book.CreateTrainingWithoutTab: {
+        const uniq = [...new Set(values.group)];
+        const training = uniq.map(async e => {
+          const res = await fetchExercise({
+            players: filters.players,
+            level: filters.level,
+            group: [e],
+          });
+          return res;
         });
-        navigate(location);
+        Promise.all(training).then(res => {
+          const uniqTrainings = [
+            ...new Set(res.flat().map(e => JSON.stringify(e))),
+          ].map(e => JSON.parse(e));
+          setExercises(uniqTrainings);
+          navigate(Book.CreateTrainingWithoutTab, {
+            from,
+            readyTraining: false,
+          });
+        });
+        break;
       }
     }
   };
@@ -71,11 +114,16 @@ const ChooseTrainingType: FC<HomeScreensStackScreenProps> = ({
       }
       rightHeaderButton={
         <CustomButton
-          iconLeft={ArrowRightIcon}
+          iconLeft={isLoading ? Loader : CheckIcon}
           bgColor="#25282D"
           onPress={handleSubmit(onPress)}
           width={50}
-          disabled={!group || groupLength !== group.length}
+          disabled={
+            isLoading ||
+            (location === 'CreateTrainingWithoutTab'
+              ? group.length < 1
+              : groupLength !== group.length)
+          }
         />
       }>
       <VStack flex={1} width={width} alignItems="center">

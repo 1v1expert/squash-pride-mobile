@@ -23,7 +23,7 @@ const Registration: FC<PublicStackScreenProps> = () => {
       <Box flex={1} bgColor="#25282D">
         <SafeAreaLayout top bottom style={styles.container}>
           <VStack space="md" flex={1}>
-            <VStack alignItems="center" space="2xl">
+            <VStack alignItems="center" space="xl">
               <Image
                 source={images.logo}
                 resizeMode="contain"

@@ -27,6 +27,7 @@ import CustomCheckbox from '../../../components/CustomCheckbox';
 import {useUser} from '../../../../bus/user';
 import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
 import {getUsername} from '../../../../tools/helpers';
+import {perfectSize} from '../../../../tools/helpers/perfectSize';
 
 const width = Dimensions.get('screen').width;
 
@@ -99,7 +100,7 @@ const Login = () => {
             resizeMode="cover"
             style={styles.background}>
             <SafeAreaLayout top bottom style={styles.container}>
-              <VStack flex={1} justifyContent="space-around">
+              <VStack flex={1} justifyContent="space-around" space="md">
                 <Center>
                   <Image
                     source={images.logo}
@@ -111,8 +112,8 @@ const Login = () => {
                   />
                 </Center>
                 <FormProvider {...methods}>
-                  <VStack paddingHorizontal={40} space="4xl">
-                    <VStack space="4xl">
+                  <VStack paddingHorizontal={40} mb={perfectSize(20)}>
+                    <VStack space="xl">
                       <VStack space="xs">
                         <CustomInput
                           name="username"

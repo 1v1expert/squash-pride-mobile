@@ -23,6 +23,7 @@ type CustomButtonProps = {
   mainIcon?: any;
   outline?: boolean;
   style?: any;
+  iconColor?: 'primary' | 'secondary';
 };
 
 const CustomButton: FC<CustomButtonProps> = ({
@@ -32,6 +33,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   size,
   iconLeft,
   iconRight,
+  iconColor = 'primary',
   bgColor = '#000',
   width,
   height,
@@ -52,12 +54,18 @@ const CustomButton: FC<CustomButtonProps> = ({
 
   const styles = {
     container: {
+      alignItems: 'center',
+      justifyContent: 'center',
       borderRadius: borderRadius,
       opacity: disabled ? 0.5 : 1,
       borderColor: '#F7AA37',
       borderWidth: outline ? 1 : 0,
       ...style,
     },
+  };
+  const iconColors = {
+    primary: '#F7AA37',
+    secondary: '#fff',
   };
   return (
     <LinearGradient
@@ -69,9 +77,9 @@ const CustomButton: FC<CustomButtonProps> = ({
         disabled={disabled}
         size={size}
         bgColor="inherit"
-        minHeight={50}
-        height={height}
-        width={width}
+        minHeight={perfectSize(50)}
+        height={height && perfectSize(height)}
+        width={width && perfectSize(width)}
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}>
@@ -79,7 +87,7 @@ const CustomButton: FC<CustomButtonProps> = ({
           <ButtonIcon
             mr={title ? 15 : 0}
             as={iconLeft}
-            color={pressed ? '#000' : '#F7AA37'}
+            color={pressed ? '#000' : iconColors[iconColor]}
           />
         )}
         {title && !isLoading && (
@@ -94,7 +102,7 @@ const CustomButton: FC<CustomButtonProps> = ({
           <ButtonIcon
             ml={title ? 15 : 0}
             as={iconRight}
-            color={pressed ? '#000' : '#F7AA37'}
+            color={pressed ? '#000' : iconColors[iconColor]}
           />
         )}
         {mainIcon && (

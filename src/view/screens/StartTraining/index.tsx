@@ -1,6 +1,7 @@
 import {
   ArrowLeftIcon,
   CalendarDaysIcon,
+  Center,
   CheckIcon,
   HStack,
   ScrollView,
@@ -33,6 +34,7 @@ import {useCalendar} from '../../../bus/calendar';
 import {Image} from '@gluestack-ui/themed';
 import {images} from '../../../assets';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
+import TrainingFinishModal from '../../components/TrainingFinishModal';
 
 // const DATA: ExerciseType[] = [
 //   {
@@ -87,6 +89,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     removeFavoriteItem,
     addDoneTraining,
     resetFilters,
+    completedTrainings,
   } = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
   const {setTimeUnit} = useCalendar();
@@ -96,6 +99,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const [titles, setTitles] = useState<TitlesType[]>([]);
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [finishModal, setFinishModal] = useState(false);
 
   const currentMonth = new Date().getMonth() + 1;
   const currentDay = new Date().getDate();
@@ -117,13 +121,14 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const scrollToIndex = async (index: number) => {
     scrollRef.current?.scrollToIndex({index});
   };
-
+  console.log('completedTrainings', completedTrainings);
   const onLikePress = () => {
     !favorite
       ? addFavoriteItem({
           date: new Date().getTime(),
           type: 'exercise',
           exercise: mainStack[currentIndex],
+          name: '',
         })
       : removeFavoriteItem({
           type: 'exercise',
@@ -169,6 +174,22 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     setTitles(updatedTitles);
     setCurrentTime(0);
   };
+  const checkTraining = (index: number) => {
+    const updatedTitles = titles.map((title, i) => ({
+      ...title,
+      done: i === index ? true : title.done,
+    }));
+    const done = updatedTitles.every((title, i) => title.done || i === index);
+    console.log('updatedTitles', updatedTitles);
+    setFinished(done);
+    setTitles(updatedTitles);
+  };
+
+  useEffect(() => {
+    if (finished) {
+      setFinishModal(true);
+    }
+  }, [finished]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
@@ -203,6 +224,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
                 date: new Date().getTime(),
                 type: 'training',
                 training: mainStack,
+                name: '',
               }),
               resetStack(),
               navigate(Book.Home),
@@ -227,14 +249,27 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           <HStack
             alignItems="center"
             justifyContent="center"
-            paddingHorizontal={20}
-            paddingVertical={10}>
+            paddingVertical={perfectSize(10)}>
             <Indicator
               items={titles}
               selected={currentIndex}
               length={mainStack.length}
               space="4xl"
             />
+            {titles[currentIndex] && !titles[currentIndex].done && (
+              <TouchableOpacity
+                hitSlop={10}
+                style={styles.check}
+                onPress={() => checkTraining(currentIndex)}>
+                <Center
+                  width={perfectSize(30)}
+                  height={perfectSize(30)}
+                  borderRadius={30}
+                  bgColor="#131517">
+                  <CheckIcon color={'#F7AB39'} />
+                </Center>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               hitSlop={10}
               style={styles.heartIcon}
@@ -285,7 +320,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               );
             }}
             pagingEnabled
-            keyExtractor={item => item.uid}
+            keyExtractor={(_, i) => i.toString()}
             showsHorizontalScrollIndicator={false}
             snapToAlignment="start"
             decelerationRate={'normal'}
@@ -293,12 +328,12 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           <HStack
             width="$full"
             bgColor="#1B1E20"
-            height={75}
+            height={perfectSize(60)}
             alignItems="center"
             paddingHorizontal={30}
             space="xl">
             <PeopleCounter amountOfPeople={mainStack[currentIndex].players} />
-            <Text variant="primary">
+            <Text variant="primary" fontSize={fontSize.title}>
               {t(
                 `private.optionsScreen.step2.${mainStack[currentIndex].level}`,
               )}
@@ -313,6 +348,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
       ) : (
         <Spinner size="large" pt={20} color="#F7AB39" />
       )}
+      <TrainingFinishModal visible={finishModal} setVisible={setFinishModal} />
     </ViewContainer>
   );
 };
@@ -322,6 +358,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
   },
+  check: {position: 'absolute', left: 10},
 });
 
 export default StartTraining;

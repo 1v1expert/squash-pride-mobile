@@ -46,7 +46,10 @@ export type HomeScreensStackParamList = {
       }
     | undefined;
   Options: {location?: keyof HomeScreensStackParamList} | undefined;
-  ChooseTrainingType: {location?: keyof HomeScreensStackParamList} | undefined;
+  ChooseTrainingType: {
+    location?: keyof HomeScreensStackParamList | keyof PrivateStackParamList;
+    from?: keyof TabNavigatorParamList;
+  };
   ExerciseMediaViewer: {item: ExerciseType};
 };
 
@@ -73,6 +76,12 @@ export type ExerciseMediaViewerScreenProps = NativeStackScreenProps<
 export type FilterScreenProps = NativeStackScreenProps<
   HomeScreensStackParamList,
   'Filter'
+> &
+  NativeStackScreenProps<PrivateStackParamList>;
+
+export type ChooseTrainingTypeScreenProps = NativeStackScreenProps<
+  HomeScreensStackParamList,
+  'ChooseTrainingType'
 > &
   NativeStackScreenProps<PrivateStackParamList>;
 export type OptionsScreenProps = NativeStackScreenProps<

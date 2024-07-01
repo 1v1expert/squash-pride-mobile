@@ -132,12 +132,41 @@ export const removeCompletedTraining: types.BaseContract<types.TrainingType> = (
 ) => {
   const trainings = state.trainings.filter(e => {
     return (
-      e?.training?.toString() !== action.payload?.training?.toString() && e
+      JSON.stringify(e?.training) !==
+        JSON.stringify(action.payload?.training) && e
     );
   });
-  save('favorites', !trainings.length ? null : trainings);
+  save('trainings', !trainings.length ? null : trainings);
   return {
     ...state,
     trainings,
+  };
+};
+
+export const editCompletedTraining: types.BaseContract<types.FavoriteType> = (
+  state,
+  action,
+) => {
+  const trainings = state.trainings.map(training => {
+    if (training.date === action.payload.date) {
+      return action.payload;
+    } else {
+      return training;
+    }
+  });
+  save('trainings', trainings);
+  return {
+    ...state,
+    trainings,
+  };
+};
+
+export const setExercises: types.BaseContract<types.ExerciseType[]> = (
+  state,
+  action,
+) => {
+  return {
+    ...state,
+    exercises: action.payload,
   };
 };

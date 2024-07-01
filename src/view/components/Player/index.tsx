@@ -14,6 +14,7 @@ import {ExerciseType} from '../../../bus/training/types';
 import StackPlayer from '../StackPlayer';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {createThumbnail} from 'react-native-create-thumbnail';
 
 const width = Dimensions.get('screen').width;
 
@@ -45,11 +46,26 @@ const Player = ({
   const [videoStarted, setVideoStarted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [thumbnail, setThumbnail] = useState<string>();
 
   const uri = item.video.includes('https')
     ? item.video
     : `https://internal.squash-pride.ru/api/media/${item.video}`;
   console.log('uri', uri);
+
+  useEffect(() => {
+    const getThumbnail = async () => {
+      await createThumbnail({
+        url: uri,
+        timeStamp: 0,
+        format: 'jpeg',
+        cacheName: item.uid,
+      }).then(response => {
+        setThumbnail(response.path);
+      });
+    };
+    getThumbnail();
+  }, [item.uid, uri]);
 
   useEffect(() => {
     setVideoStarted(false);
@@ -62,6 +78,7 @@ const Player = ({
     }
   }, [currentTime, videoStarted]);
 
+  console.log('videoStarted', videoStarted);
   useEffect(() => {
     if (!fullscreen) {
       setTimeout(() => {
@@ -83,12 +100,12 @@ const Player = ({
     });
   };
 
+  console.log(videoPlayerRef);
   return (
     <>
       <HStack
         bgColor="#393A40"
         width={width}
-        height="30%"
         alignItems="center"
         justifyContent="center">
         {item && (
@@ -97,13 +114,14 @@ const Player = ({
             ref={videoPlayerRef}
             video={{uri}}
             style={[styles.player, {width: width}]}
+            thumbnail={thumbnail ? {uri: thumbnail} : undefined}
             pauseOnPress
             resizeMode="stretch"
             disableFullscreen
-            onLoadStart={() => [setVideoStarted(true), setLoader(true)]}
+            onStart={() => [setVideoStarted(true), setLoader(true)]}
             onBuffer={event => setLoader(event.isBuffering)}
             onReadyForDisplay={() => setLoader(false)}
-            onLoad={() => videoPlayerRef.current?.seek(currentTime)}
+            // onLoadStart={() => videoPlayerRef.current?.seek(currentTime)}
             onEnd={() => onEnd && onEnd(position)}
             customStyles={{
               controls: {
@@ -158,6 +176,7 @@ const Player = ({
         <StackPlayer
           item={item}
           visible={fullscreen}
+          thumbnail={thumbnail}
           setVisible={setFullscreen}
           position={position}
           currentTime={currentTime}
@@ -173,7 +192,7 @@ const Player = ({
   );
 };
 const styles = StyleSheet.create({
-  player: {backgroundColor: '#393A40', height: '100%'},
+  player: {backgroundColor: '#393A40'},
   defaultScreenButton: {
     position: 'absolute',
     bottom: 10,

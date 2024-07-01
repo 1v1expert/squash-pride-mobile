@@ -22,7 +22,7 @@ const height = Dimensions.get('screen').height;
 
 type GroupAccordionProps = {
   name: string;
-  defaultValue?: string;
+  defaultValue?: string[];
   error?: Merge<
     FieldError,
     (Merge<FieldError, FieldErrorsImpl<GroupData>> | undefined)[]
@@ -53,7 +53,7 @@ const GroupAccordion = ({
       render={({field: {value, onChange}}) => {
         console.log('value', value);
         const chooseGroup = (group: string) => {
-          if (!value.includes(group) && value.length < groupLength) {
+          if (value.length < groupLength) {
             onChange([...value, group]);
             if (groupLength - 1 === value.length) {
               setCollapsed(true);
@@ -94,25 +94,30 @@ const GroupAccordion = ({
                 pt={20}
                 maxHeight={height * 0.3}
                 flexWrap="wrap">
-                {groups.map((group, i) => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      groupLength === 1
-                        ? forOne(group.name)
-                        : chooseGroup(group.name)
-                    }
-                    style={styles.touchable}
-                    key={i}>
-                    <HStack pl={20}>
-                      <Text
-                        variant="primary"
-                        fontSize={fontSize.accordionBody}
-                        color={value.includes(group.name) ? '#F7A936' : '#fff'}>
-                        {group.name}
-                      </Text>
-                    </HStack>
-                  </TouchableOpacity>
-                ))}
+                {groups.map((group, i) => {
+                  const valueCount = value.filter(e => e === group.name).length;
+                  return (
+                    <TouchableOpacity
+                      onPress={() =>
+                        groupLength === 1
+                          ? forOne(group.name)
+                          : chooseGroup(group.name)
+                      }
+                      style={styles.touchable}
+                      key={i}>
+                      <HStack pl={20}>
+                        <Text
+                          variant="primary"
+                          fontSize={fontSize.accordionBody}
+                          color={
+                            value.includes(group.name) ? '#F7A936' : '#fff'
+                          }>
+                          {group.name} {!!valueCount && `x${valueCount}`}
+                        </Text>
+                      </HStack>
+                    </TouchableOpacity>
+                  );
+                })}
               </VStack>
             </Collapsible>
             {collapsed && !!value.length && (

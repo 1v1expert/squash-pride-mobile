@@ -8,9 +8,10 @@ import {Book} from '../../navigation/book';
 import {useUser} from '../../../bus/user';
 
 import CustomWeekCalendar from '../../components/CustomWeekCalendar';
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import {fontSize} from '../../../assets/fontsSize';
 import {useTraining} from '../../../bus/training';
+import {images} from '../../../assets';
 
 const height = Dimensions.get('screen').height;
 
@@ -48,7 +49,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             justifyContent="center"
             bgColor="#131517"
             width="$full"
-            height={height * 0.14}>
+            height={(Platform.OS === 'android' ? 0.16 : 0.13) * height}>
             <CustomWeekCalendar />
           </VStack>
           <VStack
@@ -61,20 +62,24 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
               onPress={() =>
                 navigate(Book.Filter, {location: Book.StartTraining})
               }
+              icon={images.startTraining}
             />
             <TouchableContainer
               text={t('private.homeScreen.createTraining')}
               onPress={() =>
                 navigate(Book.Filter, {location: 'CreateTrainingWithoutTab'})
               }
+              icon={images.createTraining}
             />
             <TouchableContainer
               text={t('private.homeScreen.gameTechnique')}
               onPress={() => navigate(Book.GameTechnique)}
+              icon={images.technique}
             />
             <TouchableContainer
               text={t('private.homeScreen.rules')}
               onPress={() => navigate(Book.Rules)}
+              icon={images.rules}
             />
           </VStack>
         </VStack>

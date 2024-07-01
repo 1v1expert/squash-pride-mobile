@@ -36,7 +36,7 @@ const Indicator = ({
         return (
           <VStack
             alignItems="center"
-            space="md"
+            space="xs"
             key={i}
             justifyContent="center">
             {items && (

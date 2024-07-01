@@ -39,7 +39,7 @@ export type FilterFormType =
   | {
       players: number;
       level: 'amateur' | 'professional';
-      group: string[];
+      group?: string[];
     }
   | {
       players?: number;
@@ -52,11 +52,13 @@ export type FavoriteType = TrainingType & {
   type: 'training' | 'exercise';
   training?: ExerciseType[];
   exercise?: ExerciseType;
+  name?: string;
 };
 export type TrainingType = {
   date?: number;
   type: 'training' | 'exercise';
   training?: ExerciseType[];
+  name?: string;
 };
 export type TrainingState = {
   isLoading: boolean;

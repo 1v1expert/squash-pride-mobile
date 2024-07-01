@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderRadius: 5,
-    height: 40,
+    height: perfectSize(40),
     justifyContent: 'center',
   },
   keyboardAvoidingContainer: {

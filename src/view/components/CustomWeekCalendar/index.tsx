@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {CalendarProvider, DateData, WeekCalendar} from 'react-native-calendars';
 import {useCalendar} from '../../../bus/calendar';
-import {HStack, Text, VStack} from '@gluestack-ui/themed';
+import {Box, HStack, Text, VStack} from '@gluestack-ui/themed';
 import {DAYS_OF_WEEK, MONTHS} from '../../../assets/constants';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
@@ -36,7 +36,7 @@ const CustomWeekCalendar = () => {
         <HStack
           alignItems="center"
           justifyContent="space-between"
-          pl={37}
+          pl={27.5}
           pr={25}>
           <HStack alignItems="center" space="xs">
             <Text
@@ -52,11 +52,13 @@ const CustomWeekCalendar = () => {
             <ChevronUp color="#F7AB39" />
           </TouchableOpacity>
         </HStack>
-        <HStack justifyContent="space-between" paddingHorizontal={37}>
+        <HStack marginHorizontal={27.5} justifyContent="space-between">
           {DAYS_OF_WEEK.map((day, i) => (
-            <Text variant="secondary" key={i} fontSize={fontSize.title}>
-              {t(`private.calendarScreen.daysOfWeek.${day}`)}
-            </Text>
+            <Box key={i} alignItems="center" minWidth={40}>
+              <Text variant="secondary" fontSize={fontSize.title}>
+                {t(`private.calendarScreen.daysOfWeek.${day}`)}
+              </Text>
+            </Box>
           ))}
         </HStack>
       </VStack>
@@ -86,7 +88,7 @@ export const styles = StyleSheet.create({
   weekCalendar: {
     width: width - 20,
     position: 'absolute',
-    top: 0,
+    top: 1,
     left: 10,
     height: 40,
   },

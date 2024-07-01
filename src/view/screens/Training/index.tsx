@@ -1,4 +1,4 @@
-import {Center, HStack, SettingsIcon, Text, VStack} from '@gluestack-ui/themed';
+import {Center, HStack, Text, VStack} from '@gluestack-ui/themed';
 import React, {useCallback, useEffect, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
@@ -11,6 +11,7 @@ import {FavoriteType, FilterFormType} from '../../../bus/training/types';
 import FilterModal from '../../components/FilterModal';
 import CustomButton from '../../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import FilterIcon from '../../../assets/svg/filter';
 
 const Training = () => {
   const {addListener} = useNavigation();
@@ -21,6 +22,7 @@ const Training = () => {
     setFilters,
     isLoading,
     filters,
+    setExercises,
   } = useTraining();
   const {t} = useCustomTranslation();
   const [state, setState] = useState(false);
@@ -29,16 +31,44 @@ const Training = () => {
   const exerciseStack: FavoriteType[] = exercises.map(e => {
     return {type: 'exercise', exercise: e};
   });
-
   const fetch = useCallback(
     async (values?: FilterFormType) => {
-      await fetchExercise({
-        players: values?.players || filters.players,
-        level: values?.level || filters.level,
-        group: values?.group || filters.group,
-      });
+      if (
+        (values?.group && values.group.length <= 1) ||
+        (filters?.group && filters.group.length <= 1)
+      ) {
+        const res = await fetchExercise({
+          players: values?.players || filters.players,
+          level: values?.level || filters.level,
+          group: values?.group || filters.group,
+        });
+        setExercises(res);
+      } else {
+        const uniq = [...new Set(values?.group || filters.group)];
+        const training = uniq.map(async e => {
+          const res = await fetchExercise({
+            players: values?.players || filters.players,
+            level: values?.level || filters.level,
+            group: [e],
+          });
+          return res;
+        });
+        Promise.all(training).then(res => {
+          const uniqTrainings = [
+            ...new Set(res.flat().map(e => JSON.stringify(e))),
+          ].map(e => JSON.parse(e));
+          console.log('uniqTrainings', uniqTrainings);
+          setExercises(uniqTrainings);
+        });
+      }
     },
-    [fetchExercise, filters.group, filters.level, filters.players],
+    [
+      fetchExercise,
+      filters.group,
+      filters.level,
+      filters.players,
+      setExercises,
+    ],
   );
 
   const onPress = (values: FilterFormType) => {
@@ -58,7 +88,7 @@ const Training = () => {
       title={t('private.trainingScreen.title')}
       rightHeaderButton={
         <CustomButton
-          iconLeft={SettingsIcon}
+          iconLeft={FilterIcon}
           bgColor="#25282D"
           onPress={() => setModal(true)}
           width={50}
@@ -107,7 +137,14 @@ const Training = () => {
           <FlatList
             data={completedTrainings}
             renderItem={({item}) => {
-              return <TrainingItem item={item} state={state} />;
+              return (
+                <TrainingItem
+                  item={item}
+                  state={state}
+                  isFavorite
+                  fromTraining
+                />
+              );
             }}
             style={styles.flatList}
             refreshControl={

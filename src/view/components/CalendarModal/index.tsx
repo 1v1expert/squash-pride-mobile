@@ -55,7 +55,7 @@ const CalendarModal = ({visible, setVisible, item}: CalendarModalProps) => {
           </Text>
           <Box bgColor="#F7A936" width="$full" height={2} />
         </VStack>
-        <VStack width={width} alignItems="center">
+        <VStack width={width} alignItems="center" mb={perfectSize(20)}>
           <CustomCalendar action={() => setTimeUnit('time')} />
         </VStack>
         <HStack width="$full" alignItems="center" justifyContent="space-evenly">
