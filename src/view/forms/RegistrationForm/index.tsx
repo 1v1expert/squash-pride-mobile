@@ -48,7 +48,7 @@ const RegistrationForm = () => {
     try {
       await register({
         password: values.password,
-        email: values.email,
+        email: values.email.toLocaleLowerCase(),
         first_name: values.firstName,
         birth_year: new Date().getFullYear() - values.age,
         gender: values.gender,

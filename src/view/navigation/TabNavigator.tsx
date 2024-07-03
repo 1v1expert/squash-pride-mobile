@@ -5,6 +5,7 @@ import {
 import React, {FC} from 'react';
 import Favorites from '../screens/Favorites';
 import Training from '../screens/Training';
+import Instruction from '../screens/Instruction';
 import Calendar from '../screens/Calendar';
 import Profile from '../screens/Profile';
 import {Book} from './book';
@@ -38,6 +39,14 @@ export const TabNavigator: FC = () => {
           headerShown: false,
           tabBarLabel: t('private.navigator.training'),
         }}
+      />
+      <Tab.Screen
+          name={Book.Instructions}
+          component={Instruction}
+          options={{
+                headerShown: false,
+                tabBarLabel: t('private.navigator.instructions'),
+            }}
       />
       <Tab.Screen
         name={Book.Calendar}

@@ -18,6 +18,7 @@ export enum Book {
   HomeScreens = 'HomeScreens',
   Favorites = 'Favorites',
   Training = 'Training',
+  Instructions = 'Instructions',
   Calendar = 'Calendar',
   Profile = 'Profile',
 

@@ -29,6 +29,7 @@ export default {
       home: 'Home',
       favorites: 'Favorites',
       training: 'Training',
+      instructions: 'Instructions',
       calendar: 'Calendar',
       profile: 'Profile',
     },
@@ -53,7 +54,7 @@ export default {
       startTraining: 'START READY TRAINING',
       createTraining: 'CREATE YOUR OWN TRAINING',
       gameTechnique: 'GAME TECHNIQUE',
-      rules: 'VIEW RULES',
+      rules: 'NEWS',
     },
     startTrainingScreen: {
       title: 'READY TRAINING',
@@ -85,6 +86,7 @@ export default {
       exercises: 'exercises',
     },
     trainingScreen: {title: 'MY TRAININGS'},
+    instructionScreen: {title: 'INSTRUCTIONS'},
     calendarScreen: {
       title: 'Training Plan',
       daysOfWeek: {
@@ -136,7 +138,7 @@ export default {
     },
     filter: {
       title: 'FILTER',
-      saveButton: 'APPLY',
+      saveButton: 'CREATE TRAINING',
       reset: 'RESET',
     },
     peopleAccordion: {

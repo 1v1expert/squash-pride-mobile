@@ -62,13 +62,13 @@ const Profile = () => {
     return {label: String(age), value: age};
   });
 
-  const changeLanguage = () => {
-    if (i18n.language === 'ru') {
-      i18n.changeLanguage('en');
-    } else {
-      i18n.changeLanguage('ru');
-    }
-  };
+  // const changeLanguage = () => {
+  //   if (i18n.language === 'ru') {
+  //     i18n.changeLanguage('en');
+  //   } else {
+  //     i18n.changeLanguage('ru');
+  //   }
+  // };
 
   useEffect(() => {
     const unsubscribe = addListener('focus', () => {
@@ -157,12 +157,12 @@ const Profile = () => {
                 )}
                 error={errors.country}
               />
-              <HStack height={perfectSize(50)} justifyContent="center">
-                <CustomButton
-                  title={t('private.profileScreen.changeLanguage')}
-                  onPress={changeLanguage}
-                />
-              </HStack>
+              {/*<HStack height={perfectSize(50)} justifyContent="center">*/}
+              {/*  <CustomButton*/}
+              {/*    title={t('private.profileScreen.changeLanguage')}*/}
+              {/*    onPress={changeLanguage}*/}
+              {/*  />*/}
+              {/*</HStack>*/}
             </VStack>
 
             <HStack

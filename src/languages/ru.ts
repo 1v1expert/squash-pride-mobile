@@ -29,6 +29,7 @@ export default {
       home: 'Домой',
       favorites: 'Избранное',
       training: 'Тренировки',
+      instructions: 'Инструкции',
       calendar: 'Календарь',
       profile: 'Профиль',
     },
@@ -53,7 +54,7 @@ export default {
       startTraining: 'НАЧАТЬ ГОТОВУЮ ТРЕНИРОВКУ',
       createTraining: 'СОЗДАТЬ СВОЮ ТРЕНИРОВКУ',
       gameTechnique: 'ТЕХНИКА ИГРЫ',
-      rules: 'СМОТРЕТЬ ПРАВИЛА',
+      rules: 'НОВОСТИ',
     },
     startTrainingScreen: {
       title: 'ГОТОВАЯ ТРЕНИРОВКА',
@@ -86,6 +87,7 @@ export default {
       exercises: 'упражнения',
     },
     trainingScreen: {title: 'МОИ ТРЕНИРОВКИ'},
+    instructionScreen: {title: 'ИНСТРУКЦИИ'},
     calendarScreen: {
       title: 'План тренировок',
       daysOfWeek: {
@@ -135,7 +137,7 @@ export default {
       logoutButton: 'Выйти из профиля',
       changeLanguage: 'Cменить язык',
     },
-    filter: {title: 'ФИЛЬТР', saveButton: 'Применть', reset: 'Сбросить'},
+    filter: {title: 'ФИЛЬТР', saveButton: 'Создать тренировку', reset: 'Сбросить'},
     peopleAccordion: {
       title: 'КОЛИЧЕСТВО ИГРОКОВ',
       text: 'СКОЛЬКО ВАС',

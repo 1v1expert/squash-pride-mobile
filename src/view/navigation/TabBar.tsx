@@ -22,6 +22,10 @@ const tabBarIcons: any = {
     focused: images.trainingFocus,
     default: images.training,
   },
+  instructions: {
+    focused: images.homeFocus,
+    default: images.home,
+  },
   calendar: {
     focused: images.calendarFocus,
     default: images.calendar,
