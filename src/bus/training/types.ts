@@ -87,6 +87,13 @@ export type ExerciseType = {
   title: string;
   ru_description: string;
 };
+export type InstructionType = {
+  uid: string;
+  video: string;
+  description: string;
+  title: string;
+  ru_description: string;
+};
 
 // Contracts
 export type BaseContract<T = any> = CaseReducer<
