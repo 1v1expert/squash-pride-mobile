@@ -33,6 +33,7 @@ export type UserState = {
   isAuthorized: boolean;
   isLoading: boolean;
   user: UserData;
+  feedback: FeedbackData;
 };
 export type LoginForm = {
   username: string;
@@ -60,7 +61,14 @@ export type UserData = {
   country: {code: string; name: string} | null;
   is_paid: boolean | null;
 };
+
+export type FeedbackData = {
+  title: string,
+  description: string,
+};
+
 export type PayloadUserData = {};
+export type PayloadFeedbackData = {};
 
 // Contracts
 export type BaseContract<T = any> = CaseReducer<UserState, PayloadAction<T>>;

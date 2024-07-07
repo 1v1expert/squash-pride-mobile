@@ -22,6 +22,8 @@ export default {
       countryInputPlaceholder: 'Country',
       button: 'Next',
       requiredError: 'Please fill in to continue',
+      feedbackTitle: 'Your problem',
+      feedbackDescription: 'Short description',
     },
   },
   private: {
@@ -134,7 +136,9 @@ export default {
       title: 'PROFILE',
       saveButton: 'Save',
       logoutButton: 'Logout',
-      changeLanguage: 'Change Language',
+      createFeedback: 'Create feedback',
+      send: 'Send feedback',
+      cancel: 'Cancel',
     },
     filter: {
       title: 'FILTER',

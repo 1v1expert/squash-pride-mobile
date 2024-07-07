@@ -5,6 +5,7 @@ import {getUserData} from './getUserData';
 import {register} from './register';
 import {refresh} from './refresh';
 import {updateUserData} from './updateUser';
+import {sendFeedbackData} from "./sendFeedback";
 
 export const extraReducers = (builder: ActionReducerMapBuilder<UserState>) => {
   builder.addMatcher(isAnyOf(getUserData.fulfilled), (state, action) => {

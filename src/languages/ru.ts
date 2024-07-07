@@ -22,6 +22,8 @@ export default {
       countryInputPlaceholder: 'Страна',
       button: 'Далее',
       requiredError: 'Заполните, чтобы продолжить',
+      feedbackTitle: 'Ваша проблема',
+      feedbackDescription: 'Коротко опишите проблему',
     },
   },
   private: {
@@ -135,7 +137,9 @@ export default {
       title: 'ПРОФИЛЬ',
       saveButton: 'Сохранить',
       logoutButton: 'Выйти из профиля',
-      changeLanguage: 'Cменить язык',
+      createFeedback: 'Сообщить о проблеме',
+      send: 'Отправить',
+      cancel: 'Отмена',
     },
     filter: {title: 'ФИЛЬТР', saveButton: 'Создать тренировку', reset: 'Сбросить'},
     peopleAccordion: {

@@ -5,6 +5,7 @@ import user from '../../bus/user/slice';
 import training from '../../bus/training/slice';
 import calendar from '../../bus/calendar/slice';
 import device from '../../bus/device/slice';
+import instruction from '../../bus/instruction/slice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     training,
     calendar,
     device,
+    instruction,
   },
   middleware,
   // devTools: NODE_ENV !== 'production',

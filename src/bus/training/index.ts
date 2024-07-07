@@ -8,7 +8,6 @@ import {getExercise} from './thunk/exercise';
 import {getRules} from './thunk/rules';
 import {getTechniques} from './thunk/techniques';
 import {useUser} from '../user';
-import {getInstructionData} from "./thunk/instruction";
 
 export const useTraining = () => {
   const dispatch = useDispatch();
@@ -91,7 +90,7 @@ export const useTraining = () => {
   ): Promise<ExerciseType[]> => {
     return tokenRefresh(() => dispatch(getExercise(data)).unwrap());
   };
-  const fetchInstructions = async () => tokenRefresh(() => dispatch(getInstructionData()));
+  // const fetchInstructions = async () => tokenRefresh(() => dispatch(getInstructionData()));
   const fetchRules = async () => tokenRefresh(() => dispatch(getRules()));
   const fetchTechniques = async () =>
     tokenRefresh(() => dispatch(getTechniques()));

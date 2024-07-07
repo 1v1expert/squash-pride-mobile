@@ -1,7 +1,8 @@
-import {Box, Center, Image, Spinner, Text} from '@gluestack-ui/themed';
+import {Box, Center, CheckIcon, Image, Spinner, Text} from '@gluestack-ui/themed';
 import {HStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {
+  Button,
   Dimensions,
   Pressable,
   StyleSheet,
@@ -15,6 +16,7 @@ import StackPlayer from '../StackPlayer';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {createThumbnail} from 'react-native-create-thumbnail';
+import {backgroundColor} from "react-native-calendars/src/style";
 
 const width = Dimensions.get('screen').width;
 
@@ -44,6 +46,7 @@ const Player = ({
 }: PlayerProps) => {
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const [videoStarted, setVideoStarted] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [loader, setLoader] = useState(false);
   const [thumbnail, setThumbnail] = useState<string>();
@@ -70,6 +73,7 @@ const Player = ({
   useEffect(() => {
     setVideoStarted(false);
     setLoader(false);
+    setVideoEnded(false);
   }, [position]);
 
   useEffect(() => {
@@ -116,13 +120,15 @@ const Player = ({
             style={[styles.player, {width: width}]}
             thumbnail={thumbnail ? {uri: thumbnail} : undefined}
             pauseOnPress
-            resizeMode="stretch"
+            // resizeMode="stretch"
             disableFullscreen
             onStart={() => [setVideoStarted(true), setLoader(true)]}
             onBuffer={event => setLoader(event.isBuffering)}
             onReadyForDisplay={() => setLoader(false)}
             // onLoadStart={() => videoPlayerRef.current?.seek(currentTime)}
-            onEnd={() => onEnd && onEnd(position)}
+            onEnd={() => {
+              setVideoEnded(true);
+              return onEnd && onEnd(position)}}
             customStyles={{
               controls: {
                 alignItems: 'center',
@@ -148,6 +154,20 @@ const Player = ({
             resizeMode="contain"
           />
         </TouchableOpacity>
+        {
+          videoEnded && <TouchableOpacity
+            hitSlop={10}
+            style={styles.nextIcon}
+            onPress={() => setFavorite && setFavorite(!favorite)}>
+          <Center
+              width={perfectSize(400)}
+              height={perfectSize(50)}
+              borderRadius={30}
+              bgColor="#131517"
+              style={styles.nextIconBg}>
+            <Text variant="primary" fontSize={30}>Swipe to the next training >></Text>
+          </Center>
+        </TouchableOpacity>}
         {loader && (
           <Box position="absolute">
             <Spinner color="#F7AB39" />
@@ -203,6 +223,16 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
   },
+  nextIcon: {
+    // backgroundColor: 'black',
+    position: 'absolute',
+    bottom: 50,
+    right: 10,
+    opacity: 1,
+  },
+  nextIconBg: {
+    opacity: 0.5,
+  }
 });
 
 export default Player;

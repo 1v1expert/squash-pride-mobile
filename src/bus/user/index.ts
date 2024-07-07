@@ -2,7 +2,7 @@ import {userActions} from './slice';
 
 // Tools
 import {useSelector, useDispatch} from '../../tools/hooks';
-import {LoginForm, PayloadUserData, RegisterForm} from './types';
+import {LoginForm, PayloadFeedbackData, PayloadUserData, RegisterForm} from './types';
 import {login} from './thunk/login';
 import {getUserData} from './thunk/getUserData';
 import {
@@ -15,6 +15,7 @@ import {load} from '../../utils/storage';
 import {register} from './thunk/register';
 import {refresh} from './thunk/refresh';
 import {updateUserData} from './thunk/updateUser';
+import {sendFeedbackData} from './thunk/sendFeedback';
 
 // Types
 // import * as types from './types';
@@ -50,6 +51,9 @@ export const useUser = () => {
   const updateUser = (state: PayloadUserData) => {
     tokenRefresh(() => dispatch(updateUserData(state)));
   };
+  const sendFeedback = (state: PayloadFeedbackData) => {
+    tokenRefresh(() => dispatch(sendFeedbackData(state)));
+  };
   return {
     user: useSelector(({user}) => user.user),
     isLoading: useSelector(({user}) => user.isLoading),
@@ -61,5 +65,6 @@ export const useUser = () => {
     logout,
     tokenRefresh,
     updateUser,
+    sendFeedback
   };
 };

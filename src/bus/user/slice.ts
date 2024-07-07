@@ -16,6 +16,10 @@ const initialState: types.UserState = {
     country: null,
     is_paid: null,
   },
+  feedback: {
+    title: '',
+    description: '',
+  }
 };
 
 export const userSlice = createSlice({
