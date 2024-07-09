@@ -39,6 +39,10 @@ const TypeOfTraining = ({
           if (value.length < groupLength) {
             onChange([...value, group]);
           }
+          if (value.includes(group)) {
+              const newValue = value.filter((value) => value !== group);
+              onChange(newValue);
+          }
         };
         const count = value.reduce((acc: number, e: string) => {
           if (e === type) {

@@ -11,6 +11,7 @@ import {useTraining} from '../../bus/training';
 import {load} from '../../utils/storage';
 import {useCalendar} from '../../bus/calendar';
 import IsPaidModal from '../components/IsPaidModal';
+import TooltipModal from "../components/TooltipModal";
 
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
@@ -70,6 +71,7 @@ export const Private: FC = () => {
         </Stack.Group>
       </Stack.Navigator>
       <IsPaidModal />
+      <TooltipModal />
     </>
   );
 };
