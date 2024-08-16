@@ -9,7 +9,8 @@ import {useUser} from '../../../bus/user';
 import {Book} from '../../navigation/book';
 
 const width = Dimensions.get('screen').width;
-const URL = 'https://squash-pride.ru';
+// const URL = 'https://pay-squash-pride.lava-bots.ru/ru';
+const URL = 'https://pay-squash-pride.lava-bots.ru/en';
 
 const IsPaid = ({navigation}: any) => {
   const {replace} = navigation;
