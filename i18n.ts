@@ -6,7 +6,7 @@ import ru from './src/languages/ru';
 // utils
 import {languageDetectorPlugin} from './src/utils/languageDetectorPlugin';
 
-export const defaultLanguage = 'ru';
+export const defaultLanguage = 'en';
 
 export const defaultNamespace = 'translation';
 
