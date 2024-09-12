@@ -9,10 +9,9 @@ export const sendFeedbackData = createAsyncThunk<FeedbackData, PayloadFeedbackDa
     async (feedback, {rejectWithValue}) => {
         console.log('sendFeedbackData',feedback);
         try {
-            const {data} = await baseService.patch<FeedbackData>('/feedback/', {
+            const {data} = await baseService.post<FeedbackData>('/feedback/', {
                 ...feedback,
             });
-
             return data;
         } catch (e: any) {
             return rejectWithValue(e.response?.data || 'Something is wrong');
