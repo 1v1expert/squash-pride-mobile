@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {ArrowLeftIcon, Text} from '@gluestack-ui/themed';
@@ -8,6 +8,8 @@ import {Dimensions, FlatList} from 'react-native';
 import Item from '../../components/Item';
 import {Book} from '../../navigation/book';
 import {useTraining} from '../../../bus/training';
+import TooltipModal from "../../components/TooltipModal";
+import {getTooltipStatus, saveTooltipStatus} from "../../../tools/helpers/tooltipStorage";
 
 const width = Dimensions.get('screen').width;
 
@@ -43,9 +45,22 @@ const GameTechnique: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate, goBack} = navigation;
   const {techniques} = useTraining();
 
-  const goToItem = (e: TItem) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+    const goToItem = (e: TItem) => {
     navigate(Book.MediaViewer, {...e});
   };
+
+    useEffect(()=>{
+        const getTooltip = async () => {
+            const isTooltipClear = await getTooltipStatus('GameTechnique');
+            if (isTooltipClear !== true) {
+                setShowTooltip(true);
+                await saveTooltipStatus('GameTechnique', true);
+            }
+        };
+        getTooltip();
+    },[]);
 
   return (
     <ViewContainer
@@ -63,12 +78,12 @@ const GameTechnique: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           No data
         </Text>
       )}
-
       <FlatList
         data={techniques}
         renderItem={({item}) => <Item item={item} onPress={goToItem} />}
         style={{width, paddingTop: 20, paddingHorizontal: 20}}
       />
+        {showTooltip && <TooltipModal tooltip={t('private.gameTechnique.tooltip')}/>}
     </ViewContainer>
   );
 };

@@ -12,7 +12,6 @@ export const getGroupData = createAsyncThunk<GroupData[]>(
 
       return data;
     } catch (e: any) {
-      console.log('test group');
       return rejectWithValue(e.response?.data.error || 'Something is wrong');
     }
   },

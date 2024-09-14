@@ -71,7 +71,6 @@ export const Private: FC = () => {
         </Stack.Group>
       </Stack.Navigator>
       <IsPaidModal />
-      {/*<TooltipModal />*/}
     </>
   );
 };

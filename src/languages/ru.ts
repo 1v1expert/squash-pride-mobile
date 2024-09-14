@@ -25,6 +25,9 @@ export default {
       feedbackTitle: 'Ваша проблема',
       feedbackDescription: 'Коротко опишите проблему',
     },
+    default: {
+      clear: 'Понятно',
+    }
   },
   private: {
     navigator: {
@@ -80,8 +83,14 @@ export default {
       startButton: 'Начать тренировку',
       scheduleButton: 'Запланировать',
     },
-    gameTechnique: {title: 'ТЕХНИКА ИГРЫ'},
-    rules: {title: 'ПРАВИЛА'},
+    gameTechnique: {
+      title: 'ТЕХНИКА ИГРЫ',
+      tooltip: 'Сюда мы наполняем технику',
+    },
+    rules: {
+      title: 'ПРАВИЛА',
+      tooltip: 'Новостная лента от Squash Pride',
+    },
 
     favoritesScreen: {
       title: 'ИЗБРАННОЕ',
@@ -141,7 +150,13 @@ export default {
       send: 'Отправить',
       cancel: 'Отмена',
     },
-    filter: {title: 'ФИЛЬТР', saveButton: 'Создать тренировку', reset: 'Сбросить'},
+    filter: {
+      title: 'ФИЛЬТР',
+      saveButton: 'Создать тренировку',
+      reset: 'Сбросить',
+      startTrainingTooltip: 'Выбери типы ударов и приложение сгенерирует для вас готовую тренировку из 4х упражнений',
+      createTrainingTooltip: 'Выбери понравившиеся упражнения и создай свою тренировку',
+    },
     peopleAccordion: {
       title: 'КОЛИЧЕСТВО ИГРОКОВ',
       text: 'СКОЛЬКО ВАС',

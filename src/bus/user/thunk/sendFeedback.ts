@@ -7,7 +7,6 @@ const sendFeedback = createAction('user/sendFeedback');
 export const sendFeedbackData = createAsyncThunk<FeedbackData, PayloadFeedbackData>(
     sendFeedback.type,
     async (feedback, {rejectWithValue}) => {
-        console.log('sendFeedbackData',feedback);
         try {
             const {data} = await baseService.post<FeedbackData>('/feedback/', {
                 ...feedback,

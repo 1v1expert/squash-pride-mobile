@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {
-  ArrowLeftIcon,
+  ArrowLeftIcon, VStack,
   //  VStack
 } from '@gluestack-ui/themed';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
@@ -12,6 +12,9 @@ import {useTraining} from '../../../bus/training';
 import {Book} from '../../navigation/book';
 import FilterForm from '../../forms/FilterForm';
 import {FilterFormType} from '../../../bus/training/types';
+import TooltipModal from "../../components/TooltipModal";
+import {getTooltipStatus, saveTooltipStatus} from "../../../tools/helpers/tooltipStorage";
+import {boolean} from "yup";
 // import {Dimensions} from 'react-native';
 // const width = Dimensions.get('screen').width;
 
@@ -24,6 +27,11 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   const {goBack, navigate} = navigation;
   const location = route.params?.location;
   const from = route.params?.from;
+  const tooltip = location === 'StartTraining'
+      ? t('private.filter.startTrainingTooltip')
+      : t('private.filter.createTrainingTooltip');
+
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const submit = (values: FilterFormType) => {
     setFilters(values);
@@ -63,6 +71,17 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
     // }
   };
 
+  useEffect(()=>{
+      const getTooltip = async () => {
+          const isTooltipClear = await getTooltipStatus(location);
+          if (isTooltipClear !== true) {
+              setShowTooltip(true);
+              await saveTooltipStatus(location, true);
+          }
+      };
+      getTooltip();
+  },[]);
+
   return (
     <ViewContainer
       title={t('private.filter.title')}
@@ -75,6 +94,7 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
         />
       }>
       <FilterForm onPress={submit} required={!!location} />
+      {showTooltip && <TooltipModal tooltip={tooltip}/>}
     </ViewContainer>
   );
 };

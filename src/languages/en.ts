@@ -25,6 +25,9 @@ export default {
       feedbackTitle: 'Your problem',
       feedbackDescription: 'Short description',
     },
+    default: {
+      clear: 'Clear',
+    }
   },
   private: {
     navigator: {
@@ -80,8 +83,14 @@ export default {
       startButton: 'Start training',
       scheduleButton: 'Schedule',
     },
-    gameTechnique: {title: 'GAME TECHNIQUE'},
-    rules: {title: 'RULES'},
+    gameTechnique: {
+      title: 'GAME TECHNIQUE',
+      tooltip: 'This is where we fill game technique',
+    },
+    rules: {
+      title: 'RULES',
+      tooltip: 'News feed from Squash Pride',
+    },
     favoritesScreen: {
       title: 'FAVORITES',
       trainings: 'trainings',
@@ -144,6 +153,8 @@ export default {
       title: 'FILTER',
       saveButton: 'CREATE TRAINING',
       reset: 'RESET',
+      startTrainingTooltip: 'Select types of strikes and the application will generate a ready-made workout for you from 4 exercises',
+      createTrainingTooltip: 'Choose exercises you like and create your own training',
     },
     peopleAccordion: {
       title: 'NUMBER OF PLAYERS',

@@ -6,6 +6,7 @@ import {Dimensions} from 'react-native';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {FilterFormType} from '../../../bus/training/types';
 import CustomButton from '../CustomButton';
+import TooltipModal from "../TooltipModal";
 
 type FilterModalProps = {
   visible: boolean;

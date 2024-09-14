@@ -6,9 +6,16 @@ import CustomButton from "../CustomButton";
 import React, {useState} from "react";
 import {perfectSize} from "../../../tools/helpers/perfectSize";
 import Indicator from "../Indicator";
+import {useCustomTranslation} from "../../../tools/hooks/useTranslation";
 
-const TooltipModal = () => {
+const TooltipModal = ({tooltip}) => {
     const [visible, setVisible] = useState(true);
+
+    const {t} = useCustomTranslation();
+
+    const onPressButton = () => {
+        setVisible(false);
+    };
 
     return (
         visible && (
@@ -20,17 +27,12 @@ const TooltipModal = () => {
                     width={'100%'}
                     height={perfectSize(150)}
                     borderRadius={30}
-                    bgColor="#131517"
-                    style={styles.nextIconBg}>
-                    <Indicator
-                        items={[{title:'',done:false},{title:'',done:false},{title:'',done:false},{title:'',done:false}]}
-                        selected={1}
-                        length={4}
-                        space="4xl"
-                    />
-                    <Text variant="primary" fontSize={30}>Tooltip</Text>
+                    style={styles.tooltipBg}>
+                    <Text variant="primary" fontSize={20} style={styles.text}>{tooltip}</Text>
                     <CustomButton
-                        title="Понятно"
+                        onPress={onPressButton}
+                        title={t('public.default.clear')}
+                        bgColor="#25282D"
                     />
                 </Center>
             </TouchableOpacity>
@@ -42,12 +44,15 @@ const styles = StyleSheet.create({
         width: '100%',
         position: "absolute",
         top: 10,
+        zIndex: 10,
     },
-    nextIconBg: {
-        // backgroundColor: '#f7ab39',
-        backgroundColor: 'black',
-
+    tooltipBg: {
+        backgroundColor: "#131517",
+        padding: 20,
     },
+    text: {
+        paddingBottom: 20,
+    }
 
 });
 

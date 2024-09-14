@@ -9,7 +9,6 @@ import {getTechniques} from "../../training/thunk/techniques";
 export const extraReducers = (builder: ActionReducerMapBuilder<InstructionState>,) => {
     builder.addMatcher(isAnyOf(getInstruction.fulfilled), (state, action) => {
         state.instructions = action.payload;
-        console.log('extraReducers ', action.payload);
     });
     builder.addMatcher(
         isAnyOf(getInstruction.pending),

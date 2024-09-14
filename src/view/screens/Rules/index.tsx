@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {ArrowLeftIcon, Text} from '@gluestack-ui/themed';
@@ -8,6 +8,8 @@ import {Book} from '../../navigation/book';
 import {Dimensions, FlatList} from 'react-native';
 import Item from '../../components/Item';
 import {useTraining} from '../../../bus/training';
+import TooltipModal from "../../components/TooltipModal";
+import {getTooltipStatus, saveTooltipStatus} from "../../../tools/helpers/tooltipStorage";
 
 const width = Dimensions.get('screen').width;
 
@@ -43,9 +45,22 @@ const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate, goBack} = navigation;
   const {rules} = useTraining();
 
+  const [showTooltip, setShowTooltip] = useState(false);
+
   const goToItem = (e: TItem) => {
     navigate(Book.MediaViewer, {...e});
   };
+
+    useEffect(()=>{
+        const getTooltip = async () => {
+            const isTooltipClear = await getTooltipStatus('Rules');
+            if (isTooltipClear !== true) {
+                setShowTooltip(true);
+                await saveTooltipStatus('Rules', true);
+            }
+        };
+        getTooltip();
+    },[]);
 
   return (
     <ViewContainer
@@ -68,6 +83,7 @@ const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         renderItem={({item}) => <Item item={item} onPress={goToItem} />}
         style={{width, paddingTop: 20, paddingHorizontal: 20}}
       />
+        {showTooltip && <TooltipModal tooltip={t('private.rules.tooltip')}/>}
     </ViewContainer>
   );
 };

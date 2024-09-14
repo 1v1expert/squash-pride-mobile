@@ -35,7 +35,6 @@ export const getExercise = createAsyncThunk<
 
     const {data} = await baseService.get<ExerciseType[]>(paths);
 
-    console.log('data', data);
     return data;
   } catch (e: any) {
     return rejectWithValue(e.response?.data.error || 'Something is wrong');
