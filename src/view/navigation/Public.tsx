@@ -6,6 +6,8 @@ import {PublicStackParamList} from './types';
 import Main from '../screens/Auth/Main';
 import Login from '../screens/Auth/Login';
 import Registration from '../screens/Auth/Registration';
+import ResetPassword from "../screens/Auth/ResetPassword";
+
 
 const Stack = createNativeStackNavigator<PublicStackParamList>();
 
@@ -27,6 +29,11 @@ export const Public: FC = () => {
           name={Book.Registration}
           component={Registration}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+            name={Book.ResetPassword}
+            component={ResetPassword}
+            options={{headerShown: false}}
         />
       </Stack.Group>
     </Stack.Navigator>

@@ -53,6 +53,9 @@ const Rules: FC<HomeScreensStackScreenProps> = ({navigation}) => {
 
     useEffect(()=>{
         const getTooltip = async () => {
+            // note: for only debug! will be fix it later
+            await saveTooltipStatus('Rules', false);
+
             const isTooltipClear = await getTooltipStatus('Rules');
             if (isTooltipClear !== true) {
                 setShowTooltip(true);

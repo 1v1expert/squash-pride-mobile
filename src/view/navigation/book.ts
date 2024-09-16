@@ -7,6 +7,7 @@ export enum Book {
   Main = 'Main',
   Login = 'Login',
   Registration = 'Registration',
+  ResetPassword = 'ResetPassword',
 
   // PrivateScreen
   // IsPaid = 'IsPaid',

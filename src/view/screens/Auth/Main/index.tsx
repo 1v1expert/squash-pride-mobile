@@ -57,6 +57,10 @@ const Main: FC<PublicStackScreenProps> = ({navigation}) => {
                   title={t('public.mainScreen.loginButton')}
                   onPress={() => navigate(Book.Login)}
                 />
+                <CustomButton
+                    title={t('public.mainScreen.resetPasswordButton')}
+                    onPress={() => navigate(Book.ResetPassword)}
+                />
               </VStack>
               {/* <HStack alignItems="center" justifyContent="space-around">
                 <CustomButton width={50} height={50} mainIcon={GoogleIcon} />

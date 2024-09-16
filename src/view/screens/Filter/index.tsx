@@ -1,10 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
-import {
-  ArrowLeftIcon, VStack,
-  //  VStack
-} from '@gluestack-ui/themed';
+import {ArrowLeftIcon,} from '@gluestack-ui/themed';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {FilterScreenProps} from '../../navigation/types';
 
@@ -14,7 +11,6 @@ import FilterForm from '../../forms/FilterForm';
 import {FilterFormType} from '../../../bus/training/types';
 import TooltipModal from "../../components/TooltipModal";
 import {getTooltipStatus, saveTooltipStatus} from "../../../tools/helpers/tooltipStorage";
-import {boolean} from "yup";
 // import {Dimensions} from 'react-native';
 // const width = Dimensions.get('screen').width;
 
@@ -73,10 +69,13 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
 
   useEffect(()=>{
       const getTooltip = async () => {
+          // note: for only debug! will be fix it later
+          await saveTooltipStatus(location, false);
+
           const isTooltipClear = await getTooltipStatus(location);
           if (isTooltipClear !== true) {
               setShowTooltip(true);
-              await saveTooltipStatus(location, true);
+              await saveTooltipStatus(location, false);
           }
       };
       getTooltip();

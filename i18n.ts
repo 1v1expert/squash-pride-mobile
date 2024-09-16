@@ -6,17 +6,17 @@ import ru from './src/languages/ru';
 // utils
 import {languageDetectorPlugin} from './src/utils/languageDetectorPlugin';
 
-export const defaultLanguage = 'en';
+export const defaultLanguage = 'ru';
 
 export const defaultNamespace = 'translation';
 
 export const resources = {
-  // ru: {
-  //   [defaultNamespace]: ru,
-  // },
-  en: {
-    [defaultNamespace]: en,
+  ru: {
+    [defaultNamespace]: ru,
   },
+  // en: {
+  //   [defaultNamespace]: en,
+  // },
 };
 i18n
   .use(initReactI18next)

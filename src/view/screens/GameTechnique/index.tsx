@@ -53,6 +53,9 @@ const GameTechnique: FC<HomeScreensStackScreenProps> = ({navigation}) => {
 
     useEffect(()=>{
         const getTooltip = async () => {
+            // note: for only debug! will be fix it later
+            await saveTooltipStatus('GameTechnique', false);
+
             const isTooltipClear = await getTooltipStatus('GameTechnique');
             if (isTooltipClear !== true) {
                 setShowTooltip(true);

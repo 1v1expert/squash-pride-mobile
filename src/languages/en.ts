@@ -1,6 +1,10 @@
 export default {
   public: {
-    mainScreen: {registrationButton: 'REGISTER', loginButton: 'LOGIN'},
+    mainScreen: {
+      registrationButton: 'REGISTER',
+      loginButton: 'LOGIN',
+      resetPasswordButton: 'Reset password',
+    },
     loginScreen: {
       loginInputPlaceholder: 'E-mail',
       passInputPlaceholder: 'Password',
@@ -24,6 +28,11 @@ export default {
       requiredError: 'Please fill in to continue',
       feedbackTitle: 'Your problem',
       feedbackDescription: 'Short description',
+    },
+    resetPasswordScreen: {
+      title: 'Please fill in your email to reset password',
+      button: 'Reset password',
+      resetPasswordPlaceholder: 'E-mail',
     },
     default: {
       clear: 'Clear',
@@ -88,7 +97,7 @@ export default {
       tooltip: 'This is where we fill game technique',
     },
     rules: {
-      title: 'RULES',
+      title: 'NEWS',
       tooltip: 'News feed from Squash Pride',
     },
     favoritesScreen: {

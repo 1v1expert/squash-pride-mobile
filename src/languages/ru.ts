@@ -1,6 +1,10 @@
 export default {
   public: {
-    mainScreen: {registrationButton: 'РЕГИСТРАЦИЯ', loginButton: 'АВТОРИЗАЦИЯ'},
+    mainScreen: {
+      registrationButton: 'РЕГИСТРАЦИЯ',
+      loginButton: 'АВТОРИЗАЦИЯ',
+      resetPasswordButton: 'Сбросить пароль',
+    },
     loginScreen: {
       loginInputPlaceholder: 'Почта',
       passInputPlaceholder: 'Пароль',
@@ -24,6 +28,11 @@ export default {
       requiredError: 'Заполните, чтобы продолжить',
       feedbackTitle: 'Ваша проблема',
       feedbackDescription: 'Коротко опишите проблему',
+    },
+    resetPasswordScreen: {
+      title: 'Введите ваш E-mail для сброса пароля',
+      button: 'Сбросить пароль',
+      resetPasswordPlaceholder: 'E-mail',
     },
     default: {
       clear: 'Понятно',
@@ -88,7 +97,7 @@ export default {
       tooltip: 'Сюда мы наполняем технику',
     },
     rules: {
-      title: 'ПРАВИЛА',
+      title: 'НОВОСТИ',
       tooltip: 'Новостная лента от Squash Pride',
     },
 
