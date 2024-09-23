@@ -348,7 +348,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
       ) : (
         <Spinner size="large" pt={20} color="#F7AB39" />
       )}
-      <TrainingFinishModal visible={finishModal} setVisible={setFinishModal} />
+      {/*<TrainingFinishModal visible={finishModal} setVisible={setFinishModal} />*/}
     </ViewContainer>
   );
 };
