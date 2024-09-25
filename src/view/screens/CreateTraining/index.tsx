@@ -33,6 +33,7 @@ import {fontSize} from '../../../assets/fontsSize';
 import {useNavigation} from '@react-navigation/native';
 import FilterModal from '../../components/FilterModal';
 import FilterIcon from '../../../assets/svg/filter';
+import {useCalendar} from "../../../bus/calendar";
 
 const width = Dimensions.get('screen').width;
 
@@ -56,6 +57,9 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
   const [state, setState] = useState(false);
   const [modal, setModal] = useState(false);
   const from = route.params.from;
+  const {addEvent, selected} = useCalendar();
+
+  const mainStack = !stackOfExercises.length ? exercises : stackOfExercises;
 
   const goToItem = (item: ExerciseType) => {
     navigate(Book.ExerciseMediaViewer, {item});
@@ -83,6 +87,22 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
     setFilters(values);
     fetch(values);
   };
+
+  const onSubmit = () => {
+    if (from) {
+      const trainings = mainStack.map(e => {
+        return {
+          group: (e.groups && e.groups[0]) || e.group || '',
+          exercise: e.uid,
+        };
+      });
+      const event = {start_at: selected.toString(), trainings};
+      addEvent(event);
+      navigate(Book.Calendar);
+    } else {
+      navigate(Book.StartTraining, {from});
+    }
+  }
 
   return (
     <>
@@ -188,7 +208,7 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
                   ? t('private.createTraining.scheduleButton')
                   : t('private.createTraining.startButton')
               }
-              onPress={() => navigate(Book.StartTraining, {from})}
+              onPress={onSubmit}
               disabled={!stackOfExercises.length || stackOfExercises.length < 4}
             />
           </HStack>
