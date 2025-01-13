@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface reactNativeAppTests : XCTestCase
+@interface squashPrideTests : XCTestCase
 
 @end
 
-@implementation reactNativeAppTests
+@implementation squashPrideTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

@@ -1,13 +1,14 @@
 {
-  "name": "reactNativeApp",
-  "version": "1.0.0",
+  "name": "squashPride",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start --reset-cache",
-    "test": "jest"
+    "test": "jest",
+    "bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/"
   },
   "dependencies": {
     "@expo/html-elements": "latest",
