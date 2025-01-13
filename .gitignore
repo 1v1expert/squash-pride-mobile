@@ -66,3 +66,7 @@ yarn-error.log
 /coverage
 
 .env
+*.bundle
+*.zip
+*.pem
+*.jar

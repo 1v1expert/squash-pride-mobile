@@ -65,10 +65,10 @@ export default {
     },
     homeScreen: {
       title: 'Добро пожаловать,',
-      startTraining: 'НАЧАТЬ ГОТОВУЮ ТРЕНИРОВКУ',
+      startTraining: 'ГОТОВЫЕ ТРЕНИРОВКИ',
       createTraining: 'СОЗДАТЬ СВОЮ ТРЕНИРОВКУ',
       gameTechnique: 'ТЕХНИКА ИГРЫ',
-      rules: 'НОВОСТИ',
+      rules: 'ФИЗИЧЕСКАЯ ПОДГОТОВКА',
     },
     startTrainingScreen: {
       title: 'ГОТОВАЯ ТРЕНИРОВКА',
