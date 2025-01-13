@@ -20,6 +20,7 @@ import {backgroundColor} from "react-native-calendars/src/style";
 import {useCustomTranslation} from "../../../tools/hooks/useTranslation";
 
 const width = Dimensions.get('screen').width;
+const heigth = Dimensions.get('screen').height;
 
 type PlayerProps = {
   item: ExerciseType;
