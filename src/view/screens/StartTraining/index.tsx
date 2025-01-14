@@ -18,7 +18,7 @@ import {
   Dimensions,
   FlatList,
   NativeScrollEvent,
-  NativeSyntheticEvent,
+  NativeSyntheticEvent, Platform,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -92,7 +92,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
     completedTrainings,
   } = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
-  const {setTimeUnit} = useCalendar();
+  const {setTimeUnit, addEvent, selected} = useCalendar();
   const [width] = useState(Dimensions.get('screen').width);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -121,7 +121,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const scrollToIndex = async (index: number) => {
     scrollRef.current?.scrollToIndex({index});
   };
-  console.log('completedTrainings', completedTrainings);
+
   const onLikePress = () => {
     !favorite
       ? addFavoriteItem({
@@ -146,6 +146,18 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           type: 'training',
           training: mainStack,
         });
+  };
+
+  const onSubmit = () => {
+      const trainings = mainStack.map(e => {
+        return {
+          group: (e.groups && e.groups[0]) || e.group || '',
+          exercise: e.uid,
+        };
+      });
+      const event = {start_at: selected.toString(), trainings};
+      addEvent(event);
+      navigate(Book.Calendar);
   };
 
   useEffect(() => {
@@ -348,7 +360,21 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
       ) : (
         <Spinner size="large" pt={20} color="#F7AB39" />
       )}
-      <TrainingFinishModal visible={finishModal} setVisible={setFinishModal} />
+      {/*<VStack*/}
+      {/*    pb={Platform.OS === 'ios' ? bottom : 15}*/}
+      {/*    width="$full"*/}
+      {/*    bgColor="#1B1E20"*/}
+      {/*    paddingHorizontal={30}*/}
+      {/*    space="xs"*/}
+      {/*    paddingVertical={10}>*/}
+      {/*  <HStack width="$full">*/}
+      {/*    <CustomButton*/}
+      {/*        title={t('private.createTraining.scheduleButton')}*/}
+      {/*        onPress={onSubmit}*/}
+      {/*    />*/}
+      {/*  </HStack>*/}
+      {/*</VStack>*/}
+      {/*<TrainingFinishModal visible={finishModal} setVisible={setFinishModal} />*/}
     </ViewContainer>
   );
 };

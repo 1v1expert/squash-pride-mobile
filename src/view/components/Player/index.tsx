@@ -17,8 +17,10 @@ import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {backgroundColor} from "react-native-calendars/src/style";
+import {useCustomTranslation} from "../../../tools/hooks/useTranslation";
 
 const width = Dimensions.get('screen').width;
+const heigth = Dimensions.get('screen').height;
 
 type PlayerProps = {
   item: ExerciseType;
@@ -45,6 +47,7 @@ const Player = ({
   setFavorite,
 }: PlayerProps) => {
   const videoPlayerRef = useRef<VideoPlayer>(null);
+  const {t} = useCustomTranslation();
   const [videoStarted, setVideoStarted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
@@ -158,14 +161,14 @@ const Player = ({
           videoEnded && <TouchableOpacity
             hitSlop={10}
             style={styles.nextIcon}
-            onPress={() => setFavorite && setFavorite(!favorite)}>
+            onPress={() => position !== length - 1 && setPosition(position+1)}>
           <Center
               width={perfectSize(400)}
               height={perfectSize(50)}
               borderRadius={30}
               bgColor="#131517"
               style={styles.nextIconBg}>
-            <Text variant="primary" fontSize={30}>Swipe to the next training >></Text>
+            <Text variant="primary" fontSize={30}>{t('private.startTrainingScreen.nextVideo')+' >>'}</Text>
           </Center>
         </TouchableOpacity>}
         {loader && (

@@ -44,7 +44,7 @@ export const Private: FC = () => {
         const completed = await load('trainings');
         !completedTrainings.length && completed && addDoneTraining(completed);
       });
-      resetStack();
+      // resetStack();
     };
     init();
   }, []);

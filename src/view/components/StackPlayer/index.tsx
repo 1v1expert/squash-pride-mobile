@@ -19,7 +19,7 @@ import SystemNavigationBar from 'react-native-system-navigation-bar';
 import VideoPlayer from 'react-native-video-player';
 import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
-import Next from '../../../assets/svg/next';
+// import Next from '../../../assets/svg/next';
 import Prev from '../../../assets/svg/prev';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
@@ -192,7 +192,7 @@ const StackPlayer = ({
           onPress={next}
           disabled={position === length - 1}
           style={styles.goToNext}>
-          <Next color={position === length - 1 ? '#fff' : '#F7A936'} />
+          {/*<Next color={position === length - 1 ? '#fff' : '#F7A936'} />*/}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={prev}

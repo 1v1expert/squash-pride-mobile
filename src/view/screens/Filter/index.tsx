@@ -93,7 +93,7 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
         />
       }>
       <FilterForm onPress={submit} required={!!location} />
-      {showTooltip && <TooltipModal tooltip={tooltip}/>}
+      {/*{showTooltip && <TooltipModal tooltip={tooltip}/>}*/}
     </ViewContainer>
   );
 };

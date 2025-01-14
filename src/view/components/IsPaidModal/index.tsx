@@ -37,7 +37,7 @@ const IsPaidModal = () => {
             fetchRules();
             fetchTechniques();
           });
-          resetStack();
+          // resetStack();
         };
         init();
       }

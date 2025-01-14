@@ -16,12 +16,14 @@ type TypeOfTrainingProps = {
   name: string;
   defaultValue?: string;
   groupLength: number;
+    isOneGroup?: boolean;
 };
 const TypeOfTraining = ({
   type,
   name,
   defaultValue,
   groupLength,
+    isOneGroup,
 }: TypeOfTrainingProps) => {
   const imageWidth = width * 0.425;
   const imageHeight = height * 0.25;
@@ -36,16 +38,18 @@ const TypeOfTraining = ({
       render={({field: {onChange, value}}) => {
         const selected = value.includes(type);
         const chooseGroup = (group: string) => {
+            if (isOneGroup && value.length > 0) return;
           if (value.length < groupLength) {
             onChange([...value, group]);
           }
-          if (value.includes(group)) {
-              const newValue = value.filter((value) => value !== group);
-              onChange(newValue);
-          }
+          // if (value.includes(group)) {
+          //     const newValue = value.filter((value) => value !== group);
+          //     onChange(newValue);
+          // }
         };
         const count = value.reduce((acc: number, e: string) => {
-          if (e === type) {
+          if (isOneGroup) return;
+            if (e === type) {
             acc += 1;
           }
           return acc;

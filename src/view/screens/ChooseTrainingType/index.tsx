@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {
@@ -52,12 +52,13 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
       group: [],
     },
   });
-  const {handleSubmit, watch} = methods;
+  const {handleSubmit, watch, getValues, reset} = methods;
   const group = watch('group');
 
   const onPress = async (values: ChooseTrainingTypeForm) => {
     setFilters(values);
-    resetStack();
+    // resetStack();
+    reset();
 
     switch (location) {
       case Book.StartTraining: {
@@ -101,6 +102,13 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
       }
     }
   };
+
+  useEffect(() => {
+    if (location === 'CreateTrainingWithoutTab' && group.length > 0) {
+      onPress(getValues());
+    }
+  },[group]);
+
   return (
     <ViewContainer
       title={t('private.createTraining.title')}
@@ -113,18 +121,21 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
         />
       }
       rightHeaderButton={
-        <CustomButton
-          iconLeft={isLoading ? Loader : CheckIcon}
-          bgColor="#25282D"
-          onPress={handleSubmit(onPress)}
-          width={50}
-          disabled={
-            isLoading ||
-            (location === 'CreateTrainingWithoutTab'
-              ? group.length < 1
-              : groupLength !== group.length)
-          }
-        />
+        location != 'CreateTrainingWithoutTab' && (
+            <CustomButton
+                iconLeft={isLoading ? Loader : CheckIcon}
+                bgColor="#25282D"
+                onPress={handleSubmit(onPress)}
+                width={50}
+                disabled={
+                  isLoading ||
+                  (location === 'CreateTrainingWithoutTab'
+                      ? group.length < 1
+                      : groupLength !== group.length)
+                }
+            />
+        )
+
       }>
       <VStack flex={1} width={width} alignItems="center">
         <FormProvider {...methods}>
@@ -140,6 +151,7 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
                   key={i}
                   name="group"
                   groupLength={groupLength}
+                  isOneGroup={location === 'CreateTrainingWithoutTab' ? true : false}
                 />
               ))}
             </HStack>
