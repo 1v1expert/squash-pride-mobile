@@ -70,7 +70,7 @@ const StackPlayer = ({
   }, []);
 
   useEffect(() => {
-    visible && Orientation.lockToLandscape();
+    // visible && Orientation.lockToLandscape();
   }, [visible]);
 
   useEffect(() => {
@@ -85,6 +85,7 @@ const StackPlayer = ({
   }, [currentTime, videoStarted]);
 
   const closeModal = () => {
+    console.log('test');
     SystemNavigationBar.fullScreen(false).then(() => {
       if (videoFullScreenPlayerRef && videoFullScreenPlayerRef.current) {
         const {
@@ -113,7 +114,7 @@ const StackPlayer = ({
       <VStack
         flex={1}
         width={'$full'}
-        alignItems="center"
+        //alignItems="center"
         justifyContent="center"
         bgColor="#393A40">
         {item && (
