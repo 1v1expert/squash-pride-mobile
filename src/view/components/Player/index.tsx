@@ -58,6 +58,7 @@ const Player = ({
     ? item.video
     : `https://internal.squash-pride.ru/api/media/${item.video}`;
   console.log('uri', uri);
+  console.log('item', item);
 
   useEffect(() => {
     const getThumbnail = async () => {
