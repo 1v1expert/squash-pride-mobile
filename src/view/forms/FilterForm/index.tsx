@@ -1,7 +1,7 @@
 import {HStack, ScrollView, Text, VStack} from '@gluestack-ui/themed';
 import React from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import LevelAccordion from '../../components/LevelAccordion';
+// import LevelAccordion from '../../components/LevelAccordion';
 import PeopleAccordion from '../../components/PeopleAccordion';
 import GroupAccordion from '../../components/GroupAccordion';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -57,7 +57,7 @@ const FilterForm = ({
           width={width}
           space="xl">
           <FormProvider {...methods}>
-            <LevelAccordion name="level" error={errors.level} />
+            {/*<LevelAccordion name="level" error={errors.level} />*/}
             <PeopleAccordion name="players" error={errors.players} />
             {withGroup && (
               <GroupAccordion

@@ -19,7 +19,7 @@ import SystemNavigationBar from 'react-native-system-navigation-bar';
 import VideoPlayer from 'react-native-video-player';
 import {images} from '../../../assets';
 import {ExerciseType} from '../../../bus/training/types';
-// import Next from '../../../assets/svg/next';
+import Next from '../../../assets/svg/next';
 import Prev from '../../../assets/svg/prev';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
@@ -85,7 +85,6 @@ const StackPlayer = ({
   }, [currentTime, videoStarted]);
 
   const closeModal = () => {
-    console.log('test');
     SystemNavigationBar.fullScreen(false).then(() => {
       if (videoFullScreenPlayerRef && videoFullScreenPlayerRef.current) {
         const {
@@ -147,7 +146,7 @@ const StackPlayer = ({
                 paddingRight: 100,
                 paddingLeft: 50,
                 backgroundColor: 'transparent',
-                bottom: 10,
+                bottom: 50,
               },
               playArrow: {color: '#FBC56E'},
               seekBarProgress: {backgroundColor: '#FBC56E'},
@@ -169,12 +168,12 @@ const StackPlayer = ({
           />
         </TouchableOpacity>
         {loader && (
-          <Box position="absolute">
+          <Box position="absolute" style={styles.loader}>
             <Spinner color="#F7AB39" />
           </Box>
         )}
         {titleIsVisible && item && (
-          <Center position="absolute" bottom={20} left={50}>
+          <Center position="absolute" bottom={70} left={70}>
             <Text variant="primary" fontSize={fontSize.text}>
               {item.title}
             </Text>
@@ -193,7 +192,7 @@ const StackPlayer = ({
           onPress={next}
           disabled={position === length - 1}
           style={styles.goToNext}>
-          {/*<Next color={position === length - 1 ? '#fff' : '#F7A936'} />*/}
+          <Next color={position === length - 1 ? '#fff' : '#F7A936'} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={prev}
@@ -215,24 +214,27 @@ const styles = StyleSheet.create({
   },
   defaultScreenButton: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 35,
     right: 50,
   },
   goToNext: {
     position: 'absolute',
     // bottom: '50%',
-    right: 50,
+    right: 20,
   },
   goToPrev: {
     position: 'absolute',
     // bottom: '50%',
-    left: 50,
+    left: 20,
   },
   heartIcon: {
     position: 'absolute',
     top: perfectSize(20),
     right: 50,
   },
+  loader: {
+    right: '50%',
+  }
 });
 
 export default StackPlayer;
