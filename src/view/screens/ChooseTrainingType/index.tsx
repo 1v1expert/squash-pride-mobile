@@ -34,10 +34,12 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
   const {
     groups,
     fetchExercise,
+    fetchPreparedTrainings,
     filters,
     addToStack,
     resetStack,
     setExercises,
+    setPreparedTrainings,
     setFilters,
     isLoading,
   } = useTraining();
@@ -61,6 +63,17 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
     reset();
 
     switch (location) {
+      case Book.PreparedTrainings: {
+        const res = await fetchPreparedTrainings(
+            {
+              players: filters.players,
+              group: filters.group,
+            }
+        );
+        setPreparedTrainings(res);
+        navigate(Book.PreparedTrainings);
+        break;
+      }
       case Book.StartTraining: {
         const training = values.group.map(async e => {
           const res = await fetchExercise({
@@ -104,7 +117,7 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
   };
 
   useEffect(() => {
-    if (location === 'CreateTrainingWithoutTab' && group.length > 0) {
+    if (group.length > 0) {
       onPress(getValues());
     }
   },[group]);
@@ -119,23 +132,6 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
           onPress={goBack}
           width={50}
         />
-      }
-      rightHeaderButton={
-        location != 'CreateTrainingWithoutTab' && (
-            <CustomButton
-                iconLeft={isLoading ? Loader : CheckIcon}
-                bgColor="#25282D"
-                onPress={handleSubmit(onPress)}
-                width={50}
-                disabled={
-                  isLoading ||
-                  (location === 'CreateTrainingWithoutTab'
-                      ? group.length < 1
-                      : groupLength !== group.length)
-                }
-            />
-        )
-
       }>
       <VStack flex={1} width={width} alignItems="center">
         <FormProvider {...methods}>
@@ -151,7 +147,7 @@ const ChooseTrainingType: FC<ChooseTrainingTypeScreenProps> = ({
                   key={i}
                   name="group"
                   groupLength={groupLength}
-                  isOneGroup={location === 'CreateTrainingWithoutTab' ? true : false}
+                  isOneGroup={true}
                 />
               ))}
             </HStack>

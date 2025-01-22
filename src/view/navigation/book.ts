@@ -26,6 +26,7 @@ export enum Book {
   //HomeScreens
   Home = 'Home',
   StartTraining = 'StartTraining',
+  PreparedTrainings = 'PreparedTrainings',
   CreateTraining = 'CreateTraining',
   GameTechnique = 'GameTechnique',
   Rules = 'Rules',

@@ -77,7 +77,7 @@ const GameTechnique: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         />
       }>
       {!techniques.length && (
-        <Text variant="primary" pt={20}>
+        <Text pt={20}>
           No data
         </Text>
       )}

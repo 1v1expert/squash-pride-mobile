@@ -164,6 +164,7 @@ export default {
       saveButton: 'CREATE TRAINING',
       reset: 'RESET',
       startTrainingTooltip: 'Select types of strikes and the application will generate a ready-made workout for you from 4 exercises',
+      preparedTrainingTooltip: 'Choose prepared exercises you like and create your own training',
       createTrainingTooltip: 'Choose exercises you like and create your own training',
     },
     peopleAccordion: {

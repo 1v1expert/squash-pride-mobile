@@ -2,12 +2,14 @@ import {trainingActions} from './slice';
 
 // Tools
 import {useSelector, useDispatch} from '../../tools/hooks';
-import {ExerciseType, FavoriteType, FiltersType, TrainingType} from './types';
+import {ExerciseType, FavoriteType, FiltersType, PreparedTrainingType, TrainingType} from './types';
 import {getGroupData} from './thunk/group';
 import {getExercise} from './thunk/exercise';
 import {getRules} from './thunk/rules';
 import {getTechniques} from './thunk/techniques';
 import {useUser} from '../user';
+import PreparedTrainings from "../../view/screens/PreparedTrainings";
+import {getPreparedTrainings} from "./thunk/prepared-training";
 
 export const useTraining = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,7 @@ export const useTraining = () => {
 
   const groups = useSelector(({training}) => training.group);
   const exercises = useSelector(({training}) => training.exercises);
+  const preparedTrainings = useSelector(({training}) => training.preparedTrainings);
   const rules = useSelector(({training}) => training.rules);
   const techniques = useSelector(({training}) => training.techniques);
   const isLoading = useSelector(({training}) => training.isLoading);
@@ -67,6 +70,9 @@ export const useTraining = () => {
   const setExercises = (state: ExerciseType[]) => {
     dispatch(trainingActions.setExercises(state));
   };
+  const setPreparedTrainings = (state: PreparedTrainingType[]) => {
+    dispatch(trainingActions.setPreparedTrainings(state));
+  };
   const addToStack = (state: ExerciseType | ExerciseType[]) => {
     dispatch(trainingActions.addToStack(state));
   };
@@ -94,11 +100,14 @@ export const useTraining = () => {
   const fetchRules = async () => tokenRefresh(() => dispatch(getRules()));
   const fetchTechniques = async () =>
     tokenRefresh(() => dispatch(getTechniques()));
+  const fetchPreparedTrainings = async (data?: FiltersType): Promise<PreparedTrainingType[]> =>
+      tokenRefresh(() => dispatch(getPreparedTrainings(data)).unwrap());
 
   return {
     groups,
     filters,
     exercises,
+    preparedTrainings,
     rules,
     techniques,
     isLoading,
@@ -107,6 +116,7 @@ export const useTraining = () => {
     completedTrainings,
     setFilters,
     setExercises,
+    setPreparedTrainings,
     addToStack,
     removeFromStack,
     resetStack,
@@ -114,6 +124,7 @@ export const useTraining = () => {
     fetchTechniques,
     fetchExercise,
     fetchGroup,
+    fetchPreparedTrainings,
     resetExercises,
     addFavoriteItem,
     removeFavoriteItem,
