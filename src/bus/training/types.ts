@@ -70,12 +70,14 @@ export type TrainingState = {
   rules: TItem[];
   favorites: FavoriteType[];
   trainings: any[];
+  preparedTrainings: PreparedTrainingType[];
 };
 export type GroupData = {
   uid: string;
   name: string;
   description: string;
 };
+
 export type ExerciseType = {
   uid: string;
   video: string;
@@ -86,6 +88,18 @@ export type ExerciseType = {
   description: string;
   title: string;
   ru_description: string;
+};
+
+export type PreparedTrainingType = {
+  uid: string;
+  video: string;
+  group?: string;
+  weight: number;
+  players: number;
+  description: string;
+  title: string;
+  ru_description: string;
+  en_description: string;
 };
 
 // Contracts

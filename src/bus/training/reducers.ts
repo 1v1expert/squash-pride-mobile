@@ -170,3 +170,14 @@ export const setExercises: types.BaseContract<types.ExerciseType[]> = (
     exercises: action.payload,
   };
 };
+
+export const setPreparedTrainings: types.BaseContract<types.PreparedTrainingType[]> = (
+    state,
+    action,
+) => {
+  return {
+    ...state,
+    preparedTrainings: action.payload,
+  };
+};
+

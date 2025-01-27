@@ -9,8 +9,8 @@ import {useTraining} from '../../../bus/training';
 import {Book} from '../../navigation/book';
 import FilterForm from '../../forms/FilterForm';
 import {FilterFormType} from '../../../bus/training/types';
-import TooltipModal from "../../components/TooltipModal";
-import {getTooltipStatus, saveTooltipStatus} from "../../../tools/helpers/tooltipStorage";
+// import TooltipModal from "../../components/TooltipModal";
+// import {getTooltipStatus, saveTooltipStatus} from "../../../tools/helpers/tooltipStorage";
 // import {Dimensions} from 'react-native';
 // const width = Dimensions.get('screen').width;
 
@@ -21,20 +21,24 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   } = useTraining();
   const {t} = useCustomTranslation();
   const {goBack, navigate} = navigation;
-  const location = route.params?.location;
-  const from = route.params?.from;
-  const tooltip = location === 'StartTraining'
-      ? t('private.filter.startTrainingTooltip')
-      : t('private.filter.createTrainingTooltip');
+  const location = route.params?.location || "Home";
+  // const from = route.params?.from;
+  // const isPreparedTrainings = location === 'PreparedTrainings';
+  // const tooltip = isPreparedTrainings
+  //     ? t('private.filter.preparedTrainingTooltip')
+  //     : t('private.filter.createTrainingTooltip');
 
-  const [showTooltip, setShowTooltip] = useState(false);
+  // const [showTooltip, setShowTooltip] = useState(false);
 
   const submit = (values: FilterFormType) => {
     setFilters(values);
-    navigate(Book.ChooseTrainingType, {
-      from,
-      location,
-    });
+
+    // navigate(Book.ChooseTrainingType, {
+    //   from,
+    //   location,
+    // });
+
+      navigate(Book.ChooseTrainingType, {location: 'PreparedTrainings'});
 
     // switch (location) {
     // case 'StartTraining': {
@@ -67,19 +71,18 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
     // }
   };
 
-  useEffect(()=>{
-      const getTooltip = async () => {
-          // note: for only debug! will be fix it later
-          await saveTooltipStatus(location, false);
-
-          const isTooltipClear = await getTooltipStatus(location);
-          if (isTooltipClear !== true) {
-              setShowTooltip(true);
-              await saveTooltipStatus(location, false);
-          }
-      };
-      getTooltip();
-  },[]);
+  // useEffect(()=>{
+  //     const getTooltip = async () => {
+  //         await saveTooltipStatus(location, false);
+  //
+  //         const isTooltipClear = await getTooltipStatus(location);
+  //         if (isTooltipClear !== true) {
+  //             setShowTooltip(true);
+  //             await saveTooltipStatus(location, false);
+  //         }
+  //     };
+  //     getTooltip();
+  // },[]);
 
   return (
     <ViewContainer

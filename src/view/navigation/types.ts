@@ -33,6 +33,7 @@ export type HomeScreensStackParamList = {
   Home: undefined;
   StartTraining: {from?: keyof TabNavigatorParamList};
   CreateTraining: {from?: keyof TabNavigatorParamList};
+  PreparedTrainings: undefined;
   GameTechnique: undefined;
   Rules: undefined;
   MediaViewer: TItem;
