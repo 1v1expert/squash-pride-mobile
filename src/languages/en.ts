@@ -68,7 +68,10 @@ export default {
       startTraining: 'START READY TRAINING',
       createTraining: 'CREATE YOUR OWN TRAINING',
       gameTechnique: 'GAME TECHNIQUE',
-      rules: 'NEWS',
+      rules: 'PHYSICAL TRAINING',
+    },
+    preparedTraining: {
+      title: 'PREPARED TRAINING',
     },
     startTrainingScreen: {
       title: 'READY TRAINING',
@@ -98,8 +101,8 @@ export default {
       tooltip: 'This is where we fill game technique',
     },
     rules: {
-      title: 'NEWS',
-      tooltip: 'News feed from Squash Pride',
+      title: 'PHYSICAL TRAINING',
+      tooltip: 'Physical training from Squash Pride',
     },
     favoritesScreen: {
       title: 'FAVORITES',

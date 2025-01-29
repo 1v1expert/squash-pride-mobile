@@ -20,9 +20,22 @@ const PreparedTrainings: FC<HomeScreensStackScreenProps> = ({navigation}) => {
         navigate(Book.MediaViewer, {...e});
     };
 
+    useEffect(()=>{
+        const getPreparedTrainings = async () => {
+            await fetchPreparedTrainings(
+                {
+                    players: filters.players,
+                }
+            ).then(response => {
+                setPreparedTrainings(response);
+            });
+        };
+        getPreparedTrainings();
+    },[])
+
     return (
         <ViewContainer
-            title={t('private.gameTechnique.title')}
+            title={t('private.preparedTraining.title')}
             leftHeaderButton={
                 <CustomButton
                     iconLeft={ArrowLeftIcon}

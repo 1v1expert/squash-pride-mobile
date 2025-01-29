@@ -10,12 +10,12 @@ export const getPreparedTrainings = createAsyncThunk<
 >(preparedTrainingAction.type, async (payload, {rejectWithValue}) => {
   try {
     const currentGroup = payload && payload.group && payload.group[0];
-    const groupPath = currentGroup ? `?group=${currentGroup}` : '';
+    // const groupPath = currentGroup ? `?group=${currentGroup}` : '';
     const playersPath =
       payload && payload.players
-        ? `&players=${payload.players}`
+        ? `?players=${payload.players}`
         : '';
-    const paths = `/training/${groupPath + playersPath}`;
+    const paths = `/training/${playersPath}`;
     console.log('paths', paths)
 
     const {data} = await baseService.get<PreparedTrainingType[]>(paths);

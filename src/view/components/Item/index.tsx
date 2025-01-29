@@ -15,8 +15,8 @@ type ItemProps = {
 };
 const Item = ({item, onPress}: ItemProps) => {
   const {i18n} = useCustomTranslation();
-  const {title, ru_description, en_description, video, uid} = item;
-  const description = i18n.language === 'ru' ? ru_description : en_description;
+  const {title, ru_description, description, video, uid} = item;
+  let descriptionText = i18n.language === 'ru' ? ru_description : description;
 
   const [thumbnail, setThumbnail] = useState<string>();
 
@@ -28,7 +28,6 @@ const Item = ({item, onPress}: ItemProps) => {
         format: 'jpeg',
         cacheName: uid,
       }).then(response => {
-        console.log({response});
         setThumbnail(response.path);
       });
     };
@@ -83,7 +82,7 @@ const Item = ({item, onPress}: ItemProps) => {
               lineHeight={12}
               width="70%"
               numberOfLines={3}>
-              {description}
+              {descriptionText}
             </Text>
           </HStack>
         </VStack>
