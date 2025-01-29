@@ -96,4 +96,7 @@ export type TItem = {
   video: string;
   ru_description: string;
   en_description: string;
+  description: string;
+  height: number;
+  width: number;
 };

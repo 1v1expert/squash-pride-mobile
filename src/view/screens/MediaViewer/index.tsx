@@ -28,14 +28,15 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const {fullscreen, setScreenMode} = useDevice();
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const {i18n} = useCustomTranslation();
-  const {title, ru_description, en_description, video, uid} = route.params;
+  const {title, ru_description, description, video, uid, width, height} = route.params;
   const [videoStarted, setVideoStarted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
   const [portraitWidth] = useState(Dimensions.get('screen').width);
   const [loader, setLoader] = useState(false);
   const [thumbnail, setThumbnail] = useState<string>();
 
-  const description = i18n.language === 'ru' ? ru_description : en_description;
+  const descriptionText = i18n.language === 'ru' ? ru_description : description;
+  const isHorizontal = height > width;
 
   useEffect(() => {
     const getThumbnail = async () => {
@@ -49,6 +50,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
       });
     };
     getThumbnail();
+
   }, [uid, video]);
 
   const openModal = () => {
@@ -59,7 +61,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
       } = videoPlayerRef.current;
       videoPlayerRef.current.pause();
       setCurrentTime(duration * progress);
-      Orientation.lockToLandscape();
+      if (isHorizontal) Orientation.lockToLandscape();
       setScreenMode(true);
     }
   };
@@ -101,7 +103,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                   },
                 ]}
                 thumbnail={thumbnail ? {uri: thumbnail} : undefined}
-                resizeMode="stretch"
+                //resizeMode="stretch"
                 pauseOnPress
                 disableFullscreen
                 onBuffer={event => setLoader(event.isBuffering)}
@@ -146,7 +148,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                 textAlign="auto"
                 fontSize={fontSize.text}
                 p={20}>
-                {description}
+                {descriptionText}
               </Text>
             </ScrollView>
           </VStack>

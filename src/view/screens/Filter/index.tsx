@@ -17,12 +17,12 @@ import {FilterFormType} from '../../../bus/training/types';
 const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   const {
     setFilters,
-    // fetchExercise
+    fetchExercise
   } = useTraining();
   const {t} = useCustomTranslation();
   const {goBack, navigate} = navigation;
   const location = route.params?.location || "Home";
-  // const from = route.params?.from;
+  const from = route.params?.from;
   // const isPreparedTrainings = location === 'PreparedTrainings';
   // const tooltip = isPreparedTrainings
   //     ? t('private.filter.preparedTrainingTooltip')
@@ -37,8 +37,23 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
     //   from,
     //   location,
     // });
+      switch (location) {
+          case 'PreparedTrainings' : {
+              navigate(Book.PreparedTrainings);
+              break;
+          }
+          case 'CreateTrainingWithoutTab': {
+              navigate(Book.ChooseTrainingType, {
+                  from,
+                  location,
+              });
+              break;
+          }
+          default: {
+              goBack();
+          }
+      }
 
-      navigate(Book.ChooseTrainingType, {location: 'PreparedTrainings'});
 
     // switch (location) {
     // case 'StartTraining': {

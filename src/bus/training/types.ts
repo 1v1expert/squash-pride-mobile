@@ -99,7 +99,6 @@ export type PreparedTrainingType = {
   description: string;
   title: string;
   ru_description: string;
-  en_description: string;
 };
 
 // Contracts

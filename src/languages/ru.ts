@@ -70,6 +70,9 @@ export default {
       gameTechnique: 'ТЕХНИКА ИГРЫ',
       rules: 'ФИЗИЧЕСКАЯ ПОДГОТОВКА',
     },
+    preparedTraining: {
+      title: 'ГОТОВЫЕ ТРЕНИРОВКИ',
+    },
     startTrainingScreen: {
       title: 'ГОТОВАЯ ТРЕНИРОВКА',
       nextVideo: 'Следующая тренировка',
@@ -98,8 +101,8 @@ export default {
       tooltip: 'Сюда мы наполняем технику',
     },
     rules: {
-      title: 'НОВОСТИ',
-      tooltip: 'Новостная лента от Squash Pride',
+      title: 'ФИЗИЧЕСКАЯ ПОДГОТОВКА',
+      tooltip: 'Физическая подготовка от Squash Pride',
     },
 
     favoritesScreen: {
