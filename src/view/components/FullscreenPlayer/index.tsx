@@ -21,6 +21,7 @@ type FullscreenPlayerProps = {
   videoPlayerRef: VideoPlayer | null;
   favorite?: boolean;
   onLikePress?: () => void;
+  isHorizontal?: boolean;
 };
 
 const FullscreenPlayer = ({
@@ -31,6 +32,7 @@ const FullscreenPlayer = ({
   videoPlayerRef,
   favorite,
   onLikePress,
+  isHorizontal
 }: FullscreenPlayerProps) => {
   const [width, setWidth] = useState(Dimensions.get('screen').width);
   const [height, setHeight] = useState(Dimensions.get('screen').height);
@@ -38,6 +40,18 @@ const FullscreenPlayer = ({
   const [loader, setLoader] = useState(false);
 
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
+  console.log('videoFullScreenPlayerRef isHorizontal', isHorizontal);
+  const controlStyles = isHorizontal ? {
+        paddingRight: 100,
+        paddingLeft: 50,
+        backgroundColor: 'transparent',
+        bottom: 10,
+      } : {
+    paddingRight: 50,
+    paddingLeft: 0,
+    backgroundColor: 'transparent',
+    bottom: 80,
+  };
 
   useEffect(() => {
     Dimensions.addEventListener('change', e => {
@@ -107,12 +121,7 @@ const FullscreenPlayer = ({
           onLoad={() => setVideoStarted(prev => !prev)}
           hideControlsOnStart={false}
           customStyles={{
-            controls: {
-              paddingRight: 100,
-              paddingLeft: 50,
-              backgroundColor: 'transparent',
-              bottom: 10,
-            },
+            controls: controlStyles,
             playArrow: {color: '#FBC56E'},
             seekBarProgress: {backgroundColor: '#FBC56E'},
             seekBarKnob: {backgroundColor: '#FBC56E'},
@@ -139,7 +148,7 @@ const FullscreenPlayer = ({
           <Spinner color="#F7AB39" />
         </Box>
       )}
-      <Pressable onPress={closeModal} style={styles.defaultScreenButton}>
+      <Pressable onPress={closeModal} style={isHorizontal ? styles.defaultScreenButtonHorizontal : styles.defaultScreenButtonVertical}>
         <Image
           source={images.fullScreen}
           width={30}
@@ -159,10 +168,15 @@ const styles = StyleSheet.create({
     top: 30,
     left: 50,
   },
-  defaultScreenButton: {
+  defaultScreenButtonHorizontal: {
     position: 'absolute',
     bottom: 20,
     right: 50,
+  },
+  defaultScreenButtonVertical: {
+    position: 'absolute',
+    bottom: 90,
+    right: 10,
   },
   heartIcon: {
     position: 'absolute',

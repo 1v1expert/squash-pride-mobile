@@ -88,6 +88,8 @@ export type ExerciseType = {
   description: string;
   title: string;
   ru_description: string;
+  width: number;
+  height: number;
 };
 
 export type PreparedTrainingType = {

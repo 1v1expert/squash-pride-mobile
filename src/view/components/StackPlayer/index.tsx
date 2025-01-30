@@ -61,6 +61,8 @@ const StackPlayer = ({
     ? item.video
     : `https://internal.squash-pride.ru/api/media/${item.video}`;
 
+  const isHorizontal = item.width > item.height;
+
   const videoFullScreenPlayerRef = useRef<VideoPlayer>(null);
   useEffect(() => {
     Dimensions.addEventListener('change', e => {
@@ -70,7 +72,7 @@ const StackPlayer = ({
   }, []);
 
   useEffect(() => {
-    // visible && Orientation.lockToLandscape();
+    visible && isHorizontal && Orientation.lockToLandscape();
   }, [visible]);
 
   useEffect(() => {
