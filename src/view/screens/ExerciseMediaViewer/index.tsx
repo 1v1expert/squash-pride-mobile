@@ -66,6 +66,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const uri = item.video.includes('https')
     ? item.video
     : `https://internal.squash-pride.ru/api/media/${item.video}`;
+  const isHorizontal = item.width > item.height;
 
   const selected = stackOfExercises.filter(e => e.uid === item?.uid).length > 0;
 
@@ -117,7 +118,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
       } = videoPlayerRef.current;
       videoPlayerRef.current.pause();
       setCurrentTime(duration * progress);
-      Orientation.lockToLandscape();
+      if (isHorizontal) Orientation.lockToLandscape();
       setFullscreen(true);
     }
   };
@@ -157,7 +158,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
               ]}
               thumbnail={thumbnail ? {uri: thumbnail} : undefined}
               onBuffer={event => setLoader(event.isBuffering)}
-              resizeMode="stretch"
+              // resizeMode="stretch"
               pauseOnPress
               disableFullscreen
               onStart={() => {
@@ -259,6 +260,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
         videoPlayerRef={videoPlayerRef.current || null}
         favorite={favorite}
         onLikePress={onLikePress}
+        isHorizontal={isHorizontal}
       />
     </>
   );

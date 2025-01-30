@@ -36,7 +36,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const [thumbnail, setThumbnail] = useState<string>();
 
   const descriptionText = i18n.language === 'ru' ? ru_description : description;
-  const isHorizontal = height > width;
+  const isHorizontal = height < width;
 
   useEffect(() => {
     const getThumbnail = async () => {
@@ -50,7 +50,8 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
       });
     };
     getThumbnail();
-
+    Orientation.lockToPortrait();
+    setScreenMode(false);
   }, [uid, video]);
 
   const openModal = () => {
@@ -160,6 +161,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
         uri={video || ''}
         currentTime={currentTime}
         videoPlayerRef={videoPlayerRef.current || null}
+        isHorizontal={isHorizontal}
       />
     </>
   );
