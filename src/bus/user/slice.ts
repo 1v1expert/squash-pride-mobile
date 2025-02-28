@@ -7,6 +7,7 @@ import {extraReducers} from './thunk';
 const initialState: types.UserState = {
   isAuthorized: false,
   isLoading: false,
+  resetEmail: '',
   user: {
     username: '',
     email: '',

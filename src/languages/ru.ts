@@ -33,6 +33,8 @@ export default {
       title: 'Введите ваш E-mail для сброса пароля',
       button: 'Сбросить пароль',
       resetPasswordPlaceholder: 'E-mail',
+      note: 'Чтобы завершить процесс сброса пароля, нажмите ссылку в письме, которое мы вам отправили.',
+      back: 'Назад',
     },
     default: {
       clear: 'Понятно',
