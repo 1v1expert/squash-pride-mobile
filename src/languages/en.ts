@@ -33,6 +33,8 @@ export default {
       title: 'Please fill in your email to reset password',
       button: 'Reset password',
       resetPasswordPlaceholder: 'E-mail',
+      note: 'To complete the reset password process, please click the link in the email we just sent you',
+      back: 'Back',
     },
     default: {
       clear: 'Clear',

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     Dimensions,
     Image,
@@ -20,6 +20,7 @@ import * as yup from "yup";
 import {Book} from "../../../navigation/book";
 import {useNavigation} from "@react-navigation/native";
 import {PublicStackScreenProps} from "../../../navigation/types";
+import {useUser} from "../../../../bus/user";
 
 const width = Dimensions.get('screen').width;
 
@@ -35,7 +36,9 @@ interface ResetPasswordForm {
 }
 
 const ResetPassword = () => {
+    const {resetPassword} = useUser();
     const {t} = useCustomTranslation();
+    const [isReset, setReset] = useState(false);
     const {replace} = useNavigation<PublicStackScreenProps['navigation']>();
 
     const methods = useForm<ResetPasswordForm>({
@@ -51,15 +54,10 @@ const ResetPassword = () => {
 
     const onPress = async (values: ResetPasswordForm) => {
         try {
-            // await register({
-            //     password: values.password,
-            //     email: values.email.toLocaleLowerCase(),
-            //     first_name: values.firstName,
-            //     birth_year: new Date().getFullYear() - values.age,
-            //     gender: values.gender,
-            //     country: values.country,
-            // });
-            replace(Book.Login);
+            await resetPassword({
+                email: values.email.toLocaleLowerCase(),
+            });
+            setReset(true);
         } catch (e: any) {
             console.log('Register error', e)
             e.email && setError('email', {message: e.email});
@@ -81,14 +79,29 @@ const ResetPassword = () => {
                             }}
                             alt=""
                         />
-                        <Text
+                        {isReset
+                            ? <VStack space="xl" paddingHorizontal={40}>
+                                <Text
+                                    textAlign="center"
+                                    variant="secondary"
+                                    fontSize={fontSize.title}>
+                                    {t('public.resetPasswordScreen.note')}
+                                </Text>
+                                <CustomButton
+                                    title={t('public.resetPasswordScreen.back')}
+                                    onPress={() => replace(Book.Login)}
+                                />
+                            </VStack>
+                            : <Text
                             textAlign="center"
                             variant="secondary"
                             fontSize={fontSize.title}>
                             {t('public.resetPasswordScreen.title')}
-                        </Text>
+                            </Text>
+                        }
+
                     </VStack>
-                    <FormProvider {...methods}>
+                    {!isReset && <FormProvider {...methods}>
                         <VStack paddingHorizontal={40} mb={perfectSize(20)}>
                             <VStack space="xl">
                                 <VStack space="xs">
@@ -102,11 +115,11 @@ const ResetPassword = () => {
                                 </VStack>
                                 <CustomButton
                                     title={t('public.resetPasswordScreen.button')}
-                                    onPress={onPress}
+                                    onPress={handleSubmit(onPress)}
                                 />
                             </VStack>
                         </VStack>
-                    </FormProvider>
+                    </FormProvider>}
                 </VStack>
             </SafeAreaLayout>
         </Box>

@@ -32,6 +32,7 @@ export type LocationPermission =
 export type UserState = {
   isAuthorized: boolean;
   isLoading: boolean;
+  resetEmail: string;
   user: UserData;
   feedback: FeedbackData;
 };
@@ -69,6 +70,10 @@ export type FeedbackData = {
 
 export type PayloadUserData = {};
 export type PayloadFeedbackData = {};
+export type ResetPassword = {
+  email: string;
+};
+export type PayloadResetPasswordData = {};
 
 // Contracts
 export type BaseContract<T = any> = CaseReducer<UserState, PayloadAction<T>>;
