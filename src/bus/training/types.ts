@@ -101,6 +101,8 @@ export type PreparedTrainingType = {
   description: string;
   title: string;
   ru_description: string;
+  width: number;
+  height: number;
 };
 
 // Contracts
