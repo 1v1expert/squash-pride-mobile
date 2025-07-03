@@ -23,13 +23,13 @@ const PeopleCounter = ({
   const players = Array.from({length: amountOfPeople}, (_, index) => index + 1);
   const choosePeople = (i: number) => {
     setSelected && setSelected(i);
-    action && action();
+    // action && action();
   };
 
   return (
     <HStack space={space}>
       {players.map((target, i) =>
-        !setSelected ? (
+        /*!setSelected ? (
           <Image
             key={i}
             source={target <= selected ? images.selectedHuman : images.human}
@@ -38,7 +38,7 @@ const PeopleCounter = ({
             resizeMode="contain"
             alt=""
           />
-        ) : (
+        ) : (*/
           <Pressable key={i} onPress={() => choosePeople(target)} hitSlop={10}>
             <Image
               source={target <= selected ? images.selectedHuman : images.human}
@@ -48,7 +48,7 @@ const PeopleCounter = ({
               alt=""
             />
           </Pressable>
-        ),
+        //),
       )}
     </HStack>
   );

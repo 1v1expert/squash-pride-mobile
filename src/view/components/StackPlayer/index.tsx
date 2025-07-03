@@ -132,7 +132,7 @@ const StackPlayer = ({
               },
             ]}
             thumbnail={thumbnail ? {uri: thumbnail} : undefined}
-            resizeMode="stretch"
+            resizeMode="contain"
             pauseOnPress
             onBuffer={event => {
               setLoader(event.isBuffering);
