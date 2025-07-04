@@ -73,7 +73,7 @@ const TypeOfTraining = ({
                 }
                 width={imageWidth}
                 height={imageHeight}
-                resizeMode="stretch"
+                resizeMode="contain"
                 alt=""
               />
               {selected && (

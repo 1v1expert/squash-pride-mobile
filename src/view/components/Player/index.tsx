@@ -1,4 +1,12 @@
-import {Box, Center, CheckIcon, Image, Spinner, Text} from '@gluestack-ui/themed';
+import {
+  Box,
+  Center,
+  CheckIcon,
+  Image,
+  Spinner,
+  Text,
+  View,
+} from '@gluestack-ui/themed';
 import {HStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -16,8 +24,10 @@ import StackPlayer from '../StackPlayer';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {createThumbnail} from 'react-native-create-thumbnail';
-import {backgroundColor} from "react-native-calendars/src/style";
-import {useCustomTranslation} from "../../../tools/hooks/useTranslation";
+import {backgroundColor} from 'react-native-calendars/src/style';
+import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
+import Next from '../../../assets/svg/next';
+import Prev from '../../../assets/svg/prev';
 
 const width = Dimensions.get('screen').width;
 const heigth = Dimensions.get('screen').height;
@@ -108,7 +118,6 @@ const Player = ({
     });
   };
 
-  console.log(videoPlayerRef);
   return (
     <>
       <HStack
@@ -132,7 +141,8 @@ const Player = ({
             // onLoadStart={() => videoPlayerRef.current?.seek(currentTime)}
             onEnd={() => {
               setVideoEnded(true);
-              return onEnd && onEnd(position)}}
+              return onEnd && onEnd(position);
+            }}
             customStyles={{
               controls: {
                 alignItems: 'center',
@@ -158,20 +168,28 @@ const Player = ({
             resizeMode="contain"
           />
         </TouchableOpacity>
-        {
-          videoEnded && <TouchableOpacity
-            hitSlop={10}
-            style={styles.nextIcon}
-            onPress={() => position !== length - 1 && setPosition(position+1)}>
-          <Center
-              width={perfectSize(400)}
-              height={perfectSize(50)}
-              borderRadius={30}
-              bgColor="#131517"
-              style={styles.nextIconBg}>
-            <Text variant="primary" fontSize={30}>{t('private.startTrainingScreen.nextVideo')+' >>'}</Text>
-          </Center>
-        </TouchableOpacity>}
+          <HStack
+            width={width}
+            justifyContent="space-between"
+            alignItems="center"
+            position="absolute">
+            <TouchableOpacity
+              hitSlop={10}
+              disabled={position === 0}
+              style={styles.prevIcon}
+              onPress={() => position !== 0 && setPosition(position - 1)}>
+              <Prev color={position === 0 ? '#fff' : '#F7A936'} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              hitSlop={10}
+              style={styles.nextIcon}
+              disabled={position === length - 1}
+              onPress={() =>
+                position !== length - 1 && setPosition(position + 1)
+              }>
+              <Next color={position === length - 1 ? '#fff' : '#F7A936'} />
+            </TouchableOpacity>
+          </HStack>
         {loader && (
           <Box position="absolute">
             <Spinner color="#F7AB39" />
@@ -228,15 +246,17 @@ const styles = StyleSheet.create({
     right: 10,
   },
   nextIcon: {
-    // backgroundColor: 'black',
     position: 'absolute',
-    bottom: 50,
-    right: 10,
+    bottom: '45%',
+    right: 20,
     opacity: 1,
   },
-  nextIconBg: {
-    opacity: 0.5,
-  }
+  prevIcon: {
+    position: 'absolute',
+    bottom: '45%',
+    left: 20,
+    opacity: 1,
+  },
 });
 
 export default Player;
