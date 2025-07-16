@@ -71,7 +71,7 @@ const Calendar = () => {
   const addReadyTraining = () => {
     setAddTraining(prev => !prev);
     navigation.navigate(Book.Filter, {
-      location: Book.StartTraining,
+      location: Book.PreparedTrainings,
       from: Book.Calendar,
     });
   };
