@@ -8,13 +8,21 @@ export const createEvent = createAsyncThunk<EventsType, EventPayload>(
   createEventAction.type,
   async (payload, {rejectWithValue}) => {
     try {
+        const preparedPayload = payload.trainings?.[0]?.group
+            ? payload
+            : {
+                start_at: payload.start_at,
+                prepared_training: payload.trainings?.[0]?.exercise
+            };
+
       const {data} = await baseService.post<EventsType>('/events/', {
-        ...payload,
+        ...preparedPayload,
       });
 
       return data;
     } catch (e: any) {
-      return rejectWithValue(e.response?.data.error || 'Something is wrong');
+        console.error('Full error response:', e.response?.data);
+      return rejectWithValue(e.response?.data.error || e ||  'Something is wrong');
     }
   },
 );

@@ -41,7 +41,7 @@ export type CalendarState = {
 export type EventsType = {
   uid: string;
   start_at: string;
-  trainings: {
+  trainings?: {
     uid: string;
     video: string;
     groups: string[];
@@ -51,14 +51,23 @@ export type EventsType = {
     title: string;
     ru_description: string;
   }[];
+  prepared_training?: {
+    uid: string;
+    video: string;
+    players: number;
+    description: string;
+    title: string;
+    ru_description: string;
+  }[];
   user?: UserData;
 };
 export type EventPayload = {
   start_at: string;
-  trainings: {
+  trainings?: {
     group: string;
     exercise: string;
   }[];
+  prepared_training?: string;
 };
 
 // Contracts

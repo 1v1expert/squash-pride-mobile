@@ -36,6 +36,7 @@ const Calendar = () => {
   const minimumDate = new Date(
     `${new Date(selected).toISOString().split('T')[0]}T04:00:00Z`,
   );
+
   const currentEvents = marked[formattedSelectedDay].events?.filter(event => {
     if (Number(event.startAt) >= selected) {
       return event;
@@ -217,7 +218,7 @@ const Calendar = () => {
                       const byTrainingItem: FavoriteType = {
                         date: Number(item.startAt),
                         type: 'training',
-                        training: item.trainings,
+                        training: item?.trainings && item?.trainings.length > 0 ? item.trainings : item.prepared_training,
                       };
                       return (
                         <TrainingItem
