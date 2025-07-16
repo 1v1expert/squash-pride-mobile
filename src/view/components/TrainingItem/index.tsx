@@ -36,6 +36,8 @@ const TrainingItem = ({
   isFavorite,
   fromTraining,
 }: TrainingItemProps) => {
+  console.log('TrainingItem', item);
+
   const {navigate} = useNavigation<PrivateStackScreenProps['navigation']>();
   const {t} = useCustomTranslation();
   const [option, setOption] = useState(false);
@@ -69,11 +71,9 @@ const TrainingItem = ({
   }, [item.exercise]);
 
   const favorite = getFavoriteItem(currentItem);
-  const title = item.training
-    ? item.training[0].group
-      ? item.training.map(e => e.group).join('-')
-      : item.training[0].title
-    : '';
+  const title = item.training[0]?.group
+          ? item.training.map(e => e.group).filter(Boolean).join('-')
+          : item.training[0]?.title || '';
   const currentMonth = new Date(Number(item.date)).getMonth() + 1;
   const currentDay = new Date(Number(item.date)).getDate();
   const currentYear = new Date(Number(item.date)).getFullYear();

@@ -23,7 +23,7 @@ export const useCalendar = () => {
       marked?: boolean;
       selected?: boolean;
       disableTouchEvent?: boolean;
-      events?: {startAt: string; trainings: any[]}[];
+      events?: {startAt: string; trainings?: any[]; prepared_training?: any[]}[];
     };
   };
   const marked = useMemo(() => {
@@ -45,13 +45,14 @@ export const useCalendar = () => {
           acc[eventDay] = {
             selected: selectedDate === eventDay,
             marked: true,
-            events: [{startAt: event.start_at, trainings: event.trainings}],
+            events: [{startAt: event.start_at, trainings: event.trainings, prepared_training: [event.prepared_training]}],
           };
         } else {
           Array.isArray(acc[eventDay].events) &&
             acc[eventDay].events.push({
               startAt: event.start_at,
               trainings: event.trainings,
+              prepared_training: [event.prepared_training],
             });
         }
 

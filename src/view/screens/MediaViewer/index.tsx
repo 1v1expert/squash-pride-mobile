@@ -1,6 +1,6 @@
 import {
   ArrowLeftIcon,
-  Box,
+  Box, CalendarDaysIcon,
   HStack,
   Image,
   ScrollView,
@@ -22,6 +22,7 @@ import {fontSize} from '../../../assets/fontsSize';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDevice} from '../../../bus/device';
+import CalendarModal from "../../components/CalendarModal";
 
 const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const {goBack} = navigation;
@@ -34,6 +35,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const [portraitWidth] = useState(Dimensions.get('screen').width);
   const [loader, setLoader] = useState(false);
   const [thumbnail, setThumbnail] = useState<string>();
+  const [calendarIsVisible, setCalendarIsVisible] = useState(false);
 
   const descriptionText = i18n.language === 'ru' ? ru_description : description;
   const isHorizontal = height < width;
@@ -71,7 +73,7 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
     <>
       <ViewContainer
         title={title}
-        headerContent="flex-start"
+        headerContent="space-between"
         leftHeaderButton={
           <CustomButton
             iconLeft={ArrowLeftIcon}
@@ -79,7 +81,16 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
             onPress={goBack}
             width={50}
           />
-        }>
+        }
+        rightHeaderButton={
+          <CustomButton
+              iconRight={CalendarDaysIcon}
+              bgColor="#25282D"
+              onPress={() => setCalendarIsVisible(true)}
+              width={50}
+          />
+        }
+      >
         <VStack flex={1}>
           <VStack
             flex={1}
@@ -162,6 +173,11 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
         currentTime={currentTime}
         videoPlayerRef={videoPlayerRef.current || null}
         isHorizontal={isHorizontal}
+      />
+      <CalendarModal
+          item={[{ uid, video, level: "amateur", players: 1, description, title, ru_description, width, height }]}
+          visible={calendarIsVisible}
+          setVisible={setCalendarIsVisible}
       />
     </>
   );
