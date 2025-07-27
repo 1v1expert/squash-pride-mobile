@@ -28,6 +28,7 @@ import {useUser} from '../../../../bus/user';
 import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
 import {getUsername} from '../../../../tools/helpers';
 import {perfectSize} from '../../../../tools/helpers/perfectSize';
+import {useNavigation} from "@react-navigation/native";
 
 const width = Dimensions.get('screen').width;
 
@@ -38,6 +39,7 @@ interface LoginForm {
 }
 
 const Login = () => {
+  const navigate = useNavigation();
   const {login, isLoading} = useUser();
   const [imageWidth, setImageWidth] = useState(width);
   const {t} = useCustomTranslation();
@@ -88,6 +90,8 @@ const Login = () => {
       setError('username', {message: t('public.loginScreen.requestError')});
     }
   };
+
+  const onBack = () => navigate.goBack();
 
   return (
     <KeyboardAvoidingView
@@ -144,6 +148,12 @@ const Login = () => {
                         onPress={handleSubmit(onPress)}
                         disabled={isLoading}
                         isLoading={isLoading}
+                      />
+                      <CustomButton
+                          title={t('public.loginScreen.back')}
+                          onPress={onBack}
+                          disabled={isLoading}
+                          isLoading={isLoading}
                       />
                     </VStack>
                   </VStack>

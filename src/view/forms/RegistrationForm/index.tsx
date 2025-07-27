@@ -25,6 +25,7 @@ interface RegistrationForm {
 }
 
 const RegistrationForm = () => {
+  const navigate = useNavigation();
   const {replace} = useNavigation<PublicStackScreenProps['navigation']>();
   const {register, isLoading} = useUser();
   const {t} = useCustomTranslation();
@@ -62,6 +63,8 @@ const RegistrationForm = () => {
       e.password && setError('password', {message: e.password});
     }
   };
+
+  const onBack = () => navigate.goBack();
 
   return (
     <Box style={styles.container}>
@@ -111,18 +114,20 @@ const RegistrationForm = () => {
             placeholder={t('public.registrationScreen.countryInputPlaceholder')}
             error={errors.country}
           />
-        </VStack>
-        <VStack pb={perfectSize(20)}>
-          <HStack justifyContent="center">
+          <VStack space="xl" paddingVertical={20}>
             <CustomButton
-              title={t('public.registrationScreen.button')}
-              onPress={handleSubmit(onPress)}
-              iconRight={ArrowRightIcon}
-              iconColor="secondary"
-              disabled={isLoading}
-              isLoading={isLoading}
+                title={t('public.registrationScreen.button')}
+                onPress={handleSubmit(onPress)}
+                iconRight={ArrowRightIcon}
+                iconColor="secondary"
+                disabled={isLoading}
+                isLoading={isLoading}
             />
-          </HStack>
+            <CustomButton
+                title={t('public.registrationScreen.back')}
+                onPress={onBack}
+            />
+          </VStack>
         </VStack>
       </FormProvider>
     </Box>
