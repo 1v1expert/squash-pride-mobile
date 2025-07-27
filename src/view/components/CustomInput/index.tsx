@@ -63,7 +63,9 @@ const CustomInput: FC<CustomInputProps> = ({
               size="md"
               height={multiline ? 'auto' : perfectSize(40)}
               minHeight={perfectSize(40)}
-              maxHeight={150}>
+              maxHeight={150}
+              alignItems="center"
+              flexDirection="row">
               <InputField
                 autoCapitalize="none"
                 value={value}
@@ -80,6 +82,7 @@ const CustomInput: FC<CustomInputProps> = ({
                 fontSize={perfectSize(17)}
                 flexWrap="wrap"
                 multiline={multiline}
+                flex={1}
               />
               {type === 'password' && (
                 <InputSlot pr="$3" onPress={() => setShowField(prev => !prev)}>

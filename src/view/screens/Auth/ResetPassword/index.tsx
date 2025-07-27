@@ -36,6 +36,7 @@ interface ResetPasswordForm {
 }
 
 const ResetPassword = () => {
+    const navigate = useNavigation();
     const {resetPassword} = useUser();
     const {t} = useCustomTranslation();
     const [isReset, setReset] = useState(false);
@@ -63,6 +64,8 @@ const ResetPassword = () => {
             e.email && setError('email', {message: e.email});
         }
     };
+
+    const onBack = () => navigate.goBack();
 
     return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -116,6 +119,10 @@ const ResetPassword = () => {
                                 <CustomButton
                                     title={t('public.resetPasswordScreen.button')}
                                     onPress={handleSubmit(onPress)}
+                                />
+                                <CustomButton
+                                    title={t('public.resetPasswordScreen.back')}
+                                    onPress={onBack}
                                 />
                             </VStack>
                         </VStack>

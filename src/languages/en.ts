@@ -12,6 +12,7 @@ export default {
       button: 'Log In',
       requiredError: 'Please fill in to continue',
       requestError: 'Incorrect login or password entered',
+      back: 'Back',
     },
     registrationScreen: {
       title: 'Create an account and get access to workouts',
@@ -28,6 +29,7 @@ export default {
       requiredError: 'Please fill in to continue',
       feedbackTitle: 'Your problem',
       feedbackDescription: 'Short description',
+      back: 'Back',
     },
     resetPasswordScreen: {
       title: 'Please fill in your email to reset password',

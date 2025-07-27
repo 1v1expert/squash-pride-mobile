@@ -12,6 +12,7 @@ export default {
       button: 'Войти',
       requiredError: 'Заполните, чтобы продолжить',
       requestError: 'Введен неверный логин или пароль',
+      back: 'Назад',
     },
     registrationScreen: {
       title: 'Создай аккаунт и получи доступ к тренировкам',
@@ -28,6 +29,7 @@ export default {
       requiredError: 'Заполните, чтобы продолжить',
       feedbackTitle: 'Ваша проблема',
       feedbackDescription: 'Коротко опишите проблему',
+      back: 'Назад',
     },
     resetPasswordScreen: {
       title: 'Введите ваш E-mail для сброса пароля',
