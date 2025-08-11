@@ -18,10 +18,12 @@ import {Book} from '../../navigation/book';
 import TrainingItem from '../../components/TrainingItem';
 import {FavoriteType} from '../../../bus/training/types';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {useTraining} from "../../../bus/training";
 
 const Calendar = () => {
   const {t} = useCustomTranslation();
   const navigation = useNavigation<HomeScreensStackScreenProps['navigation']>();
+  const { resetFilters, resetStack } = useTraining();
   const {selected, setSelected, setTimeUnit, marked, formattedSelectedDay} =
     useCalendar();
   const [addTraining, setAddTraining] = useState(false);
@@ -70,6 +72,7 @@ const Calendar = () => {
   };
   const addReadyTraining = () => {
     setAddTraining(prev => !prev);
+    resetFilters();
     navigation.navigate(Book.Filter, {
       location: Book.PreparedTrainings,
       from: Book.Calendar,
@@ -77,6 +80,8 @@ const Calendar = () => {
   };
   const addNewTraining = () => {
     setAddTraining(prev => !prev);
+    resetFilters();
+    resetStack();
     navigation.navigate(Book.Filter, {
       location: 'CreateTrainingWithoutTab',
       from: Book.Calendar,
@@ -191,18 +196,6 @@ const Calendar = () => {
                         width="$full"
                         fontSize={fontSize.text}>
                         Добавить новую тренировку
-                      </Text>
-                    </HStack>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={() => setAddTraining(prev => !prev)}>
-                    <HStack padding={perfectSize(10)}>
-                      <Text
-                        variant="primary"
-                        width="$full"
-                        fontSize={fontSize.text}>
-                        Добавить тренировку из пройденных
                       </Text>
                     </HStack>
                   </TouchableOpacity>
