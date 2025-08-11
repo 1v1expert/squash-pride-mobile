@@ -11,7 +11,7 @@ import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {FilterFormType} from '../../../bus/training/types';
-import {useTraining} from '../../../bus/training';
+// import {useTraining} from '../../../bus/training';
 
 type FilterFormProps = {
   required?: boolean;
@@ -29,16 +29,16 @@ const FilterForm = ({
   withGroup,
 }: FilterFormProps) => {
   const {t} = useCustomTranslation();
-  const {filters} = useTraining();
+  // const {filters} = useTraining();
 
   const methods = useForm<FilterFormType>({
     resolver: yupResolver(required ? filterSchemaWithGroup : filterSchema),
     mode: 'onSubmit',
     defaultValues: async () => {
       return {
-        players: (withValue && filters.players) || undefined,
-        level: (withValue && filters.level) || undefined,
-        group: (withValue && filters.group) || undefined,
+        players: undefined,
+        level: undefined,
+        group: undefined,
       };
     },
   });
