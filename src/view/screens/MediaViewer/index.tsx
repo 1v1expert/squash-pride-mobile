@@ -1,6 +1,8 @@
 import {
   ArrowLeftIcon,
-  Box, CalendarDaysIcon,
+  Box,
+  CalendarDaysIcon,
+  CheckIcon,
   HStack,
   Image,
   ScrollView,
@@ -23,13 +25,16 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDevice} from '../../../bus/device';
 import CalendarModal from "../../components/CalendarModal";
+import {Book} from "../../navigation/book";
+import {useCalendar} from "../../../bus/calendar";
 
 const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
-  const {goBack} = navigation;
+  const {navigate, goBack} = navigation;
   const {fullscreen, setScreenMode} = useDevice();
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const {i18n} = useCustomTranslation();
-  const {title, ru_description, description, video, uid, width, height} = route.params;
+  const {title, ru_description, description, video, uid, width, height, from} = route.params;
+  const {addEvent, selected} = useCalendar();
   const [videoStarted, setVideoStarted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
   const [portraitWidth] = useState(Dimensions.get('screen').width);
@@ -69,6 +74,15 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
     }
   };
 
+  const handleSubmit = () => {
+    if (from) {
+      const event = {start_at: selected.toString(), trainings: [{group: '', exercise: uid}]};
+      addEvent(event);
+      navigate(Book.Calendar);
+    } else {
+      setCalendarIsVisible(true);
+    }
+  }
   return (
     <>
       <ViewContainer
@@ -84,9 +98,9 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
         }
         rightHeaderButton={
           <CustomButton
-              iconRight={CalendarDaysIcon}
+              iconRight={from ? CheckIcon : CalendarDaysIcon }
               bgColor="#25282D"
-              onPress={() => setCalendarIsVisible(true)}
+              onPress={handleSubmit}
               width={50}
           />
         }

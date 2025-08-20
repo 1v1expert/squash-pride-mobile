@@ -42,6 +42,12 @@ const FilterForm = ({
       };
     },
   });
+
+  const onPressWithReset = (e: FilterFormType) => {
+    onPress(e);
+    reset({players: undefined, group: [], level: undefined});
+  };
+
   const {
     handleSubmit,
     formState: {errors},
@@ -85,7 +91,7 @@ const FilterForm = ({
             {t('private.filter.reset')}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleSubmit(onPress)}>
+        <TouchableOpacity onPress={handleSubmit(onPressWithReset)}>
           <Text variant="secondary" fontSize={fontSize.text}>
             {t('private.filter.saveButton')}
           </Text>

@@ -29,7 +29,6 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
   //     : t('private.filter.createTrainingTooltip');
 
   // const [showTooltip, setShowTooltip] = useState(false);
-
   const submit = (values: FilterFormType) => {
     setFilters(values);
 
@@ -39,7 +38,9 @@ const Filter: FC<FilterScreenProps> = ({navigation, route}) => {
     // });
       switch (location) {
           case 'PreparedTrainings' : {
-              navigate(Book.PreparedTrainings);
+              navigate(Book.PreparedTrainings, {
+                  from,
+              });
               break;
           }
           case 'CreateTrainingWithoutTab': {

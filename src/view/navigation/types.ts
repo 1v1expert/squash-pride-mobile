@@ -17,6 +17,7 @@ export type PrivateStackParamList = {
     from?: keyof TabNavigatorParamList;
     readyTraining?: boolean;
   };
+  PreparedTrainings: {from?: keyof TabNavigatorParamList};
   ExerciseMediaViewer: {item: ExerciseType; fromFavorites?: boolean};
   // IsPaid: undefined;
 };
@@ -33,7 +34,7 @@ export type HomeScreensStackParamList = {
   Home: undefined;
   StartTraining: {from?: keyof TabNavigatorParamList};
   CreateTraining: {from?: keyof TabNavigatorParamList};
-  PreparedTrainings: undefined;
+  PreparedTrainings: {from?: keyof TabNavigatorParamList};
   GameTechnique: undefined;
   Rules: undefined;
   MediaViewer: TItem;
@@ -99,4 +100,5 @@ export type TItem = {
   description: string;
   height: number;
   width: number;
+  from?: string;
 };
