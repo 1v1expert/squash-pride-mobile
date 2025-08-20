@@ -11,13 +11,14 @@ import Item from "../../components/Item";
 
 const width = Dimensions.get('screen').width;
 
-const PreparedTrainings: FC<HomeScreensStackScreenProps> = ({navigation}) => {
+const PreparedTrainings: FC<HomeScreensStackScreenProps> = ({navigation, route}) => {
     const {t} = useCustomTranslation();
+    const from = route?.params?.from;
     const {navigate, goBack} = navigation;
     const {preparedTrainings, fetchPreparedTrainings, setPreparedTrainings, filters} = useTraining();
 
     const goToItem = (e: TItem) => {
-        navigate(Book.MediaViewer, {...e});
+        navigate(Book.MediaViewer, {...e, from});
     };
 
     useEffect(()=>{
