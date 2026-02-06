@@ -8,8 +8,8 @@ import {useTraining} from '../../../bus/training';
 import {useUser} from '../../../bus/user';
 
 const width = Dimensions.get('screen').width;
-// const URL = 'https://squash-pride.ru';
-const URL = 'https://pay-squash-pride.lava-bots.ru/ru';
+const URL = 'https://squash-pride.ru';
+// const URL = 'https://pay-squash-pride.lava-bots.ru/ru';
 
 const IsPaidModal = () => {
   const appState = useRef(AppState.currentState);
