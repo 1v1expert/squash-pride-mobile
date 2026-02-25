@@ -71,9 +71,14 @@ const TrainingItem = ({
   }, [item.exercise]);
 
   const favorite = getFavoriteItem(currentItem);
-  const title = item.training[0]?.group
-          ? item.training.map(e => e.group).filter(Boolean).join('-')
-          : item.training[0]?.title || '';
+  let title;
+  if (item.type === 'exercise') {
+    title = item.exercise?.groups && item.exercise?.groups[0]
+  } else {
+    title =  item.training && item.training[0]?.group
+        ? item.training.map(e => e.group).filter(Boolean).join('-')
+        : item.training[0]?.title || '';
+  }
   const currentMonth = new Date(Number(item.date)).getMonth() + 1;
   const currentDay = new Date(Number(item.date)).getDate();
   const currentYear = new Date(Number(item.date)).getFullYear();
@@ -224,9 +229,7 @@ const TrainingItem = ({
                   flexWrap="wrap"
                   lineHeight={12}
                   numberOfLines={1}>
-                  {item.type === 'exercise'
-                    ? item.exercise?.groups && item.exercise?.groups[0]
-                    : title}
+                  {title}
                 </Text>
                 <HStack space="md">
                   {item.date && (
