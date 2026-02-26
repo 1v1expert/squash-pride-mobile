@@ -10,4 +10,6 @@ export const registrationSchema = yup.object({
   age: yup.number().required('public.registrationScreen.requiredError'),
   gender: yup.string().required('public.registrationScreen.requiredError'),
   country: yup.string().required('public.registrationScreen.requiredError'),
+  // TODO: rework
+  agreement: yup.boolean().oneOf([true], 'Вы должны принять пользовательское соглашение').required(),
 });

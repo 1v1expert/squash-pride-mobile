@@ -1,3 +1,5 @@
+import {USER_AGREEMENT_TEXT} from "../view/components/UserAgreementModal";
+
 export default {
   public: {
     mainScreen: {
@@ -27,6 +29,7 @@ export default {
       countryInputPlaceholder: 'Country',
       button: 'Next',
       requiredError: 'Please fill in to continue',
+      agreementError: 'You must accept the terms and conditions',
       feedbackTitle: 'Your problem',
       feedbackDescription: 'Short description',
       back: 'Back',
@@ -40,7 +43,31 @@ export default {
     },
     default: {
       clear: 'Clear',
-    }
+    },
+    agreementText:  `
+      1. General Provisions
+      1.1. This User Agreement (hereinafter referred to as the Agreement) governs the relationship between you (hereinafter referred to as the User) and the owner of the application (hereinafter referred to as the Owner) regarding the use of the mobile application.
+      
+      2. Subject of the Agreement
+      2.1. The Owner grants the User the opportunity to use the functionality of the application in accordance with its intended purpose.
+      
+      3. Rights and Obligations of the Parties
+      3.1. The User undertakes to:
+      - provide accurate information during registration;
+      - comply with the law when using the application;
+      - not violate the rights of third parties.
+      
+      3.2. The Owner has the right to:
+      - change the terms of the Agreement;
+      - restrict access to the application in case of violation of the terms of the Agreement.
+      
+      4. Confidentiality
+      4.1. The Owner undertakes to ensure the confidentiality of the User's personal data.
+      
+      5. Final Provisions
+      5.1. The Agreement comes into force from the moment the User accepts its terms.
+      5.2. By continuing to use the application, the User confirms their consent to the terms of the Agreement.
+      `,
   },
   private: {
     navigator: {
@@ -470,3 +497,4 @@ export default {
     AX: 'Åland Islands',
   },
 };
+

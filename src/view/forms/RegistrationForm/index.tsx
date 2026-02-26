@@ -1,6 +1,11 @@
-import React from 'react';
+// Обновленный RegistrationForm.tsx
+import React, { useState } from 'react';
 import {StyleSheet} from 'react-native';
-import {ArrowRightIcon, Box, HStack, VStack} from '@gluestack-ui/themed';
+import {
+  ArrowRightIcon,
+  Box,
+  VStack,
+} from '@gluestack-ui/themed';
 import {FormProvider, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
@@ -13,7 +18,8 @@ import CustomInput from '../../components/CustomInput';
 import CustomSelect from '../../components/CustomSelect';
 import CustomButton from '../../components/CustomButton';
 import CustomCountryPicker from '../../components/CountryPicker';
-import {perfectSize} from '../../../tools/helpers/perfectSize';
+import AgreementCheckbox from '../../components/AgreementCheckbox';
+import UserAgreementModal from '../../components/UserAgreementModal';
 
 interface RegistrationForm {
   firstName: string;
@@ -22,6 +28,7 @@ interface RegistrationForm {
   age: number;
   gender: string;
   country: string;
+  agreement: boolean;
 }
 
 const RegistrationForm = () => {
@@ -29,19 +36,30 @@ const RegistrationForm = () => {
   const {replace} = useNavigation<PublicStackScreenProps['navigation']>();
   const {register, isLoading} = useUser();
   const {t} = useCustomTranslation();
+  const [agreementModalVisible, setAgreementModalVisible] = useState(false);
+
   const methods = useForm<RegistrationForm>({
     resolver: yupResolver(registrationSchema),
     mode: 'onSubmit',
+    defaultValues: {
+      agreement: false,
+    },
   });
+
   const ages = Array.from({length: 34}, (_, index) => {
     const age = index + 12;
     return {label: String(age), value: age};
   });
+
   const {
     formState: {errors},
     setError,
     handleSubmit,
+    setValue,
+    watch,
   } = methods;
+
+  const agreementValue = watch('agreement');
 
   const onPress = async (values: RegistrationForm) => {
     console.log('values', values);
@@ -66,73 +84,92 @@ const RegistrationForm = () => {
 
   const onBack = () => navigate.goBack();
 
+  const handleAgreementChange = (value: boolean) => {
+    setValue('agreement', value, { shouldValidate: true });
+  };
+
   return (
-    <Box style={styles.container}>
-      <FormProvider {...methods}>
-        <VStack>
-          <CustomInput
-            name="firstName"
-            placeholder={t(
-              'public.registrationScreen.firstNameInputPlaceholder',
-            )}
-            error={errors.firstName}
-            variant="secondary"
-            required
-          />
-          <CustomInput
-            name="email"
-            placeholder={t('public.registrationScreen.emailInputPlaceholder')}
-            error={errors.email}
-            variant="secondary"
-            required
-          />
-          <CustomInput
-            name="password"
-            placeholder={t('public.registrationScreen.passInputPlaceholder')}
-            type="password"
-            error={errors.password}
-            variant="secondary"
-          />
-          <CustomSelect
-            name="age"
-            error={errors.age}
-            placeholder={t('public.registrationScreen.ageInputPlaceholder')}
-            items={ages}
-          />
-          <CustomSelect
-            name="gender"
-            error={errors.gender}
-            placeholder={t('public.registrationScreen.genderInputPlaceholder')}
-            items={[
-              {label: t('gender.male'), value: 'male'},
-              {label: t('gender.female'), value: 'female'},
-              {label: t('gender.notSpecified'), value: 'not specified'},
-            ]}
-          />
-          <CustomCountryPicker
-            name={'country'}
-            placeholder={t('public.registrationScreen.countryInputPlaceholder')}
-            error={errors.country}
-          />
-          <VStack space="xl" paddingVertical={20}>
-            <CustomButton
-                title={t('public.registrationScreen.button')}
-                onPress={handleSubmit(onPress)}
-                iconRight={ArrowRightIcon}
-                iconColor="secondary"
-                disabled={isLoading}
-                isLoading={isLoading}
+      <Box style={styles.container}>
+        <FormProvider {...methods}>
+          <VStack space="sm">
+            <CustomInput
+                name="firstName"
+                placeholder={t(
+                    'public.registrationScreen.firstNameInputPlaceholder',
+                )}
+                error={errors.firstName}
+                variant="secondary"
+                required
             />
-            <CustomButton
-                title={t('public.registrationScreen.back')}
-                onPress={onBack}
+            <CustomInput
+                name="email"
+                placeholder={t('public.registrationScreen.emailInputPlaceholder')}
+                error={errors.email}
+                variant="secondary"
+                required
             />
+            <CustomInput
+                name="password"
+                placeholder={t('public.registrationScreen.passInputPlaceholder')}
+                type="password"
+                error={errors.password}
+                variant="secondary"
+            />
+            <CustomSelect
+                name="age"
+                error={errors.age}
+                placeholder={t('public.registrationScreen.ageInputPlaceholder')}
+                items={ages}
+            />
+            <CustomSelect
+                name="gender"
+                error={errors.gender}
+                placeholder={t('public.registrationScreen.genderInputPlaceholder')}
+                items={[
+                  {label: t('gender.male'), value: 'male'},
+                  {label: t('gender.female'), value: 'female'},
+                  {label: t('gender.notSpecified'), value: 'not specified'},
+                ]}
+            />
+            <CustomCountryPicker
+                name={'country'}
+                placeholder={t('public.registrationScreen.countryInputPlaceholder')}
+                error={errors.country}
+            />
+
+            <AgreementCheckbox
+                value={agreementValue}
+                onChange={handleAgreementChange}
+                onPressLink={() => setAgreementModalVisible(true)}
+                error={errors.agreement?.message}
+            />
+
+            <VStack space="xl" paddingVertical={20}>
+              <CustomButton
+                  title={t('public.registrationScreen.button')}
+                  onPress={handleSubmit(onPress)}
+                  iconRight={ArrowRightIcon}
+                  iconColor="secondary"
+                  disabled={isLoading}
+                  isLoading={isLoading}
+              />
+              <CustomButton
+                  title={t('public.registrationScreen.back')}
+                  onPress={onBack}
+                  variant="outline"
+              />
+            </VStack>
           </VStack>
-        </VStack>
-      </FormProvider>
-    </Box>
+        </FormProvider>
+
+        <UserAgreementModal
+            visible={agreementModalVisible}
+            onClose={() => setAgreementModalVisible(false)}
+        />
+      </Box>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
