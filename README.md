@@ -83,6 +83,18 @@ Run container:
 docker run --rm -p 8080:80 spm-web
 ```
 
+Docker Compose (build + run in one command):
+
+```bash
+docker compose up --build -d
+```
+
+Stop:
+
+```bash
+docker compose down
+```
+
 Open in browser:
 
 ```text
