@@ -13,7 +13,7 @@ const getApiConfig = apiUrl => {
 
     return {
       proxyOrigin: parsedApiUrl.origin,
-      proxyPath: parsedApiUrl.pathname.replace(/\/$/, ''),
+      proxyPath: parsedApiUrl.pathname.replace(/\/$/, '') || '/',
     };
   } catch {
     return {
