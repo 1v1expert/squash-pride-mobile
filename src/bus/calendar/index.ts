@@ -60,7 +60,7 @@ export const useCalendar = () => {
       (acc: MarkedDates & any, event) => {
         const eventTimestamp = toTimestamp(event.start_at);
 
-        if (!eventTimestamp) {
+        if (eventTimestamp == null) {
           return acc;
         }
 
