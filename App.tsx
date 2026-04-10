@@ -14,8 +14,12 @@ const App = () => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
     }
-    Orientation.lockToPortrait();
+
+    if (Platform.OS !== 'web') {
+      Orientation.lockToPortrait();
+    }
   }, []);
+
   return (
     <ReduxProvider store={store}>
       <SafeAreaProvider>

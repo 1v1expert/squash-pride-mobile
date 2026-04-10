@@ -42,6 +42,27 @@ npm run ios
 yarn ios
 ```
 
+### For Web
+
+The repository now includes a React Native Web target that reuses the existing app code and adds browser fallbacks for mobile-only modules.
+
+```bash
+# install/update dependencies first
+npm install
+
+# run the web dev server
+npm run web
+
+# create a production web build
+npm run web:build
+```
+
+Notes:
+
+- The web build uses `react-native-web` plus a custom `webpack.config.js`.
+- A few native-only modules are shimmed for the browser, so web playback and some device integrations are simplified compared with iOS/Android.
+- If your backend URL comes from `.env`, make sure `API_URL` is defined before running the web build.
+
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.

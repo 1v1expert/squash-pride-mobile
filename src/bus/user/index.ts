@@ -1,3 +1,4 @@
+import {useCallback} from 'react';
 import {userActions} from './slice';
 
 // Tools
@@ -31,14 +32,17 @@ import {resetPassword, resetPasswordData} from "./thunk/resetPassword";
 export const useUser = () => {
   const dispatch = useDispatch();
 
-  const setAuthorize = (state: boolean) =>
-    dispatch(userActions.setAuthorize(state));
+  const setAuthorize = useCallback(
+    (state: boolean) => dispatch(userActions.setAuthorize(state)),
+    [dispatch],
+  );
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     clearTokens();
     dispatch(userActions.setAuthorize(false));
-  };
-  const tokenRefresh = async (callback?: () => void) => {
+  }, [dispatch]);
+
+  const tokenRefresh = useCallback(async (callback?: () => void) => {
     const token = await load(refreshToken);
 
     return (
@@ -47,32 +51,60 @@ export const useUser = () => {
         .unwrap()
         .then(() => callback && callback())
     );
-  };
-  const fetchUser = async () => {
+  }, [dispatch]);
+
+  const fetchUserData = useCallback(async () => {
     const access_token = await load(accessToken);
 
     if (access_token) {
       setAuthHeader(access_token);
     }
     dispatch(getUserData());
-  };
-  const updateUser = (state: PayloadUserData) => {
-    tokenRefresh(() => dispatch(updateUserData(state)));
-  };
-  const sendFeedback = (state: PayloadFeedbackData) => {
-    tokenRefresh(() => dispatch(sendFeedbackData(state)));
-  };
+  }, [dispatch]);
 
-  const resetPassword = (state: ResetPassword) => {
-    dispatch(resetPasswordData(state));
-  };
+  const fetchUser = useCallback(
+    () => tokenRefresh(fetchUserData),
+    [fetchUserData, tokenRefresh],
+  );
+
+  const updateUser = useCallback(
+    (state: PayloadUserData) => {
+      tokenRefresh(() => dispatch(updateUserData(state)));
+    },
+    [dispatch, tokenRefresh],
+  );
+
+  const sendFeedback = useCallback(
+    (state: PayloadFeedbackData) => {
+      tokenRefresh(() => dispatch(sendFeedbackData(state)));
+    },
+    [dispatch, tokenRefresh],
+  );
+
+  const resetPassword = useCallback(
+    (state: ResetPassword) => {
+      dispatch(resetPasswordData(state));
+    },
+    [dispatch],
+  );
+
+  const loginUser = useCallback(
+    (values: LoginForm) => dispatch(login(values)).unwrap(),
+    [dispatch],
+  );
+
+  const registerUser = useCallback(
+    (values: RegisterForm) => dispatch(register(values)).unwrap(),
+    [dispatch],
+  );
+
   return {
     user: useSelector(({user}) => user.user),
     isLoading: useSelector(({user}) => user.isLoading),
     isAuthorized: useSelector(({user}) => user.isAuthorized),
-    login: (values: LoginForm) => dispatch(login(values)).unwrap(),
-    register: (values: RegisterForm) => dispatch(register(values)).unwrap(),
-    fetchUser: () => tokenRefresh(fetchUser),
+    login: loginUser,
+    register: registerUser,
+    fetchUser,
     setAuthorize,
     logout,
     tokenRefresh,
