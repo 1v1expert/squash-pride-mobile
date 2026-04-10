@@ -63,6 +63,32 @@ Notes:
 - A few native-only modules are shimmed for the browser, so web playback and some device integrations are simplified compared with iOS/Android.
 - If your backend URL comes from `.env`, make sure `API_URL` is defined before running the web build.
 
+### Docker (Web Production)
+
+You can build and run the web app as a production Docker container.
+
+Build image:
+
+```bash
+# uses default API_URL (internal.squash-pride.ru/api/v2)
+docker build -t spm-web .
+
+# or override API URL at build time
+docker build -t spm-web --build-arg API_URL=https://your-api.example.com/api/v2 .
+```
+
+Run container:
+
+```bash
+docker run --rm -p 8080:80 spm-web
+```
+
+Open in browser:
+
+```text
+http://localhost:8080
+```
+
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.

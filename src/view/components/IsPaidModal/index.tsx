@@ -1,6 +1,6 @@
 import {Box, Center, Modal, Text, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
-import {AppState, Dimensions, Image, Linking, StyleSheet} from 'react-native';
+import {AppState, Dimensions, Image, Linking, Platform, StyleSheet} from 'react-native';
 import {images} from '../../../assets';
 import SafeAreaLayout from '../SafeAreaLayout';
 import CustomButton from '../CustomButton';
@@ -12,6 +12,10 @@ const URL = 'https://squash-pride.ru';
 // const URL = 'https://pay-squash-pride.lava-bots.ru/ru';
 
 const IsPaidModal = () => {
+  if (Platform.OS === 'web') {
+    return null;
+  }
+
   const appState = useRef(AppState.currentState);
   const {fetchUser, user} = useUser();
   const [visible, setVisible] = useState(false);

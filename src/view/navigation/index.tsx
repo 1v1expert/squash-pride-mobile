@@ -1,5 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {View} from 'react-native';
 
 import {Public} from './Public';
 import {useUser} from '../../bus/user';
@@ -30,8 +31,10 @@ export const Navigation: FC = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      {loading ? <PreLoader /> : isAuthorized ? <Private /> : <Public />}
-    </NavigationContainer>
+    <View style={{flex: 1}}>
+      <NavigationContainer>
+        {loading ? <PreLoader /> : isAuthorized ? <Private /> : <Public />}
+      </NavigationContainer>
+    </View>
   );
 };
