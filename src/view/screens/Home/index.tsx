@@ -16,21 +16,22 @@ import {images} from '../../../assets';
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate, addListener} = navigation;
   const {height, width} = useWindowDimensions();
-  const isShortScreen = height < 820;
 
   // Responsive scaling based on container width
   const scaleFactor = Math.min(Math.max(width * 0.85, 380), 540) / 460;
 
-  // Compact calendar height - reduced significantly to give more space to menu cards
+  // Compact calendar height - minimal to ensure 4 cards are always visible
+  // Max 70px even on large screens
   const calendarHeight = Math.max(
-    Math.round(60 * scaleFactor),
-    Math.min(Math.round(85 * scaleFactor), height * 0.08),
+    Math.round(50 * scaleFactor),
+    Math.min(Math.round(70 * scaleFactor), height * 0.06),
   );
 
-  // Padding around containers - reduced to maximize card visibility
+  // Padding around containers - minimal to maximize card visibility
   const headerPadding = Math.round(12 * scaleFactor);
-  const cardContainerVerticalPadding = Math.round(8 * scaleFactor);
-  const cardContainerSpace = isShortScreen ? 'sm' : 'md';
+  const headerVerticalPadding = Math.round(6 * scaleFactor);
+  const cardContainerVerticalPadding = Math.round(6 * scaleFactor);
+  const cardContainerSpace = 'sm';
   const {user} = useUser();
   const {resetStack} = useTraining();
   const {t} = useCustomTranslation();
@@ -52,7 +53,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             width="$full"
             alignItems="center"
             paddingHorizontal={headerPadding}
-            paddingVertical={Math.round(8 * scaleFactor)}
+            paddingVertical={headerVerticalPadding}
             space="xs">
             <Text variant="primary" fontSize={fontSize.title}>
               {t('private.homeScreen.title')} {user.first_name}!
@@ -66,7 +67,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             width="$full"
             height={
               Platform.OS === 'android'
-                ? Math.max(Math.round(68 * scaleFactor), calendarHeight + 4)
+                ? Math.max(Math.round(60 * scaleFactor), calendarHeight + 2)
                 : calendarHeight
             }>
             <CustomWeekCalendar />
