@@ -22,11 +22,11 @@ const TouchableContainer: FC<TouchableContainerProps> = ({
   const {height} = useWindowDimensions();
   const isWeb = Platform.OS === 'web';
   const isShortScreen = height < 820;
-  const cardPadding = isWeb ? (isShortScreen ? 12 : 14) : perfectSize(20);
-  const iconBoxSize = isWeb ? (isShortScreen ? 44 : 50) : perfectSize(60);
-  const iconSize = isWeb ? (isShortScreen ? 26 : 30) : perfectSize(40);
-  const titleFontSize = isWeb ? (isShortScreen ? 15 : 16) : perfectSize(20);
-  const titleLineHeight = isWeb ? (isShortScreen ? 20 : 22) : 30;
+  const cardPadding = isWeb ? (isShortScreen ? 13 : 16) : perfectSize(20);
+  const iconBoxSize = isWeb ? (isShortScreen ? 48 : 54) : perfectSize(60);
+  const iconSize = isWeb ? (isShortScreen ? 28 : 32) : perfectSize(40);
+  const titleFontSize = isWeb ? (isShortScreen ? 16 : 17) : perfectSize(20);
+  const titleLineHeight = isWeb ? (isShortScreen ? 21 : 24) : 30;
   const horizontalSpace = isWeb ? (isShortScreen ? 'sm' : 'md') : 'xl';
   const cardBorderRadius = isWeb ? 12 : perfectSize(15);
 

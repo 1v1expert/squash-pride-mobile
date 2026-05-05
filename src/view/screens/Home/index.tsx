@@ -18,10 +18,10 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {height} = useWindowDimensions();
   const isShortScreen = height < 820;
   const calendarHeight = Math.max(
-    88,
-    Math.min(130, height * (isShortScreen ? 0.11 : 0.13)),
+    isShortScreen ? 72 : 88,
+    Math.min(isShortScreen ? 108 : 130, height * (isShortScreen ? 0.095 : 0.13)),
   );
-  const cardContainerVerticalPadding = isShortScreen ? 10 : 20;
+  const cardContainerVerticalPadding = isShortScreen ? 8 : 18;
   const cardContainerSpace = isShortScreen ? 'sm' : 'md';
   const {user} = useUser();
   const {resetStack} = useTraining();
@@ -57,7 +57,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             width="$full"
             height={
               Platform.OS === 'android'
-                ? Math.max(92, calendarHeight + 14)
+                ? Math.max(84, calendarHeight + 10)
                 : calendarHeight
             }>
             <CustomWeekCalendar />

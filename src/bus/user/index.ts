@@ -6,26 +6,24 @@ import {useSelector, useDispatch} from '../../tools/hooks';
 import {
   LoginForm,
   PayloadFeedbackData,
-  PayloadResetPasswordData,
   PayloadUserData,
   RegisterForm,
-  ResetPassword
+  ResetPassword,
 } from './types';
 import {login} from './thunk/login';
 import {getUserData} from './thunk/getUserData';
-import {
-  clearTokens,
-  refreshToken,
-} from '../../init/axios/baseService';
+import {clearTokens, refreshToken} from '../../init/axios/baseService';
 import {load} from '../../utils/storage';
 import {register} from './thunk/register';
 import {refresh} from './thunk/refresh';
 import {updateUserData} from './thunk/updateUser';
 import {sendFeedbackData} from './thunk/sendFeedback';
-import {resetPassword, resetPasswordData} from "./thunk/resetPassword";
+import {resetPasswordData} from './thunk/resetPassword';
 
 // Types
 // import * as types from './types';
+
+let refreshInFlight: Promise<unknown> | null = null;
 
 export const useUser = () => {
   const dispatch = useDispatch();
@@ -37,19 +35,37 @@ export const useUser = () => {
 
   const logout = useCallback(async () => {
     clearTokens();
+    refreshInFlight = null;
     dispatch(userActions.setAuthorize(false));
   }, [dispatch]);
 
-  const tokenRefresh = useCallback(async (callback?: () => void) => {
-    const token = await load(refreshToken);
+  const tokenRefresh = useCallback(
+    async (callback?: () => void | Promise<unknown>) => {
+      const token = await load(refreshToken);
 
-    return (
-      token &&
-      dispatch(refresh({refreshToken: token}))
-        .unwrap()
-        .then(() => callback && callback())
-    );
-  }, [dispatch]);
+      if (!token) {
+        dispatch(userActions.setAuthorize(false));
+        return false;
+      }
+
+      if (!refreshInFlight) {
+        refreshInFlight = dispatch(refresh({refreshToken: token}))
+          .unwrap()
+          .finally(() => {
+            refreshInFlight = null;
+          });
+      }
+
+      try {
+        await refreshInFlight;
+        return callback ? callback() : true;
+      } catch {
+        dispatch(userActions.setAuthorize(false));
+        return false;
+      }
+    },
+    [dispatch],
+  );
 
   const fetchUserData = useCallback(async () => {
     dispatch(getUserData());
