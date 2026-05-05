@@ -1,10 +1,16 @@
 import {
   Box,
+  Center,
   VStack,
   //  HStack
 } from '@gluestack-ui/themed';
 import React, {FC} from 'react';
-import {Dimensions, Image, ImageBackground, StyleSheet} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native';
 import {images} from '../../../../assets';
 import SafeAreaLayout from '../../../components/SafeAreaLayout';
 import {PublicStackScreenProps} from '../../../navigation/types';
@@ -14,8 +20,6 @@ import {useCustomTranslation} from '../../../../tools/hooks/useTranslation';
 // import Google from '../../../../assets/svg/google';
 // import Facebook from '../../../../assets/svg/facebook';
 // import Vk from '../../../../assets/svg/vk';
-
-const width = Dimensions.get('screen').width;
 
 // const GoogleIcon = (e: {color: string}) => {
 //   return <Google width={25} height={25} {...e} />;
@@ -28,6 +32,17 @@ const width = Dimensions.get('screen').width;
 // };
 
 const Main: FC<PublicStackScreenProps> = ({navigation}) => {
+  const {width, height} = useWindowDimensions();
+  const isShortScreen = height < 760;
+  const logoSize = Math.min(
+    width * (isShortScreen ? 0.34 : 0.45),
+    isShortScreen ? 160 : 240,
+  );
+  const isSmallScreen = width < 500;
+  const adaptivePadding = isSmallScreen ? 20 : 40;
+  const adaptiveVerticalPadding = isShortScreen ? 12 : 28;
+  const buttonBlockSpace = isShortScreen ? 'md' : 'xl';
+  const buttonHeight = isShortScreen ? 44 : 50;
   const {navigate} = navigation;
   const {t} = useCustomTranslation();
   return (
@@ -37,29 +52,42 @@ const Main: FC<PublicStackScreenProps> = ({navigation}) => {
         resizeMode="cover"
         style={styles.background}>
         <SafeAreaLayout top bottom style={styles.container}>
-          <VStack flex={1} justifyContent="space-around">
-            <Image
-              source={images.logo}
-              resizeMode="contain"
-              style={{
-                width: width,
-                height: width,
-              }}
-            />
-            <VStack paddingHorizontal={40} space="4xl">
-              <VStack space="xl">
+          <VStack
+            flex={1}
+            justifyContent="space-between"
+            paddingTop={adaptiveVerticalPadding}
+            paddingBottom={adaptiveVerticalPadding}
+            style={styles.contentContainer}>
+            <Center>
+              <Image
+                source={images.logo}
+                resizeMode="contain"
+                style={{
+                  width: logoSize,
+                  height: logoSize,
+                }}
+              />
+            </Center>
+            <VStack
+              paddingHorizontal={adaptivePadding}
+              space={isSmallScreen || isShortScreen ? 'sm' : '2xl'}
+              width="$full">
+              <VStack space={buttonBlockSpace}>
                 <CustomButton
                   title={t('public.mainScreen.registrationButton')}
+                  height={buttonHeight}
                   onPress={() => navigate(Book.Registration)}
                 />
 
                 <CustomButton
                   title={t('public.mainScreen.loginButton')}
+                  height={buttonHeight}
                   onPress={() => navigate(Book.Login)}
                 />
                 <CustomButton
-                    title={t('public.mainScreen.resetPasswordButton')}
-                    onPress={() => navigate(Book.ResetPassword)}
+                  title={t('public.mainScreen.resetPasswordButton')}
+                  height={buttonHeight}
+                  onPress={() => navigate(Book.ResetPassword)}
                 />
               </VStack>
               {/* <HStack alignItems="center" justifyContent="space-around">
@@ -82,7 +110,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
+    alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  contentContainer: {
+    width: '100%',
+    maxWidth: 520,
   },
 });
 export default Main;

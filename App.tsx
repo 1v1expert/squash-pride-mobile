@@ -9,6 +9,8 @@ import SplashScreen from 'react-native-splash-screen';
 import {Platform, View} from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
+const appContainerStyle = {flex: 1};
+
 const App = () => {
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -24,7 +26,7 @@ const App = () => {
     <ReduxProvider store={store}>
       <SafeAreaProvider>
         <GluestackUIProvider config={config}>
-          <View style={{flex: 1}}>
+          <View style={appContainerStyle}>
             <Navigation />
           </View>
         </GluestackUIProvider>

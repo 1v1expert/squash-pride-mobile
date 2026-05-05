@@ -8,15 +8,21 @@ import {Book} from '../../navigation/book';
 import {useUser} from '../../../bus/user';
 
 import CustomWeekCalendar from '../../components/CustomWeekCalendar';
-import {Dimensions, Platform} from 'react-native';
+import {Platform, useWindowDimensions} from 'react-native';
 import {fontSize} from '../../../assets/fontsSize';
 import {useTraining} from '../../../bus/training';
 import {images} from '../../../assets';
 
-const height = Dimensions.get('screen').height;
-
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate, addListener} = navigation;
+  const {height} = useWindowDimensions();
+  const isShortScreen = height < 820;
+  const calendarHeight = Math.max(
+    88,
+    Math.min(130, height * (isShortScreen ? 0.11 : 0.13)),
+  );
+  const cardContainerVerticalPadding = isShortScreen ? 10 : 20;
+  const cardContainerSpace = isShortScreen ? 'sm' : 'md';
   const {user} = useUser();
   const {resetStack} = useTraining();
   const {t} = useCustomTranslation();
@@ -49,14 +55,20 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             justifyContent="center"
             bgColor="#131517"
             width="$full"
-            height={(Platform.OS === 'android' ? 0.16 : 0.13) * height}>
+            height={
+              Platform.OS === 'android'
+                ? Math.max(92, calendarHeight + 14)
+                : calendarHeight
+            }>
             <CustomWeekCalendar />
           </VStack>
           <VStack
             flex={1}
             width="$full"
             paddingHorizontal={20}
-            justifyContent="space-evenly">
+            justifyContent="space-evenly"
+            space={cardContainerSpace}
+            paddingVertical={cardContainerVerticalPadding}>
             <TouchableContainer
               text={t('private.homeScreen.startTraining')}
               onPress={() =>

@@ -14,10 +14,8 @@ import {
 import {login} from './thunk/login';
 import {getUserData} from './thunk/getUserData';
 import {
-  accessToken,
   clearTokens,
   refreshToken,
-  setAuthHeader,
 } from '../../init/axios/baseService';
 import {load} from '../../utils/storage';
 import {register} from './thunk/register';
@@ -54,11 +52,6 @@ export const useUser = () => {
   }, [dispatch]);
 
   const fetchUserData = useCallback(async () => {
-    const access_token = await load(accessToken);
-
-    if (access_token) {
-      setAuthHeader(access_token);
-    }
     dispatch(getUserData());
   }, [dispatch]);
 

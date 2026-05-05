@@ -5,6 +5,7 @@ import {
   ButtonText,
 } from '@gluestack-ui/themed';
 import React, {FC, useState} from 'react';
+import {Platform, useWindowDimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 
@@ -44,6 +45,16 @@ const CustomButton: FC<CustomButtonProps> = ({
   style,
 }) => {
   const [pressed, setPressed] = useState(false);
+  const {width: screenWidth} = useWindowDimensions();
+  const isWeb = Platform.OS === 'web';
+  const maxButtonWidth = Math.min(screenWidth - 40, 320);
+  const normalizedButtonMaxWidth = Math.max(180, maxButtonWidth);
+  const normalizedHeight =
+    typeof height === 'number'
+      ? isWeb
+        ? height
+        : perfectSize(height)
+      : undefined;
 
   const handlePressIn = () => setPressed(true);
   const handlePressOut = () => setPressed(false);
@@ -77,9 +88,12 @@ const CustomButton: FC<CustomButtonProps> = ({
         disabled={disabled}
         size={size}
         bgColor="inherit"
-        minHeight={perfectSize(50)}
-        height={height && perfectSize(height)}
-        width={width && perfectSize(width)}
+        minHeight={normalizedHeight || (isWeb ? 50 : perfectSize(50))}
+        height={normalizedHeight}
+        width={width && (isWeb ? width : perfectSize(width))}
+        maxWidth={
+          isWeb ? normalizedButtonMaxWidth : perfectSize(maxButtonWidth)
+        }
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}>
@@ -94,7 +108,7 @@ const CustomButton: FC<CustomButtonProps> = ({
           <ButtonText
             color={pressed ? '#000' : '#fff'}
             fontFamily="Century Gothic"
-            fontSize={perfectSize(17)}>
+            fontSize={isWeb ? 17 : perfectSize(17)}>
             {title}
           </ButtonText>
         )}
