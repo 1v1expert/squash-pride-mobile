@@ -1,7 +1,6 @@
 import {Box, HStack, Image, Pressable, Text} from '@gluestack-ui/themed';
 import React, {FC, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {
   ImageSourcePropType,
   Platform,
@@ -19,16 +18,24 @@ const TouchableContainer: FC<TouchableContainerProps> = ({
   icon,
 }) => {
   const [focus, setFocus] = useState(false);
-  const {height} = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isWeb = Platform.OS === 'web';
   const isShortScreen = height < 820;
-  const cardPadding = isWeb ? (isShortScreen ? 13 : 16) : perfectSize(20);
-  const iconBoxSize = isWeb ? (isShortScreen ? 48 : 54) : perfectSize(60);
-  const iconSize = isWeb ? (isShortScreen ? 28 : 32) : perfectSize(40);
-  const titleFontSize = isWeb ? (isShortScreen ? 16 : 17) : perfectSize(20);
-  const titleLineHeight = isWeb ? (isShortScreen ? 21 : 24) : 30;
+
+  // Responsive scaling based on container width
+  const scaleFactor = isWeb
+    ? Math.min(Math.max(width * 0.85, 380), 540) / 460 // normalize to 460px base
+    : 1;
+
+  const cardPadding = Math.round((isWeb ? 16 : 20) * scaleFactor);
+  const iconBoxSize = Math.round((isWeb ? 56 : 60) * scaleFactor);
+  const iconSize = Math.round((isWeb ? 34 : 40) * scaleFactor);
+  const titleFontSize = Math.round((isWeb ? 17 : 20) * scaleFactor);
+  const titleLineHeight = Math.round((isWeb ? 24 : 30) * scaleFactor);
   const horizontalSpace = isWeb ? (isShortScreen ? 'sm' : 'md') : 'xl';
-  const cardBorderRadius = isWeb ? 12 : perfectSize(15);
+  const cardBorderRadius = isWeb
+    ? Math.round(12 * scaleFactor)
+    : Math.round(15 * scaleFactor);
 
   return (
     <Pressable

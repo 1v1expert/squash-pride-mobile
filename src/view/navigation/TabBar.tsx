@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {LayoutChangeEvent, Platform, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  LayoutChangeEvent,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {HStack, Text} from '@gluestack-ui/themed';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
@@ -7,7 +13,7 @@ import {Image} from '@gluestack-ui/themed';
 // import {tabBarIcons} from './tabBarIcons';
 import {perfectSize} from '../../tools/helpers/perfectSize';
 import {useDevice} from '../../bus/device';
-import {images} from "../../assets";
+import {images} from '../../assets';
 
 const tabBarIcons: any = {
   homescreens: {
@@ -39,79 +45,90 @@ const tabBarIcons: any = {
 const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const {bottom} = useSafeAreaInsets();
   const {fullscreen} = useDevice();
+  const {width: screenWidth} = useWindowDimensions();
   const [containerWidth, setContainerWidth] = useState(0);
+
+  // Responsive scaling for tab bar
+  const isWeb = Platform.OS === 'web';
+  const scaleFactor = isWeb
+    ? Math.min(Math.max(screenWidth * 0.85, 380), 540) / 460
+    : 1;
+
+  const iconSize = isWeb ? Math.round(18 * scaleFactor) : perfectSize(20);
+  const fontSize = isWeb ? Math.round(9 * scaleFactor) : perfectSize(10);
+  const paddingVertical = isWeb ? Math.round(10 * scaleFactor) : perfectSize(15);
 
   const handleContainerLayout = (event: LayoutChangeEvent) => {
     setContainerWidth(event.nativeEvent.layout.width);
   };
 
   return (
-      <HStack
-          bgColor="#131517"
-          alignItems="center"
-          justifyContent="space-evenly"
-          pt={15}
-          pb={Platform.OS === 'ios' ? bottom : perfectSize(15)}
-          display={fullscreen ? 'none' : 'flex'}
-          onLayout={handleContainerLayout}>
-        {state.routes.map((route, index) => {
-          const {options} = descriptors[route.key];
-          const isFocused = state.index === index;
-          const itemCount = state.routes.length;
+    <HStack
+      bgColor="#131517"
+      alignItems="center"
+      justifyContent="space-evenly"
+      pt={12}
+      pb={Platform.OS === 'ios' ? bottom : paddingVertical}
+      display={fullscreen ? 'none' : 'flex'}
+      onLayout={handleContainerLayout}>
+      {state.routes.map((route, index) => {
+        const {options} = descriptors[route.key];
+        const isFocused = state.index === index;
+        const itemCount = state.routes.length;
 
-          // Расчет максимальной ширины для каждого элемента
-          // Можно отнять padding/margin если они есть
-          const maxItemWidth = containerWidth / itemCount - 10;
+        // Расчет максимальной ширины для каждого элемента
+        // Можно отнять padding/margin если они есть
+        const maxItemWidth = containerWidth / itemCount - 10;
 
-          const onPress = () => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
 
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
 
-          return (
-              <TouchableOpacity
-                  accessibilityRole="button"
-                  accessibilityState={isFocused ? {selected: true} : {}}
-                  accessibilityLabel={options.tabBarAccessibilityLabel}
-                  testID={options.tabBarTestID}
-                  onPress={onPress}
-                  key={index}
-                  style={styles.tab}>
-                <Image
-                    width={perfectSize(20)}
-                    height={perfectSize(20)}
-                    resizeMode="contain"
-                    source={
-                      isFocused
-                          ? tabBarIcons[route.name.toLowerCase()].focused
-                          : tabBarIcons[route.name.toLowerCase()].default
-                    }
-                    alt=""
-                />
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            key={index}
+            style={styles.tab}>
+            <Image
+              width={iconSize}
+              height={iconSize}
+              resizeMode="contain"
+              source={
+                isFocused
+                  ? tabBarIcons[route.name.toLowerCase()].focused
+                  : tabBarIcons[route.name.toLowerCase()].default
+              }
+              alt=""
+            />
 
-                {maxItemWidth > 60 && (
-                    <Text
-                        variant="primary"
-                        lineHeight={13}
-                        fontSize={perfectSize(10)}
-                        mt={3}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        style={[styles.text, {maxWidth: maxItemWidth - 20}]}>
-                      {options.tabBarLabel?.toString()}
-                    </Text>
-                )}
-              </TouchableOpacity>
-          );
-        })}
-      </HStack>
+            {maxItemWidth > 60 && (
+              <Text
+                variant="primary"
+                lineHeight={Math.round(11 * scaleFactor)}
+                fontSize={fontSize}
+                mt={3}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={[styles.text, {maxWidth: maxItemWidth - 20}]}>
+                {options.tabBarLabel?.toString()}
+              </Text>
+            )}
+          </TouchableOpacity>
+        );
+      })}
+    </HStack>
   );
 };
 

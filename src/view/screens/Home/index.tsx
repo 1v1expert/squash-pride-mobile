@@ -15,13 +15,21 @@ import {images} from '../../../assets';
 
 const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {navigate, addListener} = navigation;
-  const {height} = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isShortScreen = height < 820;
+
+  // Responsive scaling based on container width
+  const scaleFactor = Math.min(Math.max(width * 0.85, 380), 540) / 460;
+
+  // Compact calendar height - reduced significantly to give more space to menu cards
   const calendarHeight = Math.max(
-    isShortScreen ? 72 : 88,
-    Math.min(isShortScreen ? 108 : 130, height * (isShortScreen ? 0.095 : 0.13)),
+    Math.round(60 * scaleFactor),
+    Math.min(Math.round(85 * scaleFactor), height * 0.08),
   );
-  const cardContainerVerticalPadding = isShortScreen ? 8 : 18;
+
+  // Padding around containers - reduced to maximize card visibility
+  const headerPadding = Math.round(12 * scaleFactor);
+  const cardContainerVerticalPadding = Math.round(8 * scaleFactor);
   const cardContainerSpace = isShortScreen ? 'sm' : 'md';
   const {user} = useUser();
   const {resetStack} = useTraining();
@@ -43,7 +51,8 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             bgColor="#131517"
             width="$full"
             alignItems="center"
-            paddingHorizontal={20}
+            paddingHorizontal={headerPadding}
+            paddingVertical={Math.round(8 * scaleFactor)}
             space="xs">
             <Text variant="primary" fontSize={fontSize.title}>
               {t('private.homeScreen.title')} {user.first_name}!
@@ -57,7 +66,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             width="$full"
             height={
               Platform.OS === 'android'
-                ? Math.max(84, calendarHeight + 10)
+                ? Math.max(Math.round(68 * scaleFactor), calendarHeight + 4)
                 : calendarHeight
             }>
             <CustomWeekCalendar />
@@ -65,7 +74,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           <VStack
             flex={1}
             width="$full"
-            paddingHorizontal={20}
+            paddingHorizontal={headerPadding}
             justifyContent="space-evenly"
             space={cardContainerSpace}
             paddingVertical={cardContainerVerticalPadding}>

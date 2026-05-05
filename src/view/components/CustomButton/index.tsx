@@ -47,14 +47,16 @@ const CustomButton: FC<CustomButtonProps> = ({
   const [pressed, setPressed] = useState(false);
   const {width: screenWidth} = useWindowDimensions();
   const isWeb = Platform.OS === 'web';
-  const maxButtonWidth = Math.min(screenWidth - 40, 320);
-  const normalizedButtonMaxWidth = Math.max(180, maxButtonWidth);
+
+  // Responsive button sizing: scale proportionally with container width
+  const scaleFactor = isWeb
+    ? Math.min(Math.max(screenWidth * 0.85, 380), 540) / 460 // normalize to 460px base
+    : 1;
+  const baseHeight = 52;
+  const maxButtonWidth = screenWidth - 40;
   const normalizedHeight =
-    typeof height === 'number'
-      ? isWeb
-        ? height
-        : perfectSize(height)
-      : undefined;
+    typeof height === 'number' ? Math.round(height * scaleFactor) : baseHeight;
+  const buttonFontSize = Math.round(16 * scaleFactor);
 
   const handlePressIn = () => setPressed(true);
   const handlePressOut = () => setPressed(false);
@@ -88,12 +90,10 @@ const CustomButton: FC<CustomButtonProps> = ({
         disabled={disabled}
         size={size}
         bgColor="inherit"
-        minHeight={normalizedHeight || (isWeb ? 50 : perfectSize(50))}
+        minHeight={normalizedHeight}
         height={normalizedHeight}
         width={width && (isWeb ? width : perfectSize(width))}
-        maxWidth={
-          isWeb ? normalizedButtonMaxWidth : perfectSize(maxButtonWidth)
-        }
+        maxWidth={maxButtonWidth}
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}>
@@ -108,7 +108,7 @@ const CustomButton: FC<CustomButtonProps> = ({
           <ButtonText
             color={pressed ? '#000' : '#fff'}
             fontFamily="Century Gothic"
-            fontSize={isWeb ? 17 : perfectSize(17)}>
+            fontSize={buttonFontSize}>
             {title}
           </ButtonText>
         )}
