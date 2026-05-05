@@ -5,7 +5,7 @@ import {FormProvider, useForm} from 'react-hook-form';
 import PeopleAccordion from '../../components/PeopleAccordion';
 import GroupAccordion from '../../components/GroupAccordion';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {Platform, TouchableOpacity, useWindowDimensions} from 'react-native';
 import {filterSchema, filterSchemaWithGroup} from './schema';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
@@ -20,8 +20,6 @@ type FilterFormProps = {
   onPress: (e: FilterFormType) => void;
 };
 
-const width = Dimensions.get('screen').width;
-
 const FilterForm = ({
   onPress,
   required,
@@ -29,6 +27,14 @@ const FilterForm = ({
   withGroup,
 }: FilterFormProps) => {
   const {t} = useCustomTranslation();
+  const {width} = useWindowDimensions();
+  const isWeb = Platform.OS === 'web';
+  const contentHorizontalPadding = isWeb
+    ? Math.max(16, Math.min(30, width * 0.04))
+    : 30;
+  const footerHorizontalPadding = isWeb
+    ? Math.max(16, Math.min(50, width * 0.08))
+    : 50;
   // const {filters} = useTraining();
 
   const methods = useForm<FilterFormType>({
@@ -59,8 +65,9 @@ const FilterForm = ({
         <VStack
           flex={1}
           pt={20}
-          paddingHorizontal={30}
-          width={width}
+          alignSelf="center"
+          width="100%"
+          paddingHorizontal={contentHorizontalPadding}
           space="xl">
           <FormProvider {...methods}>
             {/*<LevelAccordion name="level" error={errors.level} />*/}
@@ -76,12 +83,12 @@ const FilterForm = ({
         </VStack>
       </ScrollView>
       <HStack
-        width={width}
+        width="100%"
         bgColor="#1B1E20"
         height={perfectSize(75)}
         alignItems="center"
         justifyContent="space-between"
-        paddingHorizontal={50}
+        paddingHorizontal={footerHorizontalPadding}
         space="xl">
         <TouchableOpacity
           onPress={() =>

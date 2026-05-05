@@ -16,7 +16,7 @@ import TooltipModal from "../components/TooltipModal";
 const Stack = createNativeStackNavigator<PrivateStackParamList>();
 
 export const Private: FC = () => {
-  const {fetchUser} = useUser();
+  const {fetchUserData} = useUser();
   const {
     fetchGroup,
     fetchRules,
@@ -32,7 +32,7 @@ export const Private: FC = () => {
 
   useEffect(() => {
     const init = () => {
-      fetchUser().then(async () => {
+      Promise.resolve(fetchUserData()).then(async () => {
         fetchGroup();
         fetchRules();
         fetchTechniques();

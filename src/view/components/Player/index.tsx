@@ -11,7 +11,6 @@ import {HStack} from '@gluestack-ui/themed';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Button,
-  Dimensions,
   Pressable,
   StyleSheet,
   TouchableOpacity,
@@ -23,17 +22,15 @@ import {ExerciseType} from '../../../bus/training/types';
 import StackPlayer from '../StackPlayer';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
-import {createThumbnail} from 'react-native-create-thumbnail';
 import {backgroundColor} from 'react-native-calendars/src/style';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import Next from '../../../assets/svg/next';
 import Prev from '../../../assets/svg/prev';
-
-const width = Dimensions.get('screen').width;
-const heigth = Dimensions.get('screen').height;
+import {getVideoThumbnail} from '../../../tools/helpers/videoPreview';
 
 type PlayerProps = {
   item: ExerciseType;
+  contentWidth: number;
   position: number;
   scrollToIndex: (e: number) => void;
   currentTime: number;
@@ -46,6 +43,7 @@ type PlayerProps = {
 };
 const Player = ({
   item,
+  contentWidth,
   position,
   scrollToIndex,
   currentTime,
@@ -72,17 +70,11 @@ const Player = ({
 
   useEffect(() => {
     const getThumbnail = async () => {
-      await createThumbnail({
-        url: uri,
-        timeStamp: 0,
-        format: 'jpeg',
-        cacheName: item.uid,
-      }).then(response => {
-        setThumbnail(response.path);
-      });
+      const path = await getVideoThumbnail(item.video, item.uid);
+      setThumbnail(path);
     };
     getThumbnail();
-  }, [item.uid, uri]);
+  }, [item.uid, item.video]);
 
   useEffect(() => {
     setVideoStarted(false);
@@ -122,7 +114,7 @@ const Player = ({
     <>
       <HStack
         bgColor="#393A40"
-        width={width}
+        width={contentWidth}
         alignItems="center"
         justifyContent="center">
         {item && (
@@ -130,7 +122,7 @@ const Player = ({
             key={position}
             ref={videoPlayerRef}
             video={{uri}}
-            style={[styles.player, {width: width}]}
+            style={[styles.player, {width: contentWidth}]}
             thumbnail={thumbnail ? {uri: thumbnail} : undefined}
             pauseOnPress
             // resizeMode="stretch"
@@ -169,7 +161,7 @@ const Player = ({
           />
         </TouchableOpacity>
           <HStack
-            width={width}
+            width={contentWidth}
             justifyContent="space-between"
             alignItems="center"
             position="absolute">

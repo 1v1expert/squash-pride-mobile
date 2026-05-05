@@ -24,7 +24,7 @@ const TouchableContainer: FC<TouchableContainerProps> = ({
 
   // Responsive scaling based on container width
   const scaleFactor = isWeb
-    ? Math.min(Math.max(width * 0.85, 380), 540) / 460 // normalize to 460px base
+    ? Math.min(Math.max(width * 0.85, 380), 760) / 460 // normalize to 460px base
     : 1;
 
   const cardPadding = Math.round((isWeb ? 16 : 20) * scaleFactor);

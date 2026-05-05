@@ -18,10 +18,8 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   const {height, width} = useWindowDimensions();
 
   // Responsive scaling based on container width
-  const scaleFactor = Math.min(Math.max(width * 0.85, 380), 540) / 460;
+  const scaleFactor = Math.min(Math.max(width * 0.85, 380), 760) / 460;
 
-  // Compact calendar height - minimal to ensure 4 cards are always visible
-  // Max 70px even on large screens
   const calendarHeight = Math.max(
     Math.round(50 * scaleFactor),
     Math.min(Math.round(70 * scaleFactor), height * 0.06),
@@ -65,6 +63,7 @@ const Home: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             justifyContent="center"
             bgColor="#131517"
             width="$full"
+            overflow="hidden"
             height={
               Platform.OS === 'android'
                 ? Math.max(Math.round(60 * scaleFactor), calendarHeight + 2)

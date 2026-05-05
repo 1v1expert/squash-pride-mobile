@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     width: '100%',
-    maxWidth: 520,
+    maxWidth: 700,
   },
 });
 export default Main;

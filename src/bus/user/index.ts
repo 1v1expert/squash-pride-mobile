@@ -113,6 +113,7 @@ export const useUser = () => {
     isAuthorized: useSelector(({user}) => user.isAuthorized),
     login: loginUser,
     register: registerUser,
+    fetchUserData,
     fetchUser,
     setAuthorize,
     logout,

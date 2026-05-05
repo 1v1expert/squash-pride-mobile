@@ -13,7 +13,7 @@ import {
 import React, {FC, useEffect, useRef, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
-import {Dimensions, Pressable, StyleSheet} from 'react-native';
+import {Pressable, StyleSheet, useWindowDimensions} from 'react-native';
 import {MediaViewerScreenProps} from '../../navigation/types';
 import {images} from '../../../assets';
 import VideoPlayer from 'react-native-video-player';
@@ -22,22 +22,24 @@ import Orientation from 'react-native-orientation-locker';
 import FullscreenPlayer from '../../components/FullscreenPlayer';
 import {fontSize} from '../../../assets/fontsSize';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDevice} from '../../../bus/device';
 import CalendarModal from "../../components/CalendarModal";
 import {Book} from "../../navigation/book";
 import {useCalendar} from "../../../bus/calendar";
+import {getVideoThumbnail} from '../../../tools/helpers/videoPreview';
 
 const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
   const {navigate, goBack} = navigation;
   const {fullscreen, setScreenMode} = useDevice();
   const videoPlayerRef = useRef<VideoPlayer>(null);
   const {i18n} = useCustomTranslation();
+  const {width: windowWidth, height: windowHeight} = useWindowDimensions();
+  const contentWidth = Math.min(Math.max(windowWidth * 0.85, 380), 760);
+  const playerHeight = Math.min(contentWidth * 0.56, Math.max(210, windowHeight * 0.42));
   const {title, ru_description, description, video, uid, width, height, from} = route.params;
   const {addEvent, selected} = useCalendar();
   const [videoStarted, setVideoStarted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
-  const [portraitWidth] = useState(Dimensions.get('screen').width);
   const [loader, setLoader] = useState(false);
   const [thumbnail, setThumbnail] = useState<string>();
   const [calendarIsVisible, setCalendarIsVisible] = useState(false);
@@ -47,14 +49,8 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
 
   useEffect(() => {
     const getThumbnail = async () => {
-      await createThumbnail({
-        url: video,
-        timeStamp: 0,
-        format: 'jpeg',
-        cacheName: uid,
-      }).then(response => {
-        setThumbnail(response.path);
-      });
+      const path = await getVideoThumbnail(video, uid);
+      setThumbnail(path);
     };
     getThumbnail();
     Orientation.lockToPortrait();
@@ -105,15 +101,16 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
           />
         }
       >
-        <VStack flex={1}>
+        <VStack flex={1} minHeight={0}>
           <VStack
             flex={1}
-            justifyContent="space-between"
+            minHeight={0}
             alignItems="center"
-            width={portraitWidth}>
+            width={contentWidth}>
             <HStack
               bgColor="#393A40"
-              width={portraitWidth}
+              width={contentWidth}
+              height={playerHeight}
               alignItems="center"
               justifyContent="center">
               <VideoPlayer
@@ -125,7 +122,8 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                 style={[
                   styles.videoPlayer,
                   {
-                    width: portraitWidth,
+                    width: contentWidth,
+                    height: playerHeight,
                   },
                 ]}
                 thumbnail={thumbnail ? {uri: thumbnail} : undefined}
@@ -168,7 +166,10 @@ const MediaViewer: FC<MediaViewerScreenProps> = ({navigation, route}) => {
                 </Pressable>
               )}
             </HStack>
-            <ScrollView>
+            <ScrollView
+              style={{flex: 1, width: '100%'}}
+              contentContainerStyle={{paddingBottom: 16}}
+              keyboardShouldPersistTaps="handled">
               <Text
                 variant="primary"
                 textAlign="auto"

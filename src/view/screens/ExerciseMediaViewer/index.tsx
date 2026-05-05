@@ -13,11 +13,11 @@ import React, {FC, useEffect, useRef, useState} from 'react';
 import ViewContainer from '../../components/ViewContainer';
 import CustomButton from '../../components/CustomButton';
 import {
-  Dimensions,
   Platform,
   Pressable,
   StyleSheet,
   TouchableOpacity,
+  useWindowDimensions,
 } from 'react-native';
 import {ExerciseMediaViewerScreenProps} from '../../navigation/types';
 import VideoPlayer from 'react-native-video-player';
@@ -32,7 +32,7 @@ import {useTraining} from '../../../bus/training';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
-import {createThumbnail} from 'react-native-create-thumbnail';
+import {getVideoThumbnail} from '../../../tools/helpers/videoPreview';
 
 const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   navigation,
@@ -41,6 +41,9 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const {goBack} = navigation;
   const {item, fromFavorites} = route.params;
   const {bottom} = useSafeAreaInsets();
+  const {width: windowWidth, height: windowHeight} = useWindowDimensions();
+  const contentWidth = Math.min(Math.max(windowWidth * 0.85, 380), 760);
+  const playerHeight = Math.min(contentWidth * 0.56, Math.max(190, windowHeight * 0.34));
   const {t, i18n} = useCustomTranslation();
   const videoPlayerRef = useRef<VideoPlayer>(null);
 
@@ -60,7 +63,6 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
   const [videoStarted, setVideoStarted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0.01);
-  const [portraitWidth] = useState(Dimensions.get('screen').width);
   const [thumbnail, setThumbnail] = useState<string>();
 
   const uri = item.video.includes('https')
@@ -72,14 +74,8 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
 
   useEffect(() => {
     const getThumbnail = async () => {
-      await createThumbnail({
-        url: item.video,
-        timeStamp: 0,
-        format: 'jpeg',
-        cacheName: item.uid,
-      }).then(response => {
-        setThumbnail(response.path);
-      });
+      const path = await getVideoThumbnail(item.video, item.uid);
+      setThumbnail(path);
     };
     getThumbnail();
   }, [item.uid, item.video]);
@@ -138,12 +134,13 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
         }>
         <VStack
           flex={1}
-          justifyContent="space-between"
+          minHeight={0}
           alignItems="center"
-          width={portraitWidth}>
+          width={contentWidth}>
           <HStack
             bgColor="#393A40"
-            width={portraitWidth}
+            width={contentWidth}
+            height={playerHeight}
             alignItems="center"
             justifyContent="center">
             <VideoPlayer
@@ -153,7 +150,8 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
               style={[
                 styles.videoPlayer,
                 {
-                  width: portraitWidth,
+                  width: contentWidth,
+                  height: playerHeight,
                 },
               ]}
               thumbnail={thumbnail ? {uri: thumbnail} : undefined}
@@ -215,7 +213,10 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
               </Pressable>
             )}
           </HStack>
-          <ScrollView>
+          <ScrollView
+            style={{flex: 1, width: '100%'}}
+            contentContainerStyle={{paddingBottom: 12}}
+            keyboardShouldPersistTaps="handled">
             <View paddingHorizontal={30} paddingVertical={20}>
               <Text variant="primary" textAlign="auto" fontSize={fontSize.text}>
                 {i18n.language === 'ru' && item.ru_description
@@ -244,7 +245,7 @@ const ExerciseMediaViewer: FC<ExerciseMediaViewerScreenProps> = ({
                 <CustomButton
                   title={selected ? 'Убрать' : 'Добавить'}
                   onPress={onPress}
-                  width={portraitWidth * 0.4}
+                  width={contentWidth * 0.4}
                   disabled={stackOfExercises.length === 4 && !selected}
                 />
               </HStack>

@@ -1,6 +1,6 @@
 import {HStack, Text, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, Platform, StyleSheet, TouchableOpacity, useWindowDimensions} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import {
   Controller,
@@ -17,7 +17,6 @@ import {GroupData} from '../../../bus/training/types';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {fontSize} from '../../../assets/fontsSize';
 
-const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 type GroupAccordionProps = {
@@ -37,6 +36,10 @@ const GroupAccordion = ({
 }: GroupAccordionProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const {t} = useCustomTranslation();
+  const {width} = useWindowDimensions();
+  const horizontalPadding = Platform.OS === 'web'
+    ? Math.max(12, Math.min(24, width * 0.03))
+    : width * 0.03;
   const {control} = useFormContext();
   const {groups} = useTraining();
 
@@ -77,7 +80,7 @@ const GroupAccordion = ({
             <TouchableOpacity onPress={toggleExpand}>
               <HStack
                 bgColor={collapsed ? '#000' : '#F7A936'}
-                paddingHorizontal={width * 0.03}
+                paddingHorizontal={horizontalPadding}
                 minHeight={perfectSize(50)}
                 alignItems="center"
                 justifyContent="space-between">
@@ -90,7 +93,7 @@ const GroupAccordion = ({
             <Collapsible collapsed={collapsed}>
               <VStack
                 bgColor="#393A40"
-                paddingHorizontal={width * 0.03}
+                paddingHorizontal={horizontalPadding}
                 pt={20}
                 maxHeight={height * 0.3}
                 flexWrap="wrap">
@@ -123,7 +126,7 @@ const GroupAccordion = ({
             {collapsed && !!value.length && (
               <HStack
                 bgColor="#393A40"
-                paddingHorizontal={width * 0.03}
+                paddingHorizontal={horizontalPadding}
                 justifyContent="center"
                 flexWrap="wrap">
                 {value.map((group: string, i: number) => {

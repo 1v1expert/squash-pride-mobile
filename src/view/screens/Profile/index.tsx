@@ -6,8 +6,11 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import {
     Keyboard,
+    Platform,
+    ScrollView,
     TouchableOpacity,
     TouchableWithoutFeedback,
+    useWindowDimensions,
 } from 'react-native';
 import {fontSize} from '../../../assets/fontsSize';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -38,6 +41,13 @@ const Profile = () => {
     const {t, i18n} = useCustomTranslation();
     const {addListener} = useNavigation();
     const [isFeedbackMode, setFeedbackMode] = useState(false);
+    const {width} = useWindowDimensions();
+    const isWeb = Platform.OS === 'web';
+    const footerHorizontalPadding = Platform.OS === 'web'
+        ? Math.max(16, Math.min(32, width * 0.04))
+        : perfectSize(50);
+    const footerHeight = isWeb ? 56 : perfectSize(60);
+    const actionsRowHeight = isWeb ? 44 : perfectSize(50);
 
     const methods = useForm<ProfileForm>({
         resolver: yupResolver(profileSchema),
@@ -132,7 +142,10 @@ const Profile = () => {
                 isFeedbackMode
                     ? <FormProvider {...feedbackMethods}>
                         <VStack flex={1} width="$full" justifyContent="space-between">
-                            <VStack pt={20} paddingHorizontal={30}>
+                            <ScrollView
+                                style={{flex: 1, width: '100%'}}
+                                contentContainerStyle={{paddingTop: 20, paddingHorizontal: 30, paddingBottom: 16}}
+                                keyboardShouldPersistTaps="handled">
                                 <CustomInput
                                     name="title"
                                     placeholder={t(
@@ -147,7 +160,7 @@ const Profile = () => {
                                     )}
                                     variant="secondary"
                                 />
-                                <HStack height={perfectSize(50)} justifyContent="center" space="xl">
+                                <HStack height={actionsRowHeight} justifyContent="center" space="xl">
                                     <CustomButton
                                         title={t('private.profileScreen.send')}
                                         onPress={feedbackMethods.handleSubmit(pressSendFeedback)}
@@ -157,13 +170,16 @@ const Profile = () => {
                                         onPress={feedbackMethods.handleSubmit(changeMode)}
                                     />
                                 </HStack>
-                            </VStack>
+                            </ScrollView>
                         </VStack>
                     </FormProvider>
                     : <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <VStack flex={1} width="$full" justifyContent="space-between">
                             <FormProvider {...methods}>
-                                <VStack pt={20} paddingHorizontal={30}>
+                                <ScrollView
+                                    style={{flex: 1, width: '100%'}}
+                                    contentContainerStyle={{paddingTop: 20, paddingHorizontal: 30, paddingBottom: 16}}
+                                    keyboardShouldPersistTaps="handled">
                                     <CustomInput
                                         name="firstName"
                                         placeholder={t(
@@ -213,28 +229,28 @@ const Profile = () => {
                                         )}
                                         error={errors.country}
                                     />
-                                    <HStack height={perfectSize(50)} justifyContent="center">
+                                    <HStack height={actionsRowHeight} justifyContent="center">
                                         <CustomButton
                                             title={t('private.profileScreen.createFeedback')}
                                             onPress={changeMode}
                                         />
                                     </HStack>
-                                </VStack>
+                                </ScrollView>
 
                                 <HStack
-                                    height={perfectSize(60)}
-                                    paddingHorizontal={perfectSize(50)}
+                                    height={footerHeight}
+                                    paddingHorizontal={footerHorizontalPadding}
                                     width="$full"
                                     bgColor="#1B1E20"
                                     alignItems="center"
                                     justifyContent="space-between">
-                                    <TouchableOpacity onPress={handleSubmit(saveChanges)}>
-                                        <Text variant="secondary" fontSize={fontSize.text}>
+                                    <TouchableOpacity style={{flex: 1}} onPress={handleSubmit(saveChanges)}>
+                                        <Text variant="secondary" fontSize={fontSize.body} numberOfLines={1}>
                                             {t('private.profileScreen.saveButton')}
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={logout}>
-                                        <Text variant="secondary" fontSize={fontSize.text}>
+                                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end'}} onPress={logout}>
+                                        <Text variant="secondary" fontSize={fontSize.body} numberOfLines={1}>
                                             {t('private.profileScreen.logoutButton')}
                                         </Text>
                                     </TouchableOpacity>

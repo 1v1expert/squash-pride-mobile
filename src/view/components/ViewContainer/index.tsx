@@ -3,6 +3,7 @@ import React, {FC, PropsWithChildren, ReactNode} from 'react';
 import SafeAreaLayout from '../SafeAreaLayout';
 import {fontSize} from '../../../assets/fontsSize';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
+import {Platform, useWindowDimensions} from 'react-native';
 
 type ViewContainerProps = {
   header?: ReactNode;
@@ -26,21 +27,28 @@ const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
   rightHeaderButton,
   headerContent = 'space-between',
 }) => {
+  const {width} = useWindowDimensions();
+  const isWeb = Platform.OS === 'web';
+  const headerHorizontalPadding = isWeb ? Math.max(20, Math.min(36, width * 0.04)) : 20;
+  const minHeaderHeight = isWeb ? 56 : perfectSize(50);
+  const topPadding = isWeb ? 8 : perfectSize(5);
+  const bottomPadding = isWeb ? 10 : perfectSize(15);
+
   return (
     <Box flex={1} bgColor="#131517">
       <SafeAreaLayout top>
-        <VStack flex={1} alignItems="center" bgColor="#25282D">
+        <VStack flex={1} width="$full" alignItems="center" bgColor="#25282D">
           <HStack
             bgColor="#131517"
             width="$full"
             alignItems="center"
             justifyContent={headerContent}
             space="xl"
-            paddingHorizontal={20}
-            minHeight={perfectSize(50)}
-            pt={perfectSize(5)}
-            paddingBottom={perfectSize(15)}>
-            <HStack minHeight={perfectSize(50)} minWidth={perfectSize(50)}>
+            paddingHorizontal={headerHorizontalPadding}
+            minHeight={minHeaderHeight}
+            pt={topPadding}
+            paddingBottom={bottomPadding}>
+            <HStack minHeight={minHeaderHeight} minWidth={minHeaderHeight}>
               {leftHeaderButton}
             </HStack>
             <VStack justifyContent="center">
@@ -51,7 +59,7 @@ const ViewContainer: FC<PropsWithChildren<ViewContainerProps>> = ({
               )}
               {header}
             </VStack>
-            <HStack minHeight={perfectSize(50)} minWidth={perfectSize(50)}>
+            <HStack minHeight={minHeaderHeight} minWidth={minHeaderHeight}>
               {rightHeaderButton}
             </HStack>
           </HStack>

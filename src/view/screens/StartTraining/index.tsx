@@ -15,12 +15,12 @@ import {HomeScreensStackScreenProps} from '../../navigation/types';
 import CustomButton from '../../components/CustomButton';
 import Indicator from '../../components/Indicator';
 import {
-  Dimensions,
   FlatList,
   NativeScrollEvent,
-  NativeSyntheticEvent, Platform,
+  NativeSyntheticEvent,
   StyleSheet,
   TouchableOpacity,
+  useWindowDimensions,
 } from 'react-native';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
@@ -54,7 +54,8 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
   } = useTraining();
   const scrollRef = React.useRef<FlatList>(null);
   const {setTimeUnit, addEvent, selected} = useCalendar();
-  const [width] = useState(Dimensions.get('screen').width);
+  const {width: windowWidth} = useWindowDimensions();
+  const contentWidth = Math.min(Math.max(windowWidth * 0.85, 380), 760);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [titles, setTitles] = useState<TitlesType[]>([]);
@@ -259,6 +260,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
           </HStack>
           <Player
             item={mainStack[currentIndex]}
+            contentWidth={contentWidth}
             position={currentIndex}
             scrollToIndex={scrollToIndex}
             currentTime={currentTime}
@@ -273,6 +275,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
             ref={scrollRef}
             horizontal
             data={mainStack}
+            style={{width: '100%'}}
             onMomentumScrollEnd={onScrollEnd}
             renderItem={({item}) => {
               return (
@@ -280,7 +283,7 @@ const StartTraining: FC<HomeScreensStackScreenProps> = ({navigation}) => {
                   flex={1}
                   justifyContent="space-between"
                   alignItems="center"
-                  width={width}>
+                  width={contentWidth}>
                   <ScrollView>
                     <Text variant="primary" p={10} fontSize={fontSize.text}>
                       {i18n.language === 'ru' && item.ru_description

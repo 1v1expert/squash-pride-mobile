@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  LayoutChangeEvent,
   Platform,
   StyleSheet,
   TouchableOpacity,
@@ -46,21 +45,20 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const {bottom} = useSafeAreaInsets();
   const {fullscreen} = useDevice();
   const {width: screenWidth} = useWindowDimensions();
-  const [containerWidth, setContainerWidth] = useState(0);
 
   // Responsive scaling for tab bar
   const isWeb = Platform.OS === 'web';
   const scaleFactor = isWeb
-    ? Math.min(Math.max(screenWidth * 0.85, 380), 540) / 460
+    ? Math.min(Math.max(screenWidth * 0.85, 380), 760) / 460
     : 1;
 
   const iconSize = isWeb ? Math.round(18 * scaleFactor) : perfectSize(20);
   const fontSize = isWeb ? Math.round(9 * scaleFactor) : perfectSize(10);
   const paddingVertical = isWeb ? Math.round(10 * scaleFactor) : perfectSize(15);
-
-  const handleContainerLayout = (event: LayoutChangeEvent) => {
-    setContainerWidth(event.nativeEvent.layout.width);
-  };
+  const estimatedContainerWidth = Math.min(
+    Math.max(Math.round(screenWidth * 0.85), 380),
+    760,
+  );
 
   return (
     <HStack
@@ -69,8 +67,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
       justifyContent="space-evenly"
       pt={12}
       pb={Platform.OS === 'ios' ? bottom : paddingVertical}
-      display={fullscreen ? 'none' : 'flex'}
-      onLayout={handleContainerLayout}>
+      display={fullscreen ? 'none' : 'flex'}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;
@@ -78,7 +75,7 @@ const TabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
 
         // Расчет максимальной ширины для каждого элемента
         // Можно отнять padding/margin если они есть
-        const maxItemWidth = containerWidth / itemCount - 10;
+        const maxItemWidth = estimatedContainerWidth / itemCount - 10;
 
         const onPress = () => {
           const event = navigation.emit({

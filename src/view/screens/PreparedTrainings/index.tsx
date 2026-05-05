@@ -6,10 +6,8 @@ import {Book} from "../../navigation/book";
 import CustomButton from "../../components/CustomButton";
 import {ArrowLeftIcon, Spinner, Text} from "@gluestack-ui/themed";
 import ViewContainer from "../../components/ViewContainer";
-import {Dimensions, FlatList} from "react-native";
+import {FlatList} from "react-native";
 import Item from "../../components/Item";
-
-const width = Dimensions.get('screen').width;
 
 const PreparedTrainings: FC<HomeScreensStackScreenProps> = ({navigation, route}) => {
     const {t} = useCustomTranslation();
@@ -51,7 +49,8 @@ const PreparedTrainings: FC<HomeScreensStackScreenProps> = ({navigation, route})
             <FlatList
                 data={preparedTrainings}
                 renderItem={({item}) => <Item item={item} onPress={goToItem} />}
-                style={{width, paddingTop: 20, paddingHorizontal: 20}}
+                style={{width: '100%'}}
+                contentContainerStyle={{paddingTop: 20, paddingHorizontal: 20, paddingBottom: 24}}
             />
         </ViewContainer>
     )

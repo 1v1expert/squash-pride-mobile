@@ -50,7 +50,7 @@ const CustomButton: FC<CustomButtonProps> = ({
 
   // Responsive button sizing: scale proportionally with container width
   const scaleFactor = isWeb
-    ? Math.min(Math.max(screenWidth * 0.85, 380), 540) / 460 // normalize to 460px base
+    ? Math.min(Math.max(screenWidth * 0.85, 380), 760) / 460 // normalize to 460px base
     : 1;
   const baseHeight = 52;
   const maxButtonWidth = screenWidth - 40;

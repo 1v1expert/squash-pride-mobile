@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {Text, View} from '@gluestack-ui/themed';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {DateData} from 'react-native-calendars';
@@ -11,6 +11,7 @@ type CustomWeekCalendarDayProps = DayProps & {
 };
 const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
   const {date, state, marking, onPress} = item;
+  const isWeb = Platform.OS === 'web';
   const today = new Date().getTime();
   const dateTimestamp = date?.timestamp || 0;
   const dateString = date?.dateString || '';
@@ -28,7 +29,9 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
   }, [state]);
 
   return (
-    <TouchableOpacity onPress={() => onPress?.(date)} style={styles.container}>
+    <TouchableOpacity
+      onPress={() => onPress?.(date)}
+      style={[styles.container, isWeb && styles.webContainer]}>
       <View
         bgColor={
           marking?.selected ? 'rgba(251, 197, 110, 0.30)' : 'transparent'
@@ -42,7 +45,10 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
             ? '#F7AB39'
             : '#7F8189'
         }>
-        <Text variant="primary" color={textColor()} fontSize={fontSize.title}>
+        <Text
+          variant="primary"
+          color={textColor()}
+          fontSize={isWeb ? 12 : fontSize.title}>
           {date?.day}
         </Text>
       </View>
@@ -53,6 +59,9 @@ const CustomWeekCalendarDay = (item: CustomWeekCalendarDayProps) => {
 export const styles = StyleSheet.create({
   container: {
     width: '60%',
+  },
+  webContainer: {
+    width: '100%',
   },
 });
 

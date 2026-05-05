@@ -1,6 +1,6 @@
 import {HStack, Text, VStack} from '@gluestack-ui/themed';
 import React, {useEffect, useState} from 'react';
-import {Dimensions, TouchableOpacity} from 'react-native';
+import {Platform, TouchableOpacity, useWindowDimensions} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import PeopleCounter from '../PeopleCounter';
 import {Controller, FieldError, useFormContext} from 'react-hook-form';
@@ -9,8 +9,6 @@ import ChevronUp from '../../../assets/svg/chevron_up';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {perfectSize} from '../../../tools/helpers/perfectSize';
 import {fontSize} from '../../../assets/fontsSize';
-
-const width = Dimensions.get('screen').width;
 
 type PeopleAccordionProps = {
   name: string;
@@ -21,6 +19,10 @@ type PeopleAccordionProps = {
 const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const {t} = useCustomTranslation();
+  const {width} = useWindowDimensions();
+  const horizontalPadding = Platform.OS === 'web'
+    ? Math.max(12, Math.min(24, width * 0.03))
+    : width * 0.03;
   const toggleExpand = () => setCollapsed(prev => !prev);
   const number = [
     t('private.peopleAccordion.number1'),
@@ -45,7 +47,7 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
             <TouchableOpacity onPress={toggleExpand}>
               <HStack
                 bgColor={collapsed ? '#000' : '#F7A936'}
-                paddingHorizontal={width * 0.03}
+                paddingHorizontal={horizontalPadding}
                 minHeight={perfectSize(50)}
                 alignItems="center"
                 justifyContent="space-between">
@@ -58,7 +60,7 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
             <Collapsible collapsed={collapsed}>
               <VStack
                 bgColor="#393A40"
-                paddingHorizontal={width * 0.03}
+                paddingHorizontal={horizontalPadding}
                 minHeight={perfectSize(50)}
                 justifyContent="center">
                 <HStack
@@ -81,7 +83,7 @@ const PeopleAccordion = ({name, defaultValue, error}: PeopleAccordionProps) => {
             {collapsed && !!value && (
               <VStack
                 bgColor="#393A40"
-                paddingHorizontal={width * 0.03}
+                paddingHorizontal={horizontalPadding}
                 minHeight={perfectSize(50)}
                 justifyContent="center">
                 <HStack

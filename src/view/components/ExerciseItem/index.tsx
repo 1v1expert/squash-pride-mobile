@@ -8,7 +8,7 @@ import {ExerciseType} from '../../../bus/training/types';
 import {fontSize} from '../../../assets/fontsSize';
 import {useTraining} from '../../../bus/training';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {createThumbnail} from 'react-native-create-thumbnail';
+import {getVideoThumbnail} from '../../../tools/helpers/videoPreview';
 
 const width = Dimensions.get('screen').width;
 type ExerciseItemProps = {
@@ -25,14 +25,8 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
 
   useEffect(() => {
     const getThumbnail = async () => {
-      await createThumbnail({
-        url: item.video,
-        timeStamp: 0,
-        format: 'jpeg',
-        cacheName: item.uid,
-      }).then(response => {
-        setThumbnail(response.path);
-      });
+      const path = await getVideoThumbnail(item.video, item.uid);
+      setThumbnail(path);
     };
     getThumbnail();
   }, [item.uid, item.video]);
@@ -56,7 +50,7 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
             alt=""
           />
         ) : (
-          <Center
+          <Image
             width={width * 0.3}
             height={width * 0.3}
             bgColor={'#393A40'}
@@ -67,6 +61,8 @@ const ExerciseItem = ({item, selected, onPress}: ExerciseItemProps) => {
             shadowOffset={{width: 0, height: 5}}
             shadowOpacity={0.36}
             shadowRadius={6.68}
+            source={images.logo}
+            alt=""
           />
         )}
         <VStack space="md" flex={1}>

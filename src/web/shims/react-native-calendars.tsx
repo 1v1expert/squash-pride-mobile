@@ -117,7 +117,13 @@ export const CalendarProvider = ({children}: PropsWithChildren<{date?: string; s
   return <>{children}</>;
 };
 
-export const WeekCalendar = ({date, dayComponent, markedDates, onDayPress}: CalendarProps) => {
+export const WeekCalendar = ({
+  date,
+  dayComponent,
+  markedDates,
+  onDayPress,
+  style,
+}: CalendarProps) => {
   const baseDate = useMemo(() => new Date(date || Date.now()), [date]);
   const startDate = new Date(baseDate);
   const offset = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
@@ -130,7 +136,7 @@ export const WeekCalendar = ({date, dayComponent, markedDates, onDayPress}: Cale
   });
 
   return (
-    <View style={styles.weekRow}>
+    <View style={[styles.weekRow, style]}>
       {week.map(day => (
         <View key={day.toISOString()} style={styles.weekItem}>
           {renderDay({day, dayComponent, markedDates, onDayPress})}

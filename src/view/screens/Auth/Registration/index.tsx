@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     width: '100%',
-    maxWidth: 460,
+    maxWidth: 700,
   },
 });
 

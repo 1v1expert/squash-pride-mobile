@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     width: '100%',
-    maxWidth: 460,
+    maxWidth: 700,
   },
 });
 

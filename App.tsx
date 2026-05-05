@@ -11,11 +11,12 @@ import Orientation from 'react-native-orientation-locker';
 
 const App = () => {
   const {width: screenWidth} = useWindowDimensions();
+  const isDesktopWeb = Platform.OS === 'web' && screenWidth >= 900;
 
-  // Dynamic maxWidth: ~85% of screen but constrained between 380-540px
+  // Dynamic maxWidth: ~85% of screen but constrained between 380-760px
   const dynamicMaxWidth = Math.min(
     Math.max(Math.round(screenWidth * 0.85), 380),
-    540,
+    760,
   );
 
   const styles = StyleSheet.create({
@@ -25,13 +26,13 @@ const App = () => {
     appWrapper: {
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: isDesktopWeb ? 'center' : 'stretch',
       backgroundColor: '#131517',
     },
     appContent: {
       flex: 1,
       width: '100%',
-      maxWidth: dynamicMaxWidth,
+      maxWidth: isDesktopWeb ? dynamicMaxWidth : undefined,
       backgroundColor: '#131517',
     },
   });

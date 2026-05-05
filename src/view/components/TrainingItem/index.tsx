@@ -14,8 +14,8 @@ import {Book} from '../../navigation/book';
 import {PrivateStackScreenProps} from '../../navigation/types';
 import TrainingItemEditModal from '../TrainingItemEditModal';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {createThumbnail} from 'react-native-create-thumbnail';
 import TrainingItemTitleEditModal from '../TrainingItemTitleEditModal';
+import {getVideoThumbnail} from '../../../tools/helpers/videoPreview';
 
 const width = Dimensions.get('screen').width;
 
@@ -57,18 +57,15 @@ const TrainingItem = ({
 
   useEffect(() => {
     const getThumbnail = async () => {
-      item.exercise &&
-        (await createThumbnail({
-          url: item.exercise.video,
-          timeStamp: 0,
-          format: 'jpeg',
-          cacheName: item.exercise.uid,
-        }).then(response => {
-          setThumbnail(response.path);
-        }));
+      if (!item.exercise) {
+        return;
+      }
+
+      const path = await getVideoThumbnail(item.exercise.video, item.exercise.uid);
+      setThumbnail(path || '');
     };
     getThumbnail();
-  }, [item.exercise]);
+  }, [item.exercise?.uid, item.exercise?.video]);
 
   const favorite = getFavoriteItem(currentItem);
   let title;

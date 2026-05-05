@@ -4,7 +4,12 @@ import {useCalendar} from '../../../bus/calendar';
 import {Box, HStack, Text, VStack} from '@gluestack-ui/themed';
 import {DAYS_OF_WEEK, MONTHS} from '../../../assets/constants';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import ChevronUp from '../../../assets/svg/chevron_up';
 import CustomWeekCalendarDay from './customWeekCalendarDay';
 import {useNavigation} from '@react-navigation/native';
@@ -12,12 +17,18 @@ import {TabNavigatorProps} from '../../navigation/types';
 import {Book} from '../../navigation/book';
 import {fontSize} from '../../../assets/fontsSize';
 
-const width = Dimensions.get('screen').width;
-
 const CustomWeekCalendar = () => {
   const {marked, selected, setSelected} = useCalendar();
   const {t} = useCustomTranslation();
   const {navigate} = useNavigation<TabNavigatorProps['navigation']>();
+  const {width} = useWindowDimensions();
+  const isWeb = Platform.OS === 'web';
+
+  const monthFontSize = isWeb ? 14 : fontSize.title;
+  const weekDayFontSize = isWeb ? 13 : fontSize.title;
+  const titlePadding = isWeb ? 10 : 27.5;
+  const gridPadding = isWeb ? 0 : 27.5;
+  const weekRowHeight = isWeb ? 26 : 40;
 
   const currentMonth = MONTHS[new Date(selected).getMonth()];
 
@@ -32,17 +43,18 @@ const CustomWeekCalendar = () => {
 
   return (
     <CalendarProvider date={selectedDate} style={styles.container}>
-      <VStack space="sm">
+      <VStack space="sm" style={styles.innerContainer}>
         <HStack
           alignItems="center"
           justifyContent="space-between"
-          pl={27.5}
-          pr={25}>
+          pl={titlePadding}
+          pr={isWeb ? 14 : 25}>
           <HStack alignItems="center" space="xs">
             <Text
               variant="secondary"
               textAlign="center"
-              fontSize={fontSize.title}>
+              fontWeight={isWeb ? '400' : undefined}
+              fontSize={monthFontSize}>
               {`${t(`private.calendarScreen.monthsNames.${currentMonth}`)}`}
             </Text>
           </HStack>
@@ -52,10 +64,13 @@ const CustomWeekCalendar = () => {
             <ChevronUp color="#F7AB39" />
           </TouchableOpacity>
         </HStack>
-        <HStack marginHorizontal={27.5} justifyContent="space-between">
+        <HStack marginHorizontal={gridPadding}>
           {DAYS_OF_WEEK.map((day, i) => (
-            <Box key={i} alignItems="center" minWidth={40}>
-              <Text variant="secondary" fontSize={fontSize.title}>
+            <Box key={i} flex={1} alignItems="center">
+              <Text
+                variant="secondary"
+                fontWeight={isWeb ? '400' : undefined}
+                fontSize={weekDayFontSize}>
                 {t(`private.calendarScreen.daysOfWeek.${day}`)}
               </Text>
             </Box>
@@ -64,7 +79,24 @@ const CustomWeekCalendar = () => {
       </VStack>
 
       <WeekCalendar
-        style={styles.weekCalendar}
+        style={[
+          styles.weekCalendar,
+          isWeb
+            ? {
+                position: 'relative',
+                top: 0,
+                width: '100%',
+                left: 0,
+                height: weekRowHeight,
+              }
+            : {
+                position: 'absolute',
+                top: 1,
+                width: width - gridPadding * 2,
+                left: gridPadding,
+                height: weekRowHeight,
+              },
+        ]}
         date={selectedDate}
         onDayPress={onDayPress}
         firstDay={1}
@@ -85,12 +117,13 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-end',
   },
+  innerContainer: {
+    width: '100%',
+  },
   weekCalendar: {
-    width: width - 20,
     position: 'absolute',
     top: 1,
-    left: 10,
-    height: 40,
+    marginTop: 2,
   },
 });
 
