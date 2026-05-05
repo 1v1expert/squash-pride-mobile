@@ -46,6 +46,12 @@ const Favorites = () => {
               return <TrainingItem item={item} state={state} isFavorite />;
             }}
             style={styles.flatList}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            windowSize={5}
+            updateCellsBatchingPeriod={50}
+            removeClippedSubviews
+            keyExtractor={item => `${item.type}-${item.date || item.exercise?.uid || 'training'}`}
           />
         ) : (
           <FlatList
@@ -54,6 +60,12 @@ const Favorites = () => {
               return <TrainingItem item={item} state={state} isFavorite />;
             }}
             style={styles.flatList}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            windowSize={5}
+            updateCellsBatchingPeriod={50}
+            removeClippedSubviews
+            keyExtractor={item => `${item.type}-${item.date || item.exercise?.uid || 'exercise'}`}
           />
         )}
       </VStack>

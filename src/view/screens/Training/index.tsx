@@ -122,6 +122,11 @@ const Training = () => {
               return <TrainingItem item={item} state={state} />;
             }}
             style={styles.flatList}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            windowSize={5}
+            updateCellsBatchingPeriod={50}
+            removeClippedSubviews
             refreshControl={
               <RefreshControl
                 refreshing={isLoading}
@@ -147,6 +152,11 @@ const Training = () => {
               );
             }}
             style={styles.flatList}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            windowSize={5}
+            updateCellsBatchingPeriod={50}
+            removeClippedSubviews
             refreshControl={
               <RefreshControl
                 refreshing={isLoading}

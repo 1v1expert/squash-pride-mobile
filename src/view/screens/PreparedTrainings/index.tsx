@@ -51,6 +51,12 @@ const PreparedTrainings: FC<HomeScreensStackScreenProps> = ({navigation, route})
                 renderItem={({item}) => <Item item={item} onPress={goToItem} />}
                 style={{width: '100%'}}
                 contentContainerStyle={{paddingTop: 20, paddingHorizontal: 20, paddingBottom: 24}}
+                initialNumToRender={4}
+                maxToRenderPerBatch={4}
+                windowSize={5}
+                updateCellsBatchingPeriod={50}
+                removeClippedSubviews
+                keyExtractor={item => item.uid}
             />
         </ViewContainer>
     )

@@ -221,6 +221,12 @@ const Calendar = () => {
                         />
                       );
                     }}
+                    initialNumToRender={4}
+                    maxToRenderPerBatch={4}
+                    windowSize={5}
+                    updateCellsBatchingPeriod={50}
+                    removeClippedSubviews
+                    keyExtractor={(item, index) => `${item.startAt || item.id || index}`}
                   />
                 ) : (
                   <HStack>

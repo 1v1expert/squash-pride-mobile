@@ -4,14 +4,12 @@ import CustomButton from '../../components/CustomButton';
 import {ArrowLeftIcon, Text} from '@gluestack-ui/themed';
 import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import {HomeScreensStackScreenProps, TItem} from '../../navigation/types';
-import {Dimensions, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import Item from '../../components/Item';
 import {Book} from '../../navigation/book';
 import {useTraining} from '../../../bus/training';
 import TooltipModal from "../../components/TooltipModal";
 import {getTooltipStatus, saveTooltipStatus} from "../../../tools/helpers/tooltipStorage";
-
-const width = Dimensions.get('screen').width;
 
 // const DATA: TItem[] = [
 //   {
@@ -84,7 +82,13 @@ const GameTechnique: FC<HomeScreensStackScreenProps> = ({navigation}) => {
       <FlatList
         data={techniques}
         renderItem={({item}) => <Item item={item} onPress={goToItem} />}
-        style={{width, paddingTop: 20, paddingHorizontal: 20}}
+        style={{width: '100%', paddingTop: 20, paddingHorizontal: 20}}
+        initialNumToRender={4}
+        maxToRenderPerBatch={4}
+        windowSize={5}
+        updateCellsBatchingPeriod={50}
+        removeClippedSubviews
+        keyExtractor={item => item.uid}
       />
         {showTooltip && <TooltipModal tooltip={t('private.gameTechnique.tooltip')}/>}
     </ViewContainer>

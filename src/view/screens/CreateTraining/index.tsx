@@ -16,7 +16,6 @@ import {useCustomTranslation} from '../../../tools/hooks/useTranslation';
 import ViewContainer from '../../components/ViewContainer';
 import PeopleCounter from '../../components/PeopleCounter';
 import {
-  Dimensions,
   FlatList,
   Platform,
   RefreshControl,
@@ -34,8 +33,6 @@ import {useNavigation} from '@react-navigation/native';
 import FilterModal from '../../components/FilterModal';
 import FilterIcon from '../../../assets/svg/filter';
 import {useCalendar} from "../../../bus/calendar";
-
-const width = Dimensions.get('screen').width;
 
 const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
   const {navigate, goBack} = useNavigation<
@@ -124,7 +121,7 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
             width={50}
           />
         }>
-        <VStack flex={1} width={width} alignItems="center">
+        <VStack flex={1} width="$full" alignItems="center">
           <HStack width="$full" bgColor="#131517">
             <TouchableOpacity
               style={styles.touchableOpacity}
@@ -163,6 +160,11 @@ const CreateTraining: FC<PrivateStackScreenProps> = ({route}) => {
               );
             }}
             style={styles.flatList}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            windowSize={5}
+            updateCellsBatchingPeriod={50}
+            removeClippedSubviews
             keyExtractor={item => item.uid}
             refreshControl={
               <RefreshControl
@@ -231,7 +233,7 @@ const styles = StyleSheet.create({
   touchableOpacity: {
     width: '50%',
   },
-  flatList: {width, paddingTop: 20, paddingHorizontal: 20},
+  flatList: {width: '100%', paddingTop: 20, paddingHorizontal: 20},
 });
 
 export default CreateTraining;

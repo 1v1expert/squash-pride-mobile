@@ -2,6 +2,33 @@ import {createThumbnail} from 'react-native-create-thumbnail';
 
 const thumbnailCache = new Map<string, string | undefined>();
 const inFlightThumbnailRequests = new Map<string, Promise<string | undefined>>();
+const MAX_CONCURRENT_THUMBNAILS = 2;
+let activeThumbnailTasks = 0;
+const thumbnailTaskQueue: Array<() => void> = [];
+
+const runThumbnailTask = <T>(task: () => Promise<T>): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    const execute = () => {
+      activeThumbnailTasks += 1;
+      task()
+        .then(resolve)
+        .catch(reject)
+        .finally(() => {
+          activeThumbnailTasks -= 1;
+          const nextTask = thumbnailTaskQueue.shift();
+          if (nextTask) {
+            nextTask();
+          }
+        });
+    };
+
+    if (activeThumbnailTasks < MAX_CONCURRENT_THUMBNAILS) {
+      execute();
+    } else {
+      thumbnailTaskQueue.push(execute);
+    }
+  });
+};
 
 export const normalizeVideoUrl = (rawUrl: string) => {
   if (!rawUrl) {
@@ -38,12 +65,14 @@ export const getVideoThumbnail = async (
 
   const request = (async () => {
     try {
-      const response = await createThumbnail({
-        url,
-        timeStamp: 0,
-        format: 'jpeg',
-        cacheName,
-      });
+      const response = await runThumbnailTask(() =>
+        createThumbnail({
+          url,
+          timeStamp: 0,
+          format: 'jpeg',
+          cacheName,
+        }),
+      );
       thumbnailCache.set(cacheKey, response.path);
       return response.path;
     } catch {
