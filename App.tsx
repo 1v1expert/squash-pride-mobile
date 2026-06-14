@@ -6,7 +6,7 @@ import {store} from './src/init/redux';
 import {Navigation} from './src/view/navigation';
 import {config} from './config/gluestack-ui.config';
 import SplashScreen from 'react-native-splash-screen';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 
 const App = () => {
@@ -14,13 +14,19 @@ const App = () => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
     }
-    Orientation.lockToPortrait();
+
+    if (Platform.OS !== 'web') {
+      Orientation.lockToPortrait();
+    }
   }, []);
+
   return (
     <ReduxProvider store={store}>
       <SafeAreaProvider>
         <GluestackUIProvider config={config}>
-          <Navigation />
+          <View style={{flex: 1}}>
+            <Navigation />
+          </View>
         </GluestackUIProvider>
       </SafeAreaProvider>
     </ReduxProvider>

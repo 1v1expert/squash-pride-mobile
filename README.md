@@ -42,6 +42,65 @@ npm run ios
 yarn ios
 ```
 
+### For Web
+
+The repository now includes a React Native Web target that reuses the existing app code and adds browser fallbacks for mobile-only modules.
+
+```bash
+# install/update dependencies first
+npm install
+
+# run the web dev server
+npm run web
+
+# create a production web build
+npm run web:build
+```
+
+Notes:
+
+- The web build uses `react-native-web` plus a custom `webpack.config.js`.
+- A few native-only modules are shimmed for the browser, so web playback and some device integrations are simplified compared with iOS/Android.
+- If your backend URL comes from `.env`, make sure `API_URL` is defined before running the web build.
+
+### Docker (Web Production)
+
+You can build and run the web app as a production Docker container.
+
+Build image:
+
+```bash
+# uses default API_URL (internal.squash-pride.ru/api/v2)
+docker build -t spm-web .
+
+# or override API URL at build time
+docker build -t spm-web --build-arg API_URL=https://your-api.example.com/api/v2 .
+```
+
+Run container:
+
+```bash
+docker run --rm -p 8080:80 spm-web
+```
+
+Docker Compose (build + run in one command):
+
+```bash
+docker compose up --build -d
+```
+
+Stop:
+
+```bash
+docker compose down
+```
+
+Open in browser:
+
+```text
+http://localhost:8080
+```
+
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.

@@ -20,7 +20,7 @@ type CustomInputProps = {
   placeholder?: string;
   type?: 'text' | 'password';
   name: string;
-  defaultValue?: string;
+  defaultValue?: string | null;
   error?: FieldError;
   maxLength?: number;
   variant?: 'primary' | 'secondary' | 'textEdit';
@@ -45,16 +45,17 @@ const CustomInput: FC<CustomInputProps> = ({
   const [focus, setFocus] = useState(false);
   const {t} = useCustomTranslation();
   const [showField, setShowField] = useState(type === 'text');
+  const normalizedDefaultValue = defaultValue ?? '';
 
   useEffect(() => {
-    setValue(name, defaultValue);
-  }, [defaultValue, name, setValue]);
+    setValue(name, normalizedDefaultValue);
+  }, [name, normalizedDefaultValue, setValue]);
 
   return (
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValue ?? ''}
+      defaultValue={normalizedDefaultValue}
       render={({field: {onChange, value}}) => {
         return (
           <VStack>
@@ -69,7 +70,7 @@ const CustomInput: FC<CustomInputProps> = ({
               borderRadius={perfectSize(5)}>
               <InputField
                 autoCapitalize="none"
-                value={value}
+                value={value ?? ''}
                 onChangeText={(formatted: string) => onChange(formatted)}
                 placeholder={placeholder}
                 placeholderTextColor={focus ? '#000' : '#fff'}

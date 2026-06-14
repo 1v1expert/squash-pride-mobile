@@ -1,0 +1,11 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        API_URL: ${API_URL:-https://internal.squash-pride.ru/api/v2}
+    container_name: spm-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped

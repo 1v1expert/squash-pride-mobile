@@ -13,13 +13,15 @@ export const languageDetectorPlugin: LanguageDetectorModule = {
       await AsyncStorage.getItem(STORE_LANGUAGE_KEY).then(language => {
         const supportedLanguages = ['en', 'ru'];
         const locale =
-          Platform.OS === 'ios'
-            ? NativeModules.SettingsManager?.settings?.AppleLocale ||
-              NativeModules.SettingsManager?.settings?.AppleLanguages[0] ||
-              ''
-            : NativeModules.I18nManager?.localeIdentifier || '';
+          Platform.OS === 'web'
+            ? navigator.language || ''
+            : Platform.OS === 'ios'
+              ? NativeModules.SettingsManager?.settings?.AppleLocale ||
+                NativeModules.SettingsManager?.settings?.AppleLanguages[0] ||
+                ''
+              : NativeModules.I18nManager?.localeIdentifier || '';
 
-        const [lowerCaseLocale] = locale.split('_');
+        const [lowerCaseLocale] = locale.toLowerCase().split(/[-_]/);
 
         if (language) {
           return callback(language);

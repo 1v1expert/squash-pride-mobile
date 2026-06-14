@@ -26,6 +26,26 @@ export const useCalendar = () => {
       events?: {startAt: string; trainings?: any[]; prepared_training?: any[]}[];
     };
   };
+
+  const toTimestamp = (value: unknown): number | null => {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value;
+    }
+
+    if (typeof value === 'string') {
+      const asNumber = Number(value);
+
+      if (Number.isFinite(asNumber)) {
+        return asNumber;
+      }
+
+      const parsed = new Date(value).getTime();
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    return null;
+  };
+
   const marked = useMemo(() => {
     const selectedDate = new Date(selected).toISOString().split('T')[0];
     if (!events.length) {
@@ -38,19 +58,31 @@ export const useCalendar = () => {
     }
     const calendarEvents: CalendarEventsType = events.reduce(
       (acc: MarkedDates & any, event) => {
-        const eventDay = new Date(Number(event.start_at))
-          .toISOString()
-          .split('T')[0];
+        const eventTimestamp = toTimestamp(event.start_at);
+
+        if (eventTimestamp == null) {
+          return acc;
+        }
+
+        const eventDay = new Date(eventTimestamp).toISOString().split('T')[0];
+        const startAt = `${eventTimestamp}`;
+
         if (!acc[eventDay]) {
           acc[eventDay] = {
             selected: selectedDate === eventDay,
             marked: true,
-            events: [{startAt: event.start_at, trainings: event.trainings, prepared_training: [event.prepared_training]}],
+            events: [
+              {
+                startAt,
+                trainings: event.trainings,
+                prepared_training: [event.prepared_training],
+              },
+            ],
           };
         } else {
           Array.isArray(acc[eventDay].events) &&
             acc[eventDay].events.push({
-              startAt: event.start_at,
+              startAt,
               trainings: event.trainings,
               prepared_training: [event.prepared_training],
             });

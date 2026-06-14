@@ -1,3 +1,4 @@
+import {useCallback} from 'react';
 import {trainingActions} from './slice';
 
 // Tools
@@ -28,15 +29,15 @@ export const useTraining = () => {
   );
   const favorites = useSelector(({training}) => training.favorites);
 
-  const addFavoriteItem = (item: FavoriteType | FavoriteType[]) => {
+  const addFavoriteItem = useCallback((item: FavoriteType | FavoriteType[]) => {
     dispatch(trainingActions.addFavorite(item));
-  };
-  const removeFavoriteItem = (item: FavoriteType) => {
+  }, [dispatch]);
+  const removeFavoriteItem = useCallback((item: FavoriteType) => {
     dispatch(trainingActions.removeFavorite(item));
-  };
-  const editFavoriteItem = (item: FavoriteType) => {
+  }, [dispatch]);
+  const editFavoriteItem = useCallback((item: FavoriteType) => {
     dispatch(trainingActions.editFavorite(item));
-  };
+  }, [dispatch]);
   const getFavoriteItem = (item: ExerciseType | ExerciseType[] | undefined) => {
     if (item) {
       if (Array.isArray(item)) {
@@ -49,59 +50,59 @@ export const useTraining = () => {
     }
   };
 
-  const addDoneTraining = (state: TrainingType) => {
+  const addDoneTraining = useCallback((state: TrainingType) => {
     const included = completedTrainings.some(
       e => JSON.stringify(e.training) === JSON.stringify(state.training),
     );
     if (!included) {
       dispatch(trainingActions.addCompletedTraining(state));
     }
-  };
-  const removeDoneTraining = (item: TrainingType) => {
+  }, [completedTrainings, dispatch]);
+  const removeDoneTraining = useCallback((item: TrainingType) => {
     dispatch(trainingActions.removeCompletedTraining(item));
-  };
-  const editDoneTraining = (item: TrainingType) => {
+  }, [dispatch]);
+  const editDoneTraining = useCallback((item: TrainingType) => {
     dispatch(trainingActions.editCompletedTraining(item));
-  };
+  }, [dispatch]);
 
-  const setFilters = (state: FiltersType) => {
+  const setFilters = useCallback((state: FiltersType) => {
     dispatch(trainingActions.setFilters(state));
-  };
-  const setExercises = (state: ExerciseType[]) => {
+  }, [dispatch]);
+  const setExercises = useCallback((state: ExerciseType[]) => {
     dispatch(trainingActions.setExercises(state));
-  };
-  const setPreparedTrainings = (state: PreparedTrainingType[]) => {
+  }, [dispatch]);
+  const setPreparedTrainings = useCallback((state: PreparedTrainingType[]) => {
     dispatch(trainingActions.setPreparedTrainings(state));
-  };
-  const addToStack = (state: ExerciseType | ExerciseType[]) => {
+  }, [dispatch]);
+  const addToStack = useCallback((state: ExerciseType | ExerciseType[]) => {
     dispatch(trainingActions.addToStack(state));
-  };
-  const removeFromStack = (state: ExerciseType['uid']) => {
+  }, [dispatch]);
+  const removeFromStack = useCallback((state: ExerciseType['uid']) => {
     dispatch(trainingActions.removeFromStack(state));
-  };
-  const resetStack = () => {
+  }, [dispatch]);
+  const resetStack = useCallback(() => {
     dispatch(trainingActions.resetStack());
-  };
-  const resetExercises = () => {
+  }, [dispatch]);
+  const resetExercises = useCallback(() => {
     dispatch(trainingActions.resetExercises());
-  };
-  const resetFilters = () => {
+  }, [dispatch]);
+  const resetFilters = useCallback(() => {
     dispatch(trainingActions.resetFilters());
-  };
-  const fetchGroup = async () => {
+  }, [dispatch]);
+  const fetchGroup = useCallback(async () => {
     tokenRefresh(() => dispatch(getGroupData()));
-  };
-  const fetchExercise = async (
+  }, [dispatch, tokenRefresh]);
+  const fetchExercise = useCallback(async (
     data?: FiltersType & {readyTraining?: boolean},
   ): Promise<ExerciseType[]> => {
     return tokenRefresh(() => dispatch(getExercise(data)).unwrap());
-  };
+  }, [dispatch, tokenRefresh]);
   // const fetchInstructions = async () => tokenRefresh(() => dispatch(getInstructionData()));
-  const fetchRules = async () => tokenRefresh(() => dispatch(getRules()));
-  const fetchTechniques = async () =>
-    tokenRefresh(() => dispatch(getTechniques()));
-  const fetchPreparedTrainings = async (data?: FiltersType): Promise<PreparedTrainingType[]> =>
-      tokenRefresh(() => dispatch(getPreparedTrainings(data)).unwrap());
+  const fetchRules = useCallback(async () => tokenRefresh(() => dispatch(getRules())), [dispatch, tokenRefresh]);
+  const fetchTechniques = useCallback(async () =>
+    tokenRefresh(() => dispatch(getTechniques())), [dispatch, tokenRefresh]);
+  const fetchPreparedTrainings = useCallback(async (data?: FiltersType): Promise<PreparedTrainingType[]> =>
+      tokenRefresh(() => dispatch(getPreparedTrainings(data)).unwrap()), [dispatch, tokenRefresh]);
 
   return {
     groups,
